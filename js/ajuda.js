@@ -115,7 +115,8 @@ function openGiftModal(gift) {
 
 function buildWhatsappUrl(gift) {
   const phone = window.pmWhatsappPhone || "";
-  const message = gift?.whatsappMessage || `Olá! Quero doar ${gift?.name || "um item"} para Pedro e Maynara.`;
+  const label = gift?.price ? `${gift?.name || "um item"} (${gift.price})` : gift?.name || "um item";
+  const message = gift?.whatsappMessage || `Oi Pedro quero doar "${label}" para vocês! Como podemos te enviar?`;
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 }
 
