@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Confirmações | Pedro & Maynara</title>
+    <meta
+      name="description"
+      content="Painel simples de acompanhamento das confirmações."
+    />
+    <link rel="stylesheet" href="css/confirmacoes.css?v=admin-views-1" />
+    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="js/supabase-config.js"></script>
+    <script defer src="js/admin-confirmacoes.js?v=admin-views-1"></script>
+  </head>
+  <body>
+    <a class="page-back" href="index.html">voltar</a>
+
+    <main class="confirm-shell">
+      <section class="admin-login" id="admin-login" aria-labelledby="admin-login-title">
+        <h1 id="admin-login-title">Admin</h1>
+        <p class="admin-small">
+          Acesso visual simples para ocultar o painel nesta fase.
+        </p>
+        <label class="sr-only" for="admin-password">Senha</label>
+        <input
+          id="admin-password"
+          type="password"
+          placeholder="senha"
+          autocomplete="current-password"
+        />
+        <button id="admin-enter-button" type="button">Entrar</button>
+        <p class="status-message" id="admin-login-status" aria-live="polite"></p>
+      </section>
+
+      <section class="admin-dashboard" id="admin-dashboard" aria-labelledby="admin-title">
+        <header class="admin-header">
+          <div>
+            <h1 id="admin-title">Confirmações</h1>
+            <p class="admin-small" id="admin-updated-at"></p>
+          </div>
+          <div class="admin-toolbar">
+            <button id="refresh-admin-button" type="button">Atualizar</button>
+            <button id="logout-admin-button" type="button">Sair</button>
+          </div>
+        </header>
+
+        <section class="summary-grid summary-grid--general" aria-label="Resumo geral">
+          <article class="summary-card">
+            <span class="admin-small">Vai</span>
+            <strong id="summary-going">0</strong>
+          </article>
+          <article class="summary-card">
+            <span class="admin-small">Não vai</span>
+            <strong id="summary-not-going">0</strong>
+          </article>
+          <article class="summary-card">
+            <span class="admin-small">Pendente</span>
+            <strong id="summary-pending">0</strong>
+          </article>
+          <article class="summary-card">
+            <span class="admin-small">Total de convidados</span>
+            <strong id="summary-total-guests">0</strong>
+          </article>
+        </section>
+
+        <section class="side-summary" aria-label="Resumo por lado">
+          <article class="side-card">
+            <strong>Maynara</strong>
+            <div class="side-totals" id="summary-side-maynara"></div>
+          </article>
+          <article class="side-card">
+            <strong>Pedro</strong>
+            <div class="side-totals" id="summary-side-pedro"></div>
+          </article>
+        </section>
+
+        <nav class="admin-tabs" aria-label="Filtros de grupos">
+          <button class="admin-tab is-active" type="button" data-admin-tab="all">Todos</button>
+          <button class="admin-tab" type="button" data-admin-tab="going">Grupos que vão</button>
+          <button class="admin-tab" type="button" data-admin-tab="not-going">Grupos que não vão</button>
+          <button class="admin-tab" type="button" data-admin-tab="mixed">Grupos mistos</button>
+          <button class="admin-tab" type="button" data-admin-tab="pending">Pendentes</button>
+        </nav>
+
+        <p class="status-message" id="admin-status" aria-live="polite"></p>
+        <section class="admin-list" id="admin-list" aria-label="Lista de grupos"></section>
+      </section>
+    </main>
+  </body>
+</html>

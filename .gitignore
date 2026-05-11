@@ -1,0 +1,14 @@
+# Arquivos de trabalho pesados que não precisam ir para o Git/deploy.
+*.psd
+SITE/
+references/
+
+# Originais pesados já convertidos para WebP.
+assets/images/hologram/*.png
+assets/images/section-1/foto-secao-1.png
+assets/images/section-3/oziom-space.png
+assets/images/section-3 /Camada 2.png
+assets/images/section-5/*.png
+assets/images/section-5/mobile/*.png
+assets/images/gallery/*.jpg
+assets/images/gallery/*.jpeg

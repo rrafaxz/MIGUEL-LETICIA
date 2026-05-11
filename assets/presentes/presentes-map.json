@@ -1,0 +1,272 @@
+[
+  {
+    "name": "Armário de cozinha",
+    "image": "assets/presentes/armario-de-cozinha.webp",
+    "whatsappMessage": "Olá! Quero doar armário de cozinha para Pedro e Maynara.",
+    "buttonText": "Doe esse armário de cozinha"
+  },
+  {
+    "name": "Cooktop",
+    "image": "assets/presentes/cooktop.webp",
+    "whatsappMessage": "Olá! Quero doar cooktop para Pedro e Maynara.",
+    "buttonText": "Doe esse cooktop"
+  },
+  {
+    "name": "Guarda-roupa",
+    "image": "assets/presentes/guarda-roupa.webp",
+    "whatsappMessage": "Olá! Quero doar guarda-roupa para Pedro e Maynara.",
+    "buttonText": "Doe esse guarda-roupa"
+  },
+  {
+    "name": "Mesa de jantar",
+    "image": "assets/presentes/mesa-de-jantar.webp",
+    "whatsappMessage": "Olá! Quero doar mesa de jantar para Pedro e Maynara.",
+    "buttonText": "Doe essa mesa de jantar"
+  },
+  {
+    "name": "Televisão",
+    "image": "assets/presentes/televisao.webp",
+    "whatsappMessage": "Olá! Quero doar televisão para Pedro e Maynara.",
+    "buttonText": "Doe essa televisão"
+  },
+  {
+    "name": "Painel de TV",
+    "image": "assets/presentes/painel-de-tv.webp",
+    "whatsappMessage": "Olá! Quero doar painel de tv para Pedro e Maynara.",
+    "buttonText": "Doe esse painel de tv"
+  },
+  {
+    "name": "Sofá",
+    "image": "assets/presentes/sofa.webp",
+    "whatsappMessage": "Olá! Quero doar sofá para Pedro e Maynara.",
+    "buttonText": "Doe esse sofá"
+  },
+  {
+    "name": "Aspirador de pó",
+    "image": "assets/presentes/aspirador-de-po.webp",
+    "whatsappMessage": "Olá! Quero doar aspirador de pó para Pedro e Maynara.",
+    "buttonText": "Doe esse aspirador de pó"
+  },
+  {
+    "name": "Passadeira a vapor",
+    "image": "assets/presentes/passadeira-a-vapor.webp",
+    "whatsappMessage": "Olá! Quero doar passadeira a vapor para Pedro e Maynara.",
+    "buttonText": "Doe essa passadeira a vapor"
+  },
+  {
+    "name": "Cesto de roupas",
+    "image": "assets/presentes/cesto-de-roupas.webp",
+    "whatsappMessage": "Olá! Quero doar cesto de roupas para Pedro e Maynara.",
+    "buttonText": "Doe esse cesto de roupas"
+  },
+  {
+    "name": "Conjunto lixeira banheiro",
+    "image": "assets/presentes/conjunto-lixeira-banheiro.webp",
+    "whatsappMessage": "Olá! Quero doar conjunto lixeira banheiro para Pedro e Maynara.",
+    "buttonText": "Doe esse conjunto lixeira banheiro"
+  },
+  {
+    "name": "Protetor de colchão",
+    "image": "assets/presentes/protetor-de-colchao.webp",
+    "whatsappMessage": "Olá! Quero doar protetor de colchão para Pedro e Maynara.",
+    "buttonText": "Doe esse protetor de colchão"
+  },
+  {
+    "name": "Cobertor",
+    "image": "assets/presentes/cobertor.webp",
+    "whatsappMessage": "Olá! Quero doar cobertor para Pedro e Maynara.",
+    "buttonText": "Doe esse cobertor"
+  },
+  {
+    "name": "Jogo de cama",
+    "image": "assets/presentes/jogo-de-cama.webp",
+    "whatsappMessage": "Olá! Quero doar jogo de cama para Pedro e Maynara.",
+    "buttonText": "Doe esse jogo de cama"
+  },
+  {
+    "name": "Cama box",
+    "image": "assets/presentes/cama-box.webp",
+    "whatsappMessage": "Olá! Quero doar cama box para Pedro e Maynara.",
+    "buttonText": "Doe essa cama box"
+  },
+  {
+    "name": "Lixeira automática",
+    "image": "assets/presentes/lixeira-automatica.webp",
+    "whatsappMessage": "Olá! Quero doar lixeira automática para Pedro e Maynara.",
+    "buttonText": "Doe essa lixeira automática"
+  },
+  {
+    "name": "Porta-temperos",
+    "image": "assets/presentes/porta-temperos.webp",
+    "whatsappMessage": "Olá! Quero doar porta-temperos para Pedro e Maynara.",
+    "buttonText": "Doe esse porta-temperos"
+  },
+  {
+    "name": "Batedeira",
+    "image": "assets/presentes/batedeira.webp",
+    "whatsappMessage": "Olá! Quero doar batedeira para Pedro e Maynara.",
+    "buttonText": "Doe essa batedeira"
+  },
+  {
+    "name": "Grill",
+    "image": "assets/presentes/grill.webp",
+    "whatsappMessage": "Olá! Quero doar grill para Pedro e Maynara.",
+    "buttonText": "Doe esse grill"
+  },
+  {
+    "name": "Forno elétrico",
+    "image": "assets/presentes/forno-eletrico.webp",
+    "whatsappMessage": "Olá! Quero doar forno elétrico para Pedro e Maynara.",
+    "buttonText": "Doe esse forno elétrico"
+  },
+  {
+    "name": "Micro-ondas",
+    "image": "assets/presentes/micro-ondas.webp",
+    "whatsappMessage": "Olá! Quero doar micro-ondas para Pedro e Maynara.",
+    "buttonText": "Doe esse micro-ondas"
+  },
+  {
+    "name": "Air fryer",
+    "image": "assets/presentes/air-fryer.webp",
+    "whatsappMessage": "Olá! Quero doar air fryer para Pedro e Maynara.",
+    "buttonText": "Doe esse air fryer"
+  },
+  {
+    "name": "Chaleira elétrica",
+    "image": "assets/presentes/chaleira-eletrica.webp",
+    "whatsappMessage": "Olá! Quero doar chaleira elétrica para Pedro e Maynara.",
+    "buttonText": "Doe essa chaleira elétrica"
+  },
+  {
+    "name": "Liquidificador",
+    "image": "assets/presentes/liquidificador.webp",
+    "whatsappMessage": "Olá! Quero doar liquidificador para Pedro e Maynara.",
+    "buttonText": "Doe esse liquidificador"
+  },
+  {
+    "name": "Jogo de copos",
+    "image": "assets/presentes/jogo-de-copos.webp",
+    "whatsappMessage": "Olá! Quero doar jogo de copos para Pedro e Maynara.",
+    "buttonText": "Doe esse jogo de copos"
+  },
+  {
+    "name": "Jogo de xícaras",
+    "image": "assets/presentes/jogo-de-xicaras.webp",
+    "whatsappMessage": "Olá! Quero doar jogo de xícaras para Pedro e Maynara.",
+    "buttonText": "Doe esse jogo de xícaras"
+  },
+  {
+    "name": "Taças de sobremesa",
+    "image": "assets/presentes/tacas-de-sobremesa.webp",
+    "whatsappMessage": "Olá! Quero doar taças de sobremesa para Pedro e Maynara.",
+    "buttonText": "Doe estas taças de sobremesa"
+  },
+  {
+    "name": "Jogo de taças",
+    "image": "assets/presentes/jogo-de-tacas.webp",
+    "whatsappMessage": "Olá! Quero doar jogo de taças para Pedro e Maynara.",
+    "buttonText": "Doe esse jogo de taças"
+  },
+  {
+    "name": "Jogo de copos 2",
+    "image": "assets/presentes/jogo-de-copos-2.webp",
+    "whatsappMessage": "Olá! Quero doar jogo de copos 2 para Pedro e Maynara.",
+    "buttonText": "Doe esse jogo de copos 2"
+  },
+  {
+    "name": "Aparelho de jantar",
+    "image": "assets/presentes/aparelho-de-jantar.webp",
+    "whatsappMessage": "Olá! Quero doar aparelho de jantar para Pedro e Maynara.",
+    "buttonText": "Doe esse aparelho de jantar"
+  },
+  {
+    "name": "Faqueiro",
+    "image": "assets/presentes/faqueiro.webp",
+    "whatsappMessage": "Olá! Quero doar faqueiro para Pedro e Maynara.",
+    "buttonText": "Doe esse faqueiro"
+  },
+  {
+    "name": "Jogo de facas",
+    "image": "assets/presentes/jogo-de-facas.webp",
+    "whatsappMessage": "Olá! Quero doar jogo de facas para Pedro e Maynara.",
+    "buttonText": "Doe esse jogo de facas"
+  },
+  {
+    "name": "Utensílios de silicone",
+    "image": "assets/presentes/utensilios-de-silicone.webp",
+    "whatsappMessage": "Olá! Quero doar utensílios de silicone para Pedro e Maynara.",
+    "buttonText": "Doe estes utensílios de silicone"
+  },
+  {
+    "name": "Utensílios de inox",
+    "image": "assets/presentes/utensilios-de-inox.webp",
+    "whatsappMessage": "Olá! Quero doar utensílios de inox para Pedro e Maynara.",
+    "buttonText": "Doe estes utensílios de inox"
+  },
+  {
+    "name": "Tábuas de corte",
+    "image": "assets/presentes/tabuas-de-corte.webp",
+    "whatsappMessage": "Olá! Quero doar tábuas de corte para Pedro e Maynara.",
+    "buttonText": "Doe estas tábuas de corte"
+  },
+  {
+    "name": "Multiprocessador",
+    "image": "assets/presentes/multiprocessador.webp",
+    "whatsappMessage": "Olá! Quero doar multiprocessador para Pedro e Maynara.",
+    "buttonText": "Doe esse multiprocessador"
+  },
+  {
+    "name": "Conjunto escorredor inox",
+    "image": "assets/presentes/conjunto-escorredor-inox.webp",
+    "whatsappMessage": "Olá! Quero doar conjunto escorredor inox para Pedro e Maynara.",
+    "buttonText": "Doe esse conjunto escorredor inox"
+  },
+  {
+    "name": "Potes herméticos",
+    "image": "assets/presentes/potes-hermeticos.webp",
+    "whatsappMessage": "Olá! Quero doar potes herméticos para Pedro e Maynara.",
+    "buttonText": "Doe estes potes herméticos"
+  },
+  {
+    "name": "Potes de vidro",
+    "image": "assets/presentes/potes-de-vidro.webp",
+    "whatsappMessage": "Olá! Quero doar potes de vidro para Pedro e Maynara.",
+    "buttonText": "Doe estes potes de vidro"
+  },
+  {
+    "name": "Travessas de vidro",
+    "image": "assets/presentes/travessas-de-vidro.webp",
+    "whatsappMessage": "Olá! Quero doar travessas de vidro para Pedro e Maynara.",
+    "buttonText": "Doe estas travessas de vidro"
+  },
+  {
+    "name": "Travessas de cerâmica",
+    "image": "assets/presentes/travessas-de-ceramica.webp",
+    "whatsappMessage": "Olá! Quero doar travessas de cerâmica para Pedro e Maynara.",
+    "buttonText": "Doe estas travessas de cerâmica"
+  },
+  {
+    "name": "Formas de assar",
+    "image": "assets/presentes/formas-de-assar.webp",
+    "whatsappMessage": "Olá! Quero doar formas de assar para Pedro e Maynara.",
+    "buttonText": "Doe estas formas de assar"
+  },
+  {
+    "name": "Panela de pressão",
+    "image": "assets/presentes/panela-de-pressao.webp",
+    "whatsappMessage": "Olá! Quero doar panela de pressão para Pedro e Maynara.",
+    "buttonText": "Doe essa panela de pressão"
+  },
+  {
+    "name": "Frigideiras",
+    "image": "assets/presentes/frigideiras.webp",
+    "whatsappMessage": "Olá! Quero doar frigideiras para Pedro e Maynara.",
+    "buttonText": "Doe estas frigideiras"
+  },
+  {
+    "name": "Potes organizadores",
+    "image": "assets/presentes/potes-organizadores.webp",
+    "whatsappMessage": "Olá! Quero doar potes organizadores para Pedro e Maynara.",
+    "buttonText": "Doe estes potes organizadores"
+  }
+]

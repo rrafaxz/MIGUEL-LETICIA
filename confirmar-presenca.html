@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Confirmar Presença | Pedro & Maynara</title>
+    <meta
+      name="description"
+      content="Confirme sua presença no casamento de Pedro e Maynara."
+    />
+    <link rel="stylesheet" href="css/confirmacoes.css?v=dress-code-3" />
+    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="js/supabase-config.js"></script>
+    <script defer src="js/confirmar-presenca.js"></script>
+  </head>
+  <body>
+    <a class="page-back" href="index.html">voltar</a>
+
+    <main class="confirm-shell confirm-shell--center">
+      <section class="rsvp-card" aria-labelledby="rsvp-title">
+        <h1 class="brand-title brand-title--logo" id="rsvp-title">
+          <span class="sr-only">Pedro e Maynara</span>
+          <img
+            class="rsvp-logo"
+            src="assets/images/hologram/holograma.webp"
+            alt=""
+            aria-hidden="true"
+          />
+        </h1>
+
+        <form class="search-frame" id="search-form" autocomplete="off">
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.35"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <path d="m20 20-4.2-4.2" />
+          </svg>
+          <label class="sr-only" for="guest-search">Pesquise seu nome</label>
+          <input
+            id="guest-search"
+            name="guest-search"
+            type="search"
+            placeholder="pesquise seu nome"
+            spellcheck="false"
+          />
+        </form>
+
+        <p class="status-message" id="search-status" aria-live="polite"></p>
+        <div class="results-list" id="results-list"></div>
+
+        <section class="selection-panel" id="selection-panel" aria-live="polite">
+          <div class="selection-header">
+            <div>
+              <strong class="group-title" id="selected-group-name"></strong>
+              <span class="group-meta" id="selected-group-meta"></span>
+            </div>
+            <button
+              class="ghost-button back-group-button"
+              id="change-group-button"
+              type="button"
+              aria-label="Voltar para escolher outro grupo"
+            >
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.45"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m15 18-6-6 6-6" />
+                <path d="M20 12H9" />
+              </svg>
+              <span>voltar</span>
+            </button>
+          </div>
+
+          <div class="locked-box" id="locked-message">
+            Este grupo já confirmou presença anteriormente. Você pode atualizar
+            as respostas se necessário.
+          </div>
+
+          <div class="guest-list" id="guest-list"></div>
+
+          <button class="outline-action" id="confirm-button" type="button">
+            Confirmar presença
+          </button>
+
+          <div class="success-box" id="success-message">
+            Presença confirmada com sucesso.
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <div
+      class="blessing-modal"
+      id="blessing-modal"
+      aria-hidden="true"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="blessing-modal-title"
+    >
+      <div class="blessing-modal__backdrop" data-blessing-close></div>
+      <section class="blessing-modal__panel">
+        <button
+          class="blessing-modal__close"
+          type="button"
+          aria-label="Fechar mensagem"
+          data-blessing-close
+        >
+          ×
+        </button>
+        <h2 id="blessing-modal-title">Traje Black Tie</h2>
+        <figure class="dress-code-frame">
+          <img src="assets/images/traje-convidado.png" alt="Imagem ilustrativa de traje Black Tie para convidados" />
+          <figcaption>imagem ilustrativa</figcaption>
+        </figure>
+        <p>
+          SUA PRESENÇA FOI CONFIRMADA! Para celebrarmos este momento com elegância,
+          o traje sugerido para a cerimônia é Black Tie.
+        </p>
+        <div class="blessing-modal__actions">
+          <a class="blessing-modal__primary blessing-modal__primary--pulse" href="ajuda.html">AJUDE O CASAL</a>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
