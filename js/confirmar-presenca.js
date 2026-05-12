@@ -2,6 +2,11 @@ const editNoticeMessage =
   "Este grupo já confirmou presença anteriormente. Você pode atualizar as respostas se necessário.";
 const firstSuccessMessage = "Presença confirmada com sucesso.";
 const updateSuccessMessage = "Presença atualizada com sucesso.";
+const groupNotFoundMessage =
+  "Não encontramos este convite. Você pode pesquisar seu nome abaixo.";
+const groupFields = "id, display_name, search_name, is_confirmed, confirmed_at";
+const guestFields = "id, group_id, full_name, attendance_status, created_at";
+const groupWithGuestsFields = `${groupFields}, guests(${guestFields})`;
 
 const state = {
   groups: [],
@@ -40,6 +45,10 @@ function normalizeText(value) {
 
 function setStatus(message = "") {
   elements.status.textContent = message;
+}
+
+function getDirectGroupId() {
+  return new URLSearchParams(window.location.search).get("group")?.trim() || "";
 }
 
 function openBlessingModal() {
@@ -96,6 +105,11 @@ function shouldRetryWithLegacyStatus(error) {
       text.includes("constraint") ||
       text.includes("invalid"))
   );
+}
+
+function isInvalidGroupIdError(error) {
+  const text = normalizeText([error?.message, error?.details, error?.hint, error?.code].join(" "));
+  return error?.code === "22P02" || text.includes("invalid input syntax for type uuid");
 }
 
 function getGuests(group) {
@@ -168,17 +182,34 @@ function resetSelection() {
 }
 
 async function fetchGroupById(groupId) {
-  const { data, error } = await supabaseClient
+  const { data: group, error: groupError } = await supabaseClient
     .from("guest_groups")
-    .select("id, display_name, search_name, is_confirmed, confirmed_at, guests(id, full_name, attendance_status, created_at)")
+    .select(groupFields)
     .eq("id", groupId)
-    .single();
+    .maybeSingle();
 
-  if (error) {
-    throw error;
+  if (groupError) {
+    throw groupError;
   }
 
-  return data;
+  if (!group) {
+    return null;
+  }
+
+  const { data: guests, error: guestsError } = await supabaseClient
+    .from("guests")
+    .select(guestFields)
+    .eq("group_id", groupId)
+    .order("full_name", { ascending: true });
+
+  if (guestsError) {
+    throw guestsError;
+  }
+
+  return {
+    ...group,
+    guests: guests || [],
+  };
 }
 
 function renderSelectedGroup(group) {
@@ -210,6 +241,11 @@ async function selectGroup(groupId) {
 
   try {
     const group = await fetchGroupById(groupId);
+    if (!group) {
+      setStatus(groupNotFoundMessage);
+      return;
+    }
+
     state.groups = state.groups.map((item) => (item.id === group.id ? group : item));
     renderSelectedGroup(group);
   } catch (error) {
@@ -303,7 +339,7 @@ async function confirmPresence() {
         confirmed_at: new Date().toISOString(),
       })
       .eq("id", state.selectedGroup.id)
-      .select("id, display_name, search_name, is_confirmed, confirmed_at, guests(id, full_name, attendance_status, created_at)")
+      .select(groupWithGuestsFields)
       .single();
 
     if (error) {
@@ -327,13 +363,19 @@ async function confirmPresence() {
   }
 }
 
-async function loadGroups() {
-  setStatus("Carregando lista...");
+async function loadGroups({
+  loadingMessage = "Carregando lista...",
+  successMessage = "Digite seu nome, sobrenome ou família.",
+  errorMessage = "Não foi possível carregar a lista. Tente novamente em instantes.",
+} = {}) {
+  if (loadingMessage) {
+    setStatus(loadingMessage);
+  }
 
   try {
     const { data, error } = await supabaseClient
       .from("guest_groups")
-      .select("id, display_name, search_name, is_confirmed, confirmed_at, guests(id, full_name, attendance_status, created_at)")
+      .select(groupWithGuestsFields)
       .order("display_name", { ascending: true });
 
     if (error) {
@@ -341,11 +383,65 @@ async function loadGroups() {
     }
 
     state.groups = data || [];
-    setStatus("Digite seu nome, sobrenome ou família.");
+    if (successMessage) {
+      setStatus(successMessage);
+    }
   } catch (error) {
     console.error(error);
-    setStatus("Não foi possível carregar a lista. Tente novamente em instantes.");
+    if (errorMessage) {
+      setStatus(errorMessage);
+    }
   }
+}
+
+async function openDirectGroup(groupId) {
+  setStatus("Carregando convite...");
+
+  try {
+    const group = await fetchGroupById(groupId);
+
+    if (!group) {
+      await loadGroups({ successMessage: groupNotFoundMessage });
+      return;
+    }
+
+    renderSelectedGroup(group);
+    const directStatus = elements.status.textContent;
+    state.groups = [group, ...state.groups.filter((item) => item.id !== group.id)];
+    await loadGroups({
+      loadingMessage: "",
+      successMessage: "",
+      errorMessage: "",
+    });
+    state.groups = state.groups.map((item) => (item.id === group.id ? group : item));
+    if (state.selectedGroup?.id === group.id) {
+      setStatus(directStatus);
+    }
+  } catch (error) {
+    const hasInvalidGroupId = isInvalidGroupIdError(error);
+    if (!hasInvalidGroupId) {
+      console.error(error);
+    }
+
+    const successMessage = hasInvalidGroupId
+      ? groupNotFoundMessage
+      : "Não foi possível abrir este convite agora. Você pode pesquisar seu nome abaixo.";
+
+    await loadGroups({
+      successMessage,
+    });
+  }
+}
+
+async function initializePage() {
+  const directGroupId = getDirectGroupId();
+
+  if (directGroupId) {
+    await openDirectGroup(directGroupId);
+    return;
+  }
+
+  await loadGroups();
 }
 
 elements.form.addEventListener("submit", (event) => {
@@ -376,4 +472,4 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-loadGroups();
+initializePage();
