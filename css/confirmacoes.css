@@ -354,7 +354,9 @@ a {
 
 .blessing-modal__panel {
   position: relative;
-  width: min(31rem, 100%);
+  width: min(44rem, 100%);
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
   border: 1px solid rgba(3, 3, 3, 0.18);
   background: #f7f5f0;
   color: var(--black);
@@ -661,8 +663,7 @@ a {
 .dress-code-frame {
   display: grid;
   place-items: center;
-  width: min(18rem, 82vw);
-  aspect-ratio: 4 / 5;
+  width: min(36rem, 100%);
   margin: 0.7rem auto 1.15rem;
   border: 1px solid rgba(3, 3, 3, 0.2);
   background: rgba(3, 3, 3, 0.035);
@@ -722,15 +723,26 @@ a {
 /* Imagem real do traje e alinhamento do botão principal. */
 .dress-code-frame {
   position: relative;
-  padding: 0;
+  padding: clamp(0.65rem, 2vw, 0.95rem) clamp(0.65rem, 2vw, 0.95rem) 1.55rem;
   background: #fff;
 }
 
-.dress-code-frame img {
+.dress-code-images {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.85rem, 3vw, 1.4rem);
+  align-items: center;
+  justify-items: center;
   width: 100%;
-  height: 100%;
+}
+
+.dress-code-frame img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: min(52vh, 27rem);
   object-fit: contain;
-  padding: 0.7rem;
 }
 
 .dress-code-frame figcaption {
@@ -749,4 +761,19 @@ a {
   align-items: center;
   justify-content: center;
   line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .dress-code-frame {
+    width: min(18rem, 82vw);
+  }
+
+  .dress-code-images {
+    grid-template-columns: 1fr;
+  }
+
+  .dress-code-frame img {
+    width: auto;
+    max-height: min(31vh, 16.5rem);
+  }
 }
