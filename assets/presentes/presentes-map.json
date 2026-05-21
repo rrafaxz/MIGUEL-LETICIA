@@ -30,6 +30,12 @@
     "buttonText": "Doe essa televisão"
   },
   {
+    "name": "Geladeira",
+    "image": "assets/presentes/geladeira.webp",
+    "whatsappMessage": "Olá! Quero doar geladeira para Pedro e Maynara.",
+    "buttonText": "Doe essa geladeira"
+  },
+  {
     "name": "Painel de TV",
     "image": "assets/presentes/painel-de-tv.webp",
     "whatsappMessage": "Olá! Quero doar painel de tv para Pedro e Maynara.",
@@ -136,6 +142,12 @@
     "image": "assets/presentes/chaleira-eletrica.webp",
     "whatsappMessage": "Olá! Quero doar chaleira elétrica para Pedro e Maynara.",
     "buttonText": "Doe essa chaleira elétrica"
+  },
+  {
+    "name": "Filtro de água",
+    "image": "assets/presentes/filtro-de-agua.webp",
+    "whatsappMessage": "Olá! Quero doar filtro de água para Pedro e Maynara.",
+    "buttonText": "Doe esse filtro de água"
   },
   {
     "name": "Liquidificador",
@@ -256,6 +268,12 @@
     "image": "assets/presentes/panela-de-pressao.webp",
     "whatsappMessage": "Olá! Quero doar panela de pressão para Pedro e Maynara.",
     "buttonText": "Doe essa panela de pressão"
+  },
+  {
+    "name": "Jogo de panelas",
+    "image": "assets/presentes/jogo-de-panelas.webp",
+    "whatsappMessage": "Olá! Quero doar jogo de panelas para Pedro e Maynara.",
+    "buttonText": "Doe esse jogo de panelas"
   },
   {
     "name": "Frigideiras",
