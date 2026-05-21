@@ -32,6 +32,11 @@ window.pmPresentes = [
     "whatsappMessage": "Oi Pedro quero doar \"Televisão\" para vocês! Como podemos te enviar?"
   },
   {
+    "name": "Geladeira",
+    "image": "assets/presentes/geladeira.webp",
+    "whatsappMessage": "Oi Pedro quero doar \"Geladeira\" para vocês! Como podemos te enviar?"
+  },
+  {
     "name": "Painel de TV",
     "image": "assets/presentes/painel-de-tv.webp",
     "whatsappMessage": "Oi Pedro quero doar \"Painel de TV\" para vocês! Como podemos te enviar?"
@@ -120,6 +125,11 @@ window.pmPresentes = [
     "name": "Chaleira elétrica",
     "image": "assets/presentes/chaleira-eletrica.webp",
     "whatsappMessage": "Oi Pedro quero doar \"Chaleira elétrica\" para vocês! Como podemos te enviar?"
+  },
+  {
+    "name": "Filtro de água",
+    "image": "assets/presentes/filtro-de-agua.webp",
+    "whatsappMessage": "Oi Pedro quero doar \"Filtro de água\" para vocês! Como podemos te enviar?"
   },
   {
     "name": "Liquidificador",
@@ -222,6 +232,11 @@ window.pmPresentes = [
     "whatsappMessage": "Oi Pedro quero doar \"Panela de pressão\" para vocês! Como podemos te enviar?"
   },
   {
+    "name": "Jogo de panelas",
+    "image": "assets/presentes/jogo-de-panelas.webp",
+    "whatsappMessage": "Oi Pedro quero doar \"Jogo de panelas\" para vocês! Como podemos te enviar?"
+  },
+  {
     "name": "Frigideiras",
     "image": "assets/presentes/frigideiras.webp",
     "whatsappMessage": "Oi Pedro quero doar \"Frigideiras\" para vocês! Como podemos te enviar?"
@@ -239,44 +254,44 @@ window.pmPresentes = [
 window.pmCotasDivertidas = [
   {
     name: "Netflix do casal",
-    price: "R$ 120,00",
+    price: "R$ 500,00",
     image: "assets/images/presentes-divertidos/ChatGPT Image 9 de mai. de 2026, 00_37_46.png",
     buttonText: "Presentear",
-    whatsappMessage: "Oi Pedro quero doar \"Netflix do casal (R$ 120,00)\" para vocês! Como podemos te enviar?"
+    whatsappMessage: "Oi Pedro quero doar \"Netflix do casal (R$ 500,00)\" para vocês! Como podemos te enviar?"
   },
   {
     name: "Ganhar buquê de flores",
-    price: "R$ 300,00",
+    price: "R$ 800,00",
     image: "assets/images/presentes-divertidos/ChatGPT Image 9 de mai. de 2026, 00_36_37.png",
     buttonText: "Presentear",
-    whatsappMessage: "Oi Pedro quero doar \"Ganhar buquê de flores (R$ 300,00)\" para vocês! Como podemos te enviar?"
+    whatsappMessage: "Oi Pedro quero doar \"Ganhar buquê de flores (R$ 800,00)\" para vocês! Como podemos te enviar?"
   },
   {
     name: "Não pegar fila no buffet",
-    price: "R$ 400,00",
+    price: "R$ 1.000,00",
     image: "assets/images/presentes-divertidos/ChatGPT Image 9 de mai. de 2026, 00_36_43.png",
     buttonText: "Presentear",
-    whatsappMessage: "Oi Pedro quero doar \"Não pegar fila no buffet (R$ 400,00)\" para vocês! Como podemos te enviar?"
+    whatsappMessage: "Oi Pedro quero doar \"Não pegar fila no buffet (R$ 1.000,00)\" para vocês! Como podemos te enviar?"
   },
   {
     name: "Ter mesa reservada",
-    price: "R$ 500,00",
+    price: "R$ 1.000,00",
     image: "assets/images/presentes-divertidos/ChatGPT Image 9 de mai. de 2026, 00_36_48.png",
     buttonText: "Presentear",
-    whatsappMessage: "Oi Pedro quero doar \"Ter mesa reservada (R$ 500,00)\" para vocês! Como podemos te enviar?"
+    whatsappMessage: "Oi Pedro quero doar \"Ter mesa reservada (R$ 1.000,00)\" para vocês! Como podemos te enviar?"
   },
   {
     name: "Despertador para a noiva",
-    price: "R$ 135,00",
+    price: "R$ 800,00",
     image: "assets/images/presentes-divertidos/ChatGPT Image 9 de mai. de 2026, 00_38_41.png",
     buttonText: "Presentear",
-    whatsappMessage: "Oi Pedro quero doar \"Despertador para a noiva (R$ 135,00)\" para vocês! Como podemos te enviar?"
+    whatsappMessage: "Oi Pedro quero doar \"Despertador para a noiva (R$ 800,00)\" para vocês! Como podemos te enviar?"
   },
   {
     name: "Curso de culinária para noiva",
-    price: "R$ 110,00",
+    price: "R$ 2.000,00",
     image: "assets/images/presentes-divertidos/ChatGPT Image 9 de mai. de 2026, 00_37_35.png",
     buttonText: "Presentear",
-    whatsappMessage: "Oi Pedro quero doar \"Curso de culinária para noiva (R$ 110,00)\" para vocês! Como podemos te enviar?"
+    whatsappMessage: "Oi Pedro quero doar \"Curso de culinária para noiva (R$ 2.000,00)\" para vocês! Como podemos te enviar?"
   }
 ];
