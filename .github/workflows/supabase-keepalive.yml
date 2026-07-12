@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     env:
-      SUPABASE_URL: https://ygzhbtnzenrmkyisggry.supabase.co
-      SUPABASE_ANON_KEY: sb_publishable_DrEcabJBv9qsW6hSite4ww_RcW0FDp1
+      SUPABASE_URL: https://yycsjewvcwuwedkzpvsa.supabase.co
+      SUPABASE_ANON_KEY: sb_publishable_jzFtKEn8B_chPDVHKovrAQ_ssHloH2K
 
     steps:
       - name: Ping Supabase REST API

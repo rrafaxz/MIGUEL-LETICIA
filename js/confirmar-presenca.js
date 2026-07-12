@@ -5,7 +5,7 @@ const updateSuccessMessage = "Presença atualizada com sucesso.";
 const groupNotFoundMessage =
   "Não encontramos este convite. Você pode pesquisar seu nome abaixo.";
 const groupFields = "id, display_name, search_name, is_confirmed, confirmed_at";
-const guestFields = "id, group_id, full_name, attendance_status, created_at";
+const guestFields = "id, group_id, full_name, attendance_status, guest_order, created_at";
 const groupWithGuestsFields = `${groupFields}, guests(${guestFields})`;
 
 const state = {
@@ -114,7 +114,11 @@ function isInvalidGroupIdError(error) {
 
 function getGuests(group) {
   return Array.isArray(group.guests)
-    ? [...group.guests].sort((a, b) => a.full_name.localeCompare(b.full_name, "pt-BR"))
+    ? [...group.guests].sort(
+        (a, b) =>
+          (Number(a.guest_order) || 0) - (Number(b.guest_order) || 0) ||
+          a.full_name.localeCompare(b.full_name, "pt-BR"),
+      )
     : [];
 }
 
@@ -200,6 +204,7 @@ async function fetchGroupById(groupId) {
     .from("guests")
     .select(guestFields)
     .eq("group_id", groupId)
+    .order("guest_order", { ascending: true })
     .order("full_name", { ascending: true });
 
   if (guestsError) {

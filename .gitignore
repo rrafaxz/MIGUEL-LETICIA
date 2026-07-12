@@ -1,4 +1,5 @@
 # Arquivos de trabalho pesados que não precisam ir para o Git/deploy.
+.DS_Store
 *.psd
 SITE/
 references/

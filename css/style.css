@@ -12,12 +12,14 @@
 }
 
 :root {
-  --ink: #151413;
-  --paper: #f6f4f0;
-  --white: #fbfaf8;
-  --black: #030303;
-  --line: rgba(21, 20, 19, 0.45);
-  --line-light: rgba(246, 244, 240, 0.62);
+  --ink: #172e1e;
+  --paper: #edf8ee;
+  --white: #fbfff9;
+  --black: #142619;
+  --celadon: #a8dcab;
+  --celadon-soft: #ddf4dd;
+  --line: rgba(23, 46, 30, 0.44);
+  --line-light: rgba(251, 255, 249, 0.68);
   --font-serif: "Bodoni 72", Didot, "Times New Roman", serif;
   --font-script: "Aston Script", "Snell Roundhand", cursive;
 }
@@ -108,9 +110,9 @@ img {
   opacity: 1;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.74) 0%, rgba(0, 0, 0, 0) 24%),
-    radial-gradient(circle at 50% 52%, rgba(0, 0, 0, 0) 0 30%, rgba(0, 0, 0, 0.42) 78%),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0) 48%, rgba(0, 0, 0, 0.28));
+    linear-gradient(180deg, rgba(20, 38, 25, 0.74) 0%, rgba(20, 38, 25, 0) 24%),
+    radial-gradient(circle at 50% 52%, rgba(20, 38, 25, 0) 0 30%, rgba(20, 38, 25, 0.38) 78%),
+    linear-gradient(90deg, rgba(20, 38, 25, 0.38), rgba(20, 38, 25, 0) 48%, rgba(20, 38, 25, 0.24));
 }
 
 .hero-header {
@@ -184,7 +186,7 @@ img {
   transform: translate(-50%, -50%);
   transform-origin: center center;
   opacity: 0;
-  mix-blend-mode: screen;
+  mix-blend-mode: normal;
 }
 
 .hero-hologram-one {
@@ -399,9 +401,22 @@ img {
   top: calc(50% - 2rem);
   width: 1px;
   height: 4rem;
-  background: rgba(21, 20, 19, 0.32);
+  background: rgba(23, 46, 30, 0.32);
   transform: translateX(-50%) scaleY(0);
   transform-origin: center center;
+}
+
+.date-note {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 3.2rem);
+  margin: 0;
+  transform: translateX(-50%);
+  color: rgba(23, 46, 30, 0.68);
+  font-size: 0.86rem;
+  line-height: 1.4;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .story-scene {
@@ -606,7 +621,7 @@ img {
     border: 1px solid rgba(246, 244, 240, 0.54);
     border-radius: 0;
     padding: 0;
-    background: rgba(3, 3, 3, 0.12);
+    background: rgba(20, 38, 25, 0.18);
     color: var(--paper);
   }
 
@@ -643,7 +658,7 @@ img {
     height: 100vh;
     min-height: 100svh;
     padding: 7.1rem 1.4rem 2rem;
-    background: rgba(3, 3, 3, 0.96);
+    background: rgba(20, 38, 25, 0.96);
     transform: translateX(-101%);
     transition: transform 360ms cubic-bezier(0.22, 0.61, 0.36, 1);
   }
@@ -754,6 +769,14 @@ img {
     gap: 1.35rem;
     width: min(18rem, 82vw);
     height: 13rem;
+  }
+
+  .date-note {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    white-space: normal;
   }
 
   .date-mark {
@@ -890,7 +913,7 @@ body.is-dress-modal-open {
 .dress-modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(3, 3, 3, 0.68);
+  background: rgba(20, 38, 25, 0.68);
 }
 
 .dress-modal__panel {
@@ -898,8 +921,8 @@ body.is-dress-modal-open {
   width: min(44rem, 100%);
   max-height: calc(100vh - 2rem);
   overflow-y: auto;
-  border: 1px solid rgba(3, 3, 3, 0.18);
-  background: #f7f5f0;
+  border: 1px solid rgba(23, 46, 30, 0.18);
+  background: var(--white);
   color: var(--black);
   padding: clamp(1.35rem, 5vw, 2.2rem);
   text-align: center;
@@ -917,7 +940,7 @@ body.is-dress-modal-open {
   right: 0.8rem;
   border: 0;
   background: transparent;
-  color: rgba(3, 3, 3, 0.58);
+  color: rgba(23, 46, 30, 0.58);
   font-size: 1.45rem;
   line-height: 1;
 }
@@ -933,7 +956,7 @@ body.is-dress-modal-open {
 .dress-modal p {
   margin: 1rem auto 0;
   max-width: 25rem;
-  color: rgba(3, 3, 3, 0.72);
+  color: rgba(23, 46, 30, 0.72);
   font-size: 0.98rem;
   line-height: 1.55;
 }
@@ -944,7 +967,7 @@ body.is-dress-modal-open {
   place-items: center;
   width: min(36rem, 100%);
   margin: 0.7rem auto 0;
-  border: 1px solid rgba(3, 3, 3, 0.2);
+  border: 1px solid rgba(23, 46, 30, 0.2);
   background: #fff;
   padding: clamp(0.65rem, 2vw, 0.95rem) clamp(0.65rem, 2vw, 0.95rem) 1.55rem;
   overflow: hidden;
@@ -972,7 +995,7 @@ body.is-dress-modal-open {
   position: absolute;
   right: 0.55rem;
   bottom: 0.45rem;
-  color: rgba(3, 3, 3, 0.46);
+  color: rgba(23, 46, 30, 0.46);
   font-size: 0.56rem;
   letter-spacing: 0.08em;
   line-height: 1;

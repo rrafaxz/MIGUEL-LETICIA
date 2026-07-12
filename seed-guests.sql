@@ -1,7 +1,11 @@
--- Pedro & Maynara RSVP seed
--- Rode este arquivo no SQL Editor do Supabase.
--- Para substituir membros provisórios por nomes reais depois, edite a tabela
--- public.guests no Supabase ou altere os arrays deste seed antes de rodar novamente.
+-- Miguel & Leticia RSVP setup
+-- Rode este arquivo no SQL Editor do Supabase novo.
+-- Ele cria a estrutura, cadastra a lista inicial de convidados e cria as views
+-- usadas por admin-confirmacoes.html.
+--
+-- Importante: nao rode este arquivo sobre uma base com confirmacoes reais sem
+-- revisar antes. O seed abaixo preserva respostas existentes quando encontra
+-- o mesmo grupo/convidado, mas nao remove grupos antigos automaticamente.
 
 create extension if not exists pgcrypto;
 create extension if not exists unaccent;
@@ -14,10 +18,24 @@ as $$
   select lower(regexp_replace(unaccent(coalesce(value, '')), '\s+', ' ', 'g'));
 $$;
 
+drop view if exists public.rsvp_grupos_pendentes;
+drop view if exists public.rsvp_grupos_mistos;
+drop view if exists public.rsvp_grupos_que_nao_vao;
+drop view if exists public.rsvp_grupos_que_vao;
+drop view if exists public.rsvp_grupos_resumo;
+drop view if exists public.rsvp_totais_por_lado;
+drop view if exists public.rsvp_totais_gerais;
+drop view if exists public.rsvp_admin_view;
+
 create table if not exists public.guest_groups (
   id uuid primary key default gen_random_uuid(),
   display_name text not null,
   search_name text not null,
+  side text not null default 'Casal',
+  category text not null default 'Convidados',
+  group_type text not null default 'Grupo',
+  sort_order integer not null default 0,
+  notes text,
   is_confirmed boolean not null default false,
   confirmed_at timestamptz,
   created_at timestamptz not null default now()
@@ -28,11 +46,23 @@ create table if not exists public.guests (
   group_id uuid not null references public.guest_groups(id) on delete cascade,
   full_name text not null,
   attendance_status text not null default 'pending',
+  guest_order integer not null default 0,
+  is_child boolean not null default false,
+  is_baby boolean not null default false,
+  notes text,
   created_at timestamptz not null default now()
 );
 
 alter table public.guest_groups
-  add column if not exists search_name text;
+  add column if not exists search_name text,
+  add column if not exists side text not null default 'Casal',
+  add column if not exists category text not null default 'Convidados',
+  add column if not exists group_type text not null default 'Grupo',
+  add column if not exists sort_order integer not null default 0,
+  add column if not exists notes text,
+  add column if not exists is_confirmed boolean not null default false,
+  add column if not exists confirmed_at timestamptz,
+  add column if not exists created_at timestamptz not null default now();
 
 alter table public.guest_groups
   alter column search_name set default '';
@@ -44,34 +74,20 @@ where search_name is null or search_name = '';
 alter table public.guest_groups
   alter column search_name set not null;
 
-alter table public.guest_groups
-  add column if not exists is_confirmed boolean not null default false;
-
-alter table public.guest_groups
-  add column if not exists confirmed_at timestamptz;
-
-alter table public.guest_groups
+alter table public.guests
+  add column if not exists attendance_status text not null default 'pending',
+  add column if not exists guest_order integer not null default 0,
+  add column if not exists is_child boolean not null default false,
+  add column if not exists is_baby boolean not null default false,
+  add column if not exists notes text,
   add column if not exists created_at timestamptz not null default now();
 
 alter table public.guests
-  add column if not exists attendance_status text not null default 'pending';
+  drop constraint if exists guests_attendance_status_check;
 
 alter table public.guests
-  add column if not exists created_at timestamptz not null default now();
-
-do $$
-begin
-  if not exists (
-    select 1
-    from pg_constraint
-    where conname = 'guests_attendance_status_check'
-      and conrelid = 'public.guests'::regclass
-  ) then
-    alter table public.guests
-      add constraint guests_attendance_status_check
-      check (attendance_status in ('pending', 'going', 'not_going'));
-  end if;
-end $$;
+  add constraint guests_attendance_status_check
+  check (attendance_status in ('pending', 'yes', 'no', 'going', 'not_going'));
 
 create unique index if not exists guest_groups_display_name_uidx
   on public.guest_groups(display_name);
@@ -82,164 +98,214 @@ create unique index if not exists guests_group_full_name_uidx
 alter table public.guest_groups enable row level security;
 alter table public.guests enable row level security;
 
+drop policy if exists "guest groups are readable" on public.guest_groups;
+drop policy if exists "guests are readable" on public.guests;
+drop policy if exists "unconfirmed groups can be confirmed once" on public.guest_groups;
+drop policy if exists "groups can be confirmed or updated" on public.guest_groups;
+drop policy if exists "guests can be updated before group confirmation" on public.guests;
+drop policy if exists "guests can update attendance status" on public.guests;
+
+create policy "guest groups are readable"
+  on public.guest_groups
+  for select
+  to anon, authenticated
+  using (true);
+
+create policy "guests are readable"
+  on public.guests
+  for select
+  to anon, authenticated
+  using (true);
+
+create policy "groups can be confirmed or updated"
+  on public.guest_groups
+  for update
+  to anon, authenticated
+  using (true)
+  with check (
+    is_confirmed = true
+    and confirmed_at is not null
+    and not exists (
+      select 1
+      from public.guests g
+      where g.group_id = guest_groups.id
+        and g.attendance_status = 'pending'
+    )
+  );
+
+create policy "guests can update attendance status"
+  on public.guests
+  for update
+  to anon, authenticated
+  using (true)
+  with check (attendance_status in ('pending', 'yes', 'no', 'going', 'not_going'));
+
 grant usage on schema public to anon, authenticated;
 grant select on public.guest_groups to anon, authenticated;
 grant select on public.guests to anon, authenticated;
 grant update (is_confirmed, confirmed_at) on public.guest_groups to anon, authenticated;
 grant update (attendance_status) on public.guests to anon, authenticated;
 
-do $$
-begin
-  if not exists (
-    select 1 from pg_policies
-    where schemaname = 'public'
-      and tablename = 'guest_groups'
-      and policyname = 'guest groups are readable'
-  ) then
-    create policy "guest groups are readable"
-      on public.guest_groups
-      for select
-      to anon, authenticated
-      using (true);
-  end if;
-
-  if not exists (
-    select 1 from pg_policies
-    where schemaname = 'public'
-      and tablename = 'guests'
-      and policyname = 'guests are readable'
-  ) then
-    create policy "guests are readable"
-      on public.guests
-      for select
-      to anon, authenticated
-      using (true);
-  end if;
-
-  if not exists (
-    select 1 from pg_policies
-    where schemaname = 'public'
-      and tablename = 'guest_groups'
-      and policyname = 'unconfirmed groups can be confirmed once'
-  ) then
-    create policy "unconfirmed groups can be confirmed once"
-      on public.guest_groups
-      for update
-      to anon, authenticated
-      using (is_confirmed = false)
-      with check (
-        is_confirmed = true
-        and confirmed_at is not null
-        and not exists (
-          select 1
-          from public.guests g
-          where g.group_id = guest_groups.id
-            and g.attendance_status = 'pending'
-        )
-      );
-  end if;
-
-  if not exists (
-    select 1 from pg_policies
-    where schemaname = 'public'
-      and tablename = 'guests'
-      and policyname = 'guests can be updated before group confirmation'
-  ) then
-    create policy "guests can be updated before group confirmation"
-      on public.guests
-      for update
-      to anon, authenticated
-      using (
-        exists (
-          select 1
-          from public.guest_groups gg
-          where gg.id = guests.group_id
-            and gg.is_confirmed = false
-        )
-      )
-      with check (attendance_status in ('pending', 'going', 'not_going'));
-  end if;
-end $$;
-
-with seed_groups(display_name, members) as (
+with seed_groups(display_name, side, category, group_type, sort_order, members) as (
   values
-    ('Família Batista', array['Família Batista']::text[]),
-    ('Darlan e família', array['Darlan', 'Família de Darlan']::text[]),
-    ('Pedro Elquer e família', array['Pedro Elquer', 'Família de Pedro Elquer']::text[]),
-    ('André Gomes e família', array['André Gomes', 'Família de André Gomes']::text[]),
-    ('Dayrton e Esposa', array['Dayrton', 'Esposa de Dayrton']::text[]),
-    ('Iliana Correia e família', array['Iliana Correia', 'Família de Iliana Correia']::text[]),
-    ('Bernadete', array['Bernadete']::text[]),
-    ('Florací e Adriana', array['Florací', 'Adriana']::text[]),
-    ('Gamaliel e família', array['Gamaliel', 'Família de Gamaliel']::text[]),
-    ('Irmã Ana e família', array['Irmã Ana', 'Família de Irmã Ana']::text[]),
-    ('Nauritânia e família', array['Nauritânia', 'Família de Nauritânia']::text[]),
-    ('Claucí e família', array['Claucí', 'Família de Claucí']::text[]),
-    ('Ana Maria e família', array['Ana Maria', 'Família de Ana Maria']::text[]),
-    ('Cristina', array['Cristina']::text[]),
-    ('Raquel Batista e família', array['Raquel Batista', 'Família de Raquel Batista']::text[]),
-    ('Alzeno', array['Alzeno']::text[]),
-    ('Ducarmo', array['Ducarmo']::text[]),
-    ('Iolanda e esposo', array['Iolanda', 'Esposo de Iolanda']::text[]),
-    ('Bento', array['Bento']::text[]),
-    ('Antônio Augusto e esposa', array['Antônio Augusto', 'Esposa de Antônio Augusto']::text[]),
-    ('Mãe Lay e família', array['Mãe Lay', 'Família de Mãe Lay']::text[]),
-    ('Pai Flaésio', array['Pai Flaésio']::text[]),
-    ('Vó Laura e Vô Ducílio', array['Vó Laura', 'Vô Ducílio']::text[]),
-    ('Flávia e família', array['Flávia', 'Família de Flávia']::text[]),
-    ('Wesley e família', array['Wesley', 'Família de Wesley']::text[]),
-    ('Bruna e família', array['Bruna', 'Família de Bruna']::text[]),
-    ('Fagner e família', array['Fagner', 'Família de Fagner']::text[]),
-    ('Fábio e família', array['Fábio', 'Família de Fábio']::text[]),
-    ('Marlin', array['Marlin']::text[]),
-    ('Tia Maria', array['Tia Maria']::text[]),
-    ('Valéria e família', array['Valéria', 'Família de Valéria']::text[]),
-    ('Juan', array['Juan']::text[]),
-    ('Fabiula e família', array['Fabiula', 'Família de Fabiula']::text[]),
-    ('Verônica', array['Verônica']::text[]),
-    ('Vó Zuleide', array['Vó Zuleide']::text[]),
-    ('Elias e família', array['Elias', 'Família de Elias']::text[]),
-    ('Nailson', array['Nailson']::text[]),
-    ('Lailson', array['Lailson']::text[]),
-    ('Jailson e família', array['Jailson', 'Família de Jailson']::text[]),
-    ('Natan', array['Natan']::text[]),
-    ('Tainá e família', array['Tainá', 'Família de Tainá']::text[]),
-    ('Lucas e família', array['Lucas', 'Família de Lucas']::text[]),
-    ('Josué', array['Josué']::text[]),
-    ('Paulo', array['Paulo']::text[]),
-    ('Maxwell e Geovanna', array['Maxwell', 'Geovanna']::text[]),
-    ('Rafael e Camila', array['Rafael', 'Camila']::text[]),
-    ('Bruno', array['Bruno']::text[]),
-    ('Nilza e Genésio', array['Nilza', 'Genésio']::text[]),
-    ('Renato Belo e família', array['Renato Belo', 'Família de Renato Belo']::text[]),
-    ('Rafael Santos e família', array['Rafael Santos', 'Família de Rafael Santos']::text[]),
-    ('Regiane e família', array['Regiane', 'Família de Regiane']::text[]),
-    ('Ednalva e família', array['Ednalva', 'Família de Ednalva']::text[]),
-    ('Marlon e esposa', array['Marlon', 'Esposa de Marlon']::text[]),
-    ('Maykon e esposa', array['Maykon', 'Esposa de Maykon']::text[]),
-    ('Nailde', array['Nailde']::text[]),
-    ('Paulo e Lorrane', array['Paulo', 'Lorrane']::text[]),
-    ('Bruna', array['Bruna']::text[]),
-    ('Mateus', array['Mateus']::text[]),
-    ('Edmila', array['Edmila']::text[]),
-    ('Lucas', array['Lucas']::text[]),
-    ('Marcos', array['Marcos']::text[]),
-    ('Emilly Moura', array['Emilly Moura']::text[]),
-    ('Thalison', array['Thalison']::text[]),
-    ('Kauany', array['Kauany']::text[]),
-    ('Alberto e família', array['Alberto', 'Família de Alberto']::text[])
+    ('Família Eduardo', 'Miguel', 'Família noivo', 'Família', 10, array['Eduardo', 'Viviane', 'Anna Beatriz', 'Sahan', 'Daniel', 'Lívia', 'Bárbara']::text[]),
+    ('Família Wilker', 'Miguel', 'Família noivo', 'Família', 20, array['Wilker', 'Miguel Souza', 'Rebeca', 'Davi (criança)', 'Elis (criança)', 'William']::text[]),
+    ('Família Renato', 'Miguel', 'Família noivo', 'Família', 30, array['Renato', 'Helena', 'Lucca', 'Davi']::text[]),
+    ('Família Rafael', 'Miguel', 'Família noivo', 'Família', 40, array['Rafael', 'Pâmela', 'Beijamim (criança)', 'Adam (bebê)']::text[]),
+    ('Família Rafael Abut', 'Miguel', 'Família noivo', 'Família', 50, array['Rafael', 'Cristiane', 'Ana Clara', 'Daniela']::text[]),
+    ('Família Leila', 'Miguel', 'Família noivo', 'Família', 60, array['Leila', 'Jardel', 'Rosângela']::text[]),
+    ('Família Leonardo', 'Miguel', 'Família noivo', 'Família', 70, array['Leonardo', 'Josy', 'Maria Eduarda', 'Udson', 'Pedro']::text[]),
+    ('Família José', 'Miguel', 'Família noivo', 'Família', 80, array['José', 'Luciana']::text[]),
+
+    ('Lucca, Ana Clara e Jessica', 'Casal', 'Amigos do casal', 'Casal + acompanhante', 110, array['Lucca', 'Ana Clara', 'Jessica (mãe do Lucca)']::text[]),
+    ('Arthur, Gabrielle e Thalita', 'Casal', 'Amigos do casal', 'Casal + acompanhante', 120, array['Arthur', 'Gabrielle', 'Thalita (irmã da Gabi)']::text[]),
+    ('Victor Viana e Ana', 'Casal', 'Amigos do casal', 'Casal', 130, array['Victor Viana', 'Ana']::text[]),
+    ('Gabriel e Emlly', 'Casal', 'Amigos do casal', 'Casal', 140, array['Gabriel', 'Emlly']::text[]),
+    ('Rafael e Camila', 'Casal', 'Amigos do casal', 'Casal', 150, array['Rafael', 'Camila']::text[]),
+    ('Vinicius e Fernanda', 'Casal', 'Amigos do casal', 'Casal', 160, array['Vinicius', 'Fernanda']::text[]),
+    ('Família Ivan', 'Casal', 'Amigos do casal', 'Família', 170, array['Ivan', 'Lara', 'Alice (criança)', 'Helena (criança)']::text[]),
+    ('Marsol e Laís', 'Casal', 'Amigos do casal', 'Solteira + acompanhante', 180, array['Marsol', 'Laís']::text[]),
+    ('Sthefany', 'Casal', 'Amigos do casal', 'Solteira', 190, array['Sthefany']::text[]),
+    ('Ana Beatriz', 'Casal', 'Amigos do casal', 'Solteira', 200, array['Ana Beatriz']::text[]),
+    ('Isaac', 'Casal', 'Amigos do casal', 'Solteiro', 210, array['Isaac']::text[]),
+    ('Diego', 'Casal', 'Amigos do casal', 'Solteiro', 220, array['Diego']::text[]),
+    ('Frederico', 'Casal', 'Amigos do casal', 'Solteiro', 230, array['Frederico']::text[]),
+    ('Abraão', 'Casal', 'Amigos do casal', 'Solteiro', 240, array['Abraão']::text[]),
+    ('Arthur', 'Casal', 'Amigos do casal', 'Solteiro', 250, array['Arthur']::text[]),
+    ('João Victor', 'Casal', 'Amigos do casal', 'Solteiro', 260, array['João Victor']::text[]),
+    ('Gesyel', 'Casal', 'Amigos do casal', 'Solteiro', 270, array['Gesyel']::text[]),
+    ('Adryele', 'Casal', 'Amigos do casal', 'Solteira', 280, array['Adryele']::text[])
 ),
 upsert_groups as (
-  insert into public.guest_groups(display_name, search_name)
-  select display_name, public.rsvp_search_name(display_name)
+  insert into public.guest_groups(display_name, search_name, side, category, group_type, sort_order)
+  select
+    display_name,
+    public.rsvp_search_name(display_name || ' ' || array_to_string(members, ' ')),
+    side,
+    category,
+    group_type,
+    sort_order
   from seed_groups
   on conflict (display_name) do update
-    set search_name = excluded.search_name
+    set search_name = excluded.search_name,
+        side = excluded.side,
+        category = excluded.category,
+        group_type = excluded.group_type,
+        sort_order = excluded.sort_order
   returning id, display_name
 )
-insert into public.guests(group_id, full_name, attendance_status)
-select gg.id, member.member_name, 'pending'
+insert into public.guests(group_id, full_name, attendance_status, guest_order, is_child, is_baby, notes)
+select
+  gg.id,
+  member.member_name,
+  'pending',
+  member.member_order::integer,
+  public.rsvp_search_name(member.member_name) like '%crianca%',
+  public.rsvp_search_name(member.member_name) like '%bebe%',
+  case
+    when public.rsvp_search_name(member.member_name) like '%crianca%' then 'criança'
+    when public.rsvp_search_name(member.member_name) like '%bebe%' then 'bebê'
+    else null
+  end
 from seed_groups sg
 join public.guest_groups gg on gg.display_name = sg.display_name
-cross join lateral unnest(sg.members) as member(member_name)
-on conflict (group_id, full_name) do nothing;
+cross join lateral unnest(sg.members) with ordinality as member(member_name, member_order)
+on conflict (group_id, full_name) do update
+  set guest_order = excluded.guest_order,
+      is_child = excluded.is_child,
+      is_baby = excluded.is_baby,
+      notes = excluded.notes;
+
+create or replace view public.rsvp_admin_view as
+select
+  gg.side as lado,
+  gg.category as categoria,
+  gg.group_type as tipo_grupo,
+  gg.display_name as grupo,
+  gg.display_name,
+  gg.sort_order as ordem,
+  gg.is_confirmed as grupo_ja_respondeu,
+  gg.confirmed_at,
+  gg.confirmed_at as ultima_atualizacao,
+  g.full_name as convidado,
+  g.full_name,
+  g.attendance_status as status,
+  g.attendance_status,
+  g.guest_order as ordem_convidado,
+  g.created_at as convidado_criado_em,
+  g.is_child,
+  g.is_baby,
+  g.notes
+from public.guest_groups gg
+join public.guests g on g.group_id = gg.id;
+
+create or replace view public.rsvp_totais_gerais as
+select
+  count(*) filter (where attendance_status in ('yes', 'going'))::integer as total_vai,
+  count(*) filter (where attendance_status in ('no', 'not_going'))::integer as total_nao_vai,
+  count(*) filter (where attendance_status = 'pending')::integer as total_pendente,
+  count(*)::integer as total_convidados
+from public.guests;
+
+create or replace view public.rsvp_totais_por_lado as
+select
+  gg.side as lado,
+  count(*) filter (where g.attendance_status in ('yes', 'going'))::integer as total_vai,
+  count(*) filter (where g.attendance_status in ('no', 'not_going'))::integer as total_nao_vai,
+  count(*) filter (where g.attendance_status = 'pending')::integer as total_pendente,
+  count(*)::integer as total_convidados
+from public.guest_groups gg
+join public.guests g on g.group_id = gg.id
+group by gg.side;
+
+create or replace view public.rsvp_grupos_resumo as
+select
+  gg.side as lado,
+  gg.category as categoria,
+  gg.group_type as tipo_grupo,
+  gg.display_name as grupo,
+  gg.display_name,
+  gg.sort_order as ordem,
+  gg.is_confirmed as grupo_ja_respondeu,
+  gg.confirmed_at,
+  count(g.id)::integer as total_convidados,
+  count(g.id) filter (where g.attendance_status in ('yes', 'going'))::integer as total_vai,
+  count(g.id) filter (where g.attendance_status in ('no', 'not_going'))::integer as total_nao_vai,
+  count(g.id) filter (where g.attendance_status = 'pending')::integer as total_pendente
+from public.guest_groups gg
+left join public.guests g on g.group_id = gg.id
+group by gg.id;
+
+create or replace view public.rsvp_grupos_que_vao as
+select *
+from public.rsvp_grupos_resumo
+where total_convidados > 0
+  and total_vai = total_convidados;
+
+create or replace view public.rsvp_grupos_que_nao_vao as
+select *
+from public.rsvp_grupos_resumo
+where total_convidados > 0
+  and total_nao_vai = total_convidados;
+
+create or replace view public.rsvp_grupos_mistos as
+select *
+from public.rsvp_grupos_resumo
+where total_vai > 0
+  and total_nao_vai > 0;
+
+create or replace view public.rsvp_grupos_pendentes as
+select *
+from public.rsvp_grupos_resumo
+where total_pendente > 0;
+
+grant select on
+  public.rsvp_admin_view,
+  public.rsvp_totais_gerais,
+  public.rsvp_totais_por_lado,
+  public.rsvp_grupos_resumo,
+  public.rsvp_grupos_que_vao,
+  public.rsvp_grupos_que_nao_vao,
+  public.rsvp_grupos_mistos,
+  public.rsvp_grupos_pendentes
+to anon, authenticated;

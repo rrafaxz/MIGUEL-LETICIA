@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-label="Solar dos Novaes">
+  <rect width="1200" height="720" fill="#FBFFF9"/>
+  <rect x="70" y="66" width="1060" height="588" fill="#A8DCAB"/>
+  <path d="M180 520c132-126 250-189 354-189 63 0 116 24 158 72 31-74 85-111 162-111 71 0 134 42 190 126" fill="none" stroke="#172E1E" stroke-width="12" stroke-linecap="round"/>
+  <text x="600" y="224" fill="#172E1E" font-family="Georgia, 'Times New Roman', serif" font-size="72" text-anchor="middle">Solar dos Novaes</text>
+  <text x="600" y="300" fill="#172E1E" font-family="Georgia, 'Times New Roman', serif" font-size="30" text-anchor="middle">Miguel &amp; Leticia</text>
+</svg>

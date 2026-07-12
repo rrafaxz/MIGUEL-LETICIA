@@ -1,8 +1,8 @@
 // Dados do Pix. Para alterar depois, troque apenas estes valores.
-const PIX_QR_CODE_IMAGE = "assets/images/pix/qrcode-pix.png";
-const PIX_KEY = "077.507.271-08";
-const PIX_OWNER = "Pedro Lucas de Sousa Lima";
-const PIX_BANK = "Caixa econômica";
+const PIX_QR_CODE_IMAGE = "";
+const PIX_KEY = "";
+const PIX_OWNER = "Miguel e Letícia";
+const PIX_BANK = "";
 
 const ajudaElements = {
   pixModal: document.querySelector("#pix-modal"),
@@ -59,6 +59,11 @@ function closeGiftModal() {
 }
 
 async function copyPixKey() {
+  if (!PIX_KEY) {
+    ajudaElements.copyFeedback.textContent = "A chave Pix ainda será informada.";
+    return;
+  }
+
   try {
     await navigator.clipboard.writeText(PIX_KEY);
     ajudaElements.copyFeedback.textContent = "Chave copiada.";
@@ -70,17 +75,24 @@ async function copyPixKey() {
 }
 
 function setupPix() {
-  ajudaElements.pixKey.textContent = `Pix - ${PIX_KEY}`;
+  ajudaElements.pixKey.textContent = PIX_KEY ? `Pix - ${PIX_KEY}` : "Pix será informado em breve.";
 
   const pixDetails = document.querySelector("#pix-details");
   if (pixDetails) {
-    pixDetails.innerHTML = `
-      <span>${PIX_OWNER}</span>
-      <span>${PIX_BANK}</span>
-    `;
+    pixDetails.innerHTML = PIX_KEY
+      ? `
+        <span>${PIX_OWNER}</span>
+        <span>${PIX_BANK}</span>
+      `
+      : "<span>Chave e QR Code ainda não cadastrados.</span>";
   }
 
-  ajudaElements.qrImage.src = PIX_QR_CODE_IMAGE;
+  if (PIX_QR_CODE_IMAGE) {
+    ajudaElements.qrImage.src = PIX_QR_CODE_IMAGE;
+  } else {
+    ajudaElements.qrFrame.classList.add("is-placeholder");
+    ajudaElements.qrImage.removeAttribute("src");
+  }
 
   ajudaElements.qrImage.addEventListener("error", () => {
     ajudaElements.qrFrame.classList.add("is-placeholder");
@@ -94,6 +106,7 @@ function setupPix() {
     button.addEventListener("click", closePixModal);
   });
 
+  ajudaElements.copyPix.disabled = !PIX_KEY;
   ajudaElements.copyPix.addEventListener("click", copyPixKey);
 }
 
@@ -109,15 +122,16 @@ function openGiftModal(gift) {
     <span>${gift.name}</span>
   `;
   ajudaElements.giftModalCopy.textContent =
-    "Ao confirmar, você será redirecionado para o WhatsApp de Pedro e Maynara para combinar e confirmar sua doação com segurança.";
+    "Ao confirmar, você será redirecionado para o WhatsApp de Miguel e Letícia para combinar e confirmar sua doação com segurança.";
   openModal(ajudaElements.giftModal);
 }
 
 function buildWhatsappUrl(gift) {
   const phone = window.pmWhatsappPhone || "";
   const label = gift?.price ? `${gift?.name || "um item"} (${gift.price})` : gift?.name || "um item";
-  const message = gift?.whatsappMessage || `Oi Pedro quero doar "${label}" para vocês! Como podemos te enviar?`;
-  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  const message = gift?.whatsappMessage || `Oi Miguel e Letícia, quero doar "${label}" para vocês! Como podemos te enviar?`;
+  const encodedMessage = encodeURIComponent(message);
+  return phone ? `https://wa.me/${phone}?text=${encodedMessage}` : `https://api.whatsapp.com/send?text=${encodedMessage}`;
 }
 
 function confirmGiftDonation() {

@@ -1,5 +1,5 @@
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const imageExtensionPattern = /\.(?:avif|gif|jpe?g|png|webp)$/i;
+const imageExtensionPattern = /\.(?:avif|gif|jpe?g|png|svg|webp)$/i;
 const folderImageCache = new Map();
 
 window.addEventListener("DOMContentLoaded", async () => {
@@ -36,22 +36,20 @@ async function hydrateDynamicMedia() {
 }
 
 async function hydrateStoryImages() {
-  const pedroImage = document.querySelector("[data-story-role='pedro']");
-  const maynaraImage = document.querySelector("[data-story-role='maynara']");
+  const miguelImage = document.querySelector("[data-story-role='miguel']");
+  const leticiaImage = document.querySelector("[data-story-role='leticia']");
   const compact = window.matchMedia("(max-width: 980px)").matches;
 
-  if (!pedroImage || !maynaraImage) return;
+  if (!miguelImage || !leticiaImage) return;
 
-  if (compact && pedroImage.dataset.mobileSrc && maynaraImage.dataset.mobileSrc) {
-    pedroImage.src = pedroImage.dataset.mobileSrc;
-    maynaraImage.src = maynaraImage.dataset.mobileSrc;
+  if (compact && miguelImage.dataset.mobileSrc && leticiaImage.dataset.mobileSrc) {
+    miguelImage.src = miguelImage.dataset.mobileSrc;
+    leticiaImage.src = leticiaImage.dataset.mobileSrc;
     return;
   }
 
   const folders = [
-    "assets/images/section-7.5/",
-    "assets/images/7.5/",
-    "assets/images/section-5/"
+    "assets/images/miguel-leticia/"
   ];
 
   for (const folder of folders) {
@@ -61,10 +59,10 @@ async function hydrateStoryImages() {
 
     const picked = pickStoryImages(images);
 
-    if (!picked.pedro || !picked.maynara) continue;
+    if (!picked.miguel || !picked.leticia) continue;
 
-    pedroImage.src = picked.pedro;
-    maynaraImage.src = picked.maynara;
+    miguelImage.src = picked.miguel;
+    leticiaImage.src = picked.leticia;
     break;
   }
 }
@@ -207,24 +205,24 @@ function pickStoryImages(images) {
     src,
     key: readableImageName(src).toLowerCase()
   }));
-  const pedro =
-    normalized.find((image) => image.key.includes("pedro") && !image.key.includes("maynara")) ||
+  const miguel =
+    normalized.find((image) => image.key.includes("miguel") && !image.key.includes("leticia")) ||
     normalized.find((image) => image.key.includes("copiar")) ||
     normalized[0];
-  const maynara =
-    normalized.find((image) => image.key.includes("maynara") && !image.key.includes("pedro")) ||
-    normalized.find((image) => image.src !== pedro.src && !image.key.includes("copiar")) ||
-    normalized.find((image) => image.src !== pedro.src) ||
+  const leticia =
+    normalized.find((image) => image.key.includes("leticia") && !image.key.includes("miguel")) ||
+    normalized.find((image) => image.src !== miguel.src && !image.key.includes("copiar")) ||
+    normalized.find((image) => image.src !== miguel.src) ||
     normalized[1];
 
   return {
-    pedro: pedro?.src,
-    maynara: maynara?.src
+    miguel: miguel?.src,
+    leticia: leticia?.src
   };
 }
 
 function readableImageName(src) {
-  const filename = decodeURIComponent(src.split("/").pop() || "Pedro e Maynara");
+  const filename = decodeURIComponent(src.split("/").pop() || "Miguel e Letícia");
 
   return filename
     .replace(/\.[^.]+$/, "")
@@ -712,7 +710,7 @@ function setupFinalScene() {
   });
 
   timeline
-    .fromTo(scene, { backgroundColor: "#fbfaf8" }, { backgroundColor: "#030303", duration: 0.3 }, 0)
+    .fromTo(scene, { backgroundColor: "#fbfff9" }, { backgroundColor: "#142619", duration: 0.3 }, 0)
     .to("[data-final-line='top'], [data-final-line='bottom']", { scaleX: 1, duration: 0.28 }, 0.18)
     .to("[data-final-line='left'], [data-final-line='right']", { scaleY: 1, duration: 0.28 }, 0.34)
     .to("[data-layer='final-text']", { autoAlpha: 1, y: 0, letterSpacing: "0.01em", duration: 0.32 }, 0.54);

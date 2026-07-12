@@ -12,11 +12,12 @@
 }
 
 :root {
-  --black: #030303;
-  --paper: #f6f4f0;
-  --muted: rgba(246, 244, 240, 0.66);
-  --soft: rgba(246, 244, 240, 0.13);
-  --line: rgba(246, 244, 240, 0.56);
+  --black: #142619;
+  --paper: #fbfff9;
+  --celadon: #a8dcab;
+  --muted: rgba(251, 255, 249, 0.7);
+  --soft: rgba(168, 220, 171, 0.18);
+  --line: rgba(251, 255, 249, 0.58);
   --font-serif: "Bodoni 72", Didot, "Times New Roman", serif;
   --font-script: "Aston Script", "Snell Roundhand", cursive;
 }
@@ -349,7 +350,7 @@ a {
 .blessing-modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(3, 3, 3, 0.68);
+  background: rgba(20, 38, 25, 0.68);
 }
 
 .blessing-modal__panel {
@@ -357,8 +358,8 @@ a {
   width: min(44rem, 100%);
   max-height: calc(100vh - 2rem);
   overflow-y: auto;
-  border: 1px solid rgba(3, 3, 3, 0.18);
-  background: #f7f5f0;
+  border: 1px solid rgba(23, 46, 30, 0.18);
+  background: var(--paper);
   color: var(--black);
   padding: clamp(1.4rem, 6vw, 2.4rem);
   text-align: center;
@@ -376,14 +377,14 @@ a {
   right: 0.8rem;
   border: 0;
   background: transparent;
-  color: rgba(3, 3, 3, 0.58);
+  color: rgba(23, 46, 30, 0.58);
   font-size: 1.45rem;
   line-height: 1;
 }
 
 .blessing-modal__eyebrow {
   margin: 0 0 0.85rem;
-  color: rgba(3, 3, 3, 0.56);
+  color: rgba(23, 46, 30, 0.56);
   font-size: 0.68rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -400,7 +401,7 @@ a {
 .blessing-modal p:not(.blessing-modal__eyebrow) {
   margin: 0 auto;
   max-width: 23rem;
-  color: rgba(3, 3, 3, 0.72);
+  color: rgba(23, 46, 30, 0.72);
   font-size: 0.98rem;
   line-height: 1.55;
 }
@@ -426,7 +427,7 @@ a {
 
 .blessing-modal__secondary {
   background: transparent;
-  color: rgba(3, 3, 3, 0.72);
+  color: rgba(23, 46, 30, 0.72);
 }
 
 .admin-header {
@@ -560,7 +561,7 @@ a {
 
 .side-summary {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.8rem;
   margin: 1rem 0 1.25rem;
 }
@@ -665,14 +666,14 @@ a {
   place-items: center;
   width: min(36rem, 100%);
   margin: 0.7rem auto 1.15rem;
-  border: 1px solid rgba(3, 3, 3, 0.2);
-  background: rgba(3, 3, 3, 0.035);
+  border: 1px solid rgba(23, 46, 30, 0.2);
+  background: rgba(168, 220, 171, 0.16);
   overflow: hidden;
 }
 
 .dress-code-frame span {
   max-width: 9rem;
-  color: rgba(3, 3, 3, 0.42);
+  color: rgba(23, 46, 30, 0.42);
   font-size: 0.76rem;
   letter-spacing: 0.08em;
   line-height: 1.35;
@@ -749,7 +750,7 @@ a {
   position: absolute;
   right: 0.55rem;
   bottom: 0.45rem;
-  color: rgba(3, 3, 3, 0.46);
+  color: rgba(23, 46, 30, 0.46);
   font-size: 0.56rem;
   letter-spacing: 0.08em;
   line-height: 1;

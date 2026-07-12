@@ -1,6 +1,6 @@
 // Este bloqueio é apenas visual no front-end. Para segurança real, mova o admin
 // para uma área autenticada com Supabase Auth e políticas RLS específicas.
-const ADMIN_VISUAL_PASSWORD = "pm2026";
+const ADMIN_VISUAL_PASSWORD = "ml2026";
 
 const ADMIN_VIEWS = {
   generalTotals: "rsvp_totais_gerais",
@@ -31,8 +31,9 @@ const adminElements = {
   summaryNotGoing: document.querySelector("#summary-not-going"),
   summaryPending: document.querySelector("#summary-pending"),
   summaryTotalGuests: document.querySelector("#summary-total-guests"),
-  summarySideMaynara: document.querySelector("#summary-side-maynara"),
-  summarySidePedro: document.querySelector("#summary-side-pedro"),
+  summarySideLeticia: document.querySelector("#summary-side-leticia"),
+  summarySideMiguel: document.querySelector("#summary-side-miguel"),
+  summarySideCasal: document.querySelector("#summary-side-casal"),
 };
 
 const adminSupabase = window.pmSupabase;
@@ -142,27 +143,35 @@ function getSide(row) {
   );
   const normalized = normalizeText(rawSide);
 
-  if (normalized.includes("maynara")) {
-    return "Maynara";
+  if (normalized.includes("leticia")) {
+    return "Letícia";
   }
 
-  if (normalized.includes("pedro")) {
-    return "Pedro";
+  if (normalized.includes("miguel")) {
+    return "Miguel";
+  }
+
+  if (normalized.includes("casal")) {
+    return "Casal";
   }
 
   return "Sem lado";
 }
 
 function sideSortValue(side) {
-  if (side === "Maynara") {
+  if (side === "Letícia") {
     return 0;
   }
 
-  if (side === "Pedro") {
+  if (side === "Miguel") {
     return 1;
   }
 
-  return 2;
+  if (side === "Casal") {
+    return 2;
+  }
+
+  return 3;
 }
 
 function groupSortValue(row, fallback) {
@@ -376,8 +385,9 @@ function sideTotalsMarkup(totals) {
 }
 
 function renderSideSummary(totalsBySide) {
-  adminElements.summarySideMaynara.innerHTML = sideTotalsMarkup(totalsBySide.get("Maynara"));
-  adminElements.summarySidePedro.innerHTML = sideTotalsMarkup(totalsBySide.get("Pedro"));
+  adminElements.summarySideLeticia.innerHTML = sideTotalsMarkup(totalsBySide.get("Letícia"));
+  adminElements.summarySideMiguel.innerHTML = sideTotalsMarkup(totalsBySide.get("Miguel"));
+  adminElements.summarySideCasal.innerHTML = sideTotalsMarkup(totalsBySide.get("Casal"));
 }
 
 function extractGroupNames(rows) {
@@ -537,7 +547,7 @@ async function loadAdminData() {
 
 function tryLogin() {
   if (adminElements.password.value === ADMIN_VISUAL_PASSWORD) {
-    sessionStorage.setItem("pm-admin-unlocked", "true");
+    sessionStorage.setItem("ml-admin-unlocked", "true");
     showDashboard();
     return;
   }
@@ -562,10 +572,10 @@ adminElements.tabs.forEach((tab) => {
 
 adminElements.refresh.addEventListener("click", loadAdminData);
 adminElements.logout.addEventListener("click", () => {
-  sessionStorage.removeItem("pm-admin-unlocked");
+  sessionStorage.removeItem("ml-admin-unlocked");
   window.location.reload();
 });
 
-if (sessionStorage.getItem("pm-admin-unlocked") === "true") {
+if (sessionStorage.getItem("ml-admin-unlocked") === "true") {
   showDashboard();
 }

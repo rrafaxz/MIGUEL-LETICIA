@@ -2,64 +2,32 @@ const fs = require("fs");
 const path = require("path");
 const { chromium } = require("playwright");
 
+function conversionTargets(folder, max, quality) {
+  if (!fs.existsSync(folder)) return [];
+
+  return fs.readdirSync(folder, { withFileTypes: true }).flatMap((entry) => {
+    const fullPath = path.join(folder, entry.name);
+
+    if (entry.isDirectory()) {
+      return conversionTargets(fullPath, max, quality);
+    }
+
+    if (!/\.(jpe?g|png)$/i.test(entry.name)) {
+      return [];
+    }
+
+    return {
+      input: fullPath,
+      output: fullPath.replace(/\.[^.]+$/, ".webp"),
+      max,
+      quality,
+    };
+  });
+}
+
 const files = [
-  {
-    input: "assets/images/hologram/holograma.png",
-    output: "assets/images/hologram/holograma.webp",
-    max: 900,
-    quality: 0.86,
-  },
-  {
-    input: "assets/images/hologram/holograma-versao-2.png",
-    output: "assets/images/hologram/holograma-versao-2.webp",
-    max: 700,
-    quality: 0.86,
-  },
-  {
-    input: "assets/images/section-1/foto-secao-1.png",
-    output: "assets/images/section-1/foto-secao-1.webp",
-    max: 2560,
-    quality: 0.82,
-  },
-  {
-    input: "assets/images/section-3/oziom-space.png",
-    output: "assets/images/section-3/oziom-space.webp",
-    max: 1400,
-    quality: 0.82,
-  },
-  {
-    input: "assets/images/section-5/Camada 3.png",
-    output: "assets/images/section-5/Camada 3.webp",
-    max: 1200,
-    quality: 0.86,
-  },
-  {
-    input: "assets/images/section-5/Camada 3 copiar.png",
-    output: "assets/images/section-5/Camada 3 copiar.webp",
-    max: 1200,
-    quality: 0.86,
-  },
-  {
-    input: "assets/images/section-5/mobile/Camada 3.png",
-    output: "assets/images/section-5/mobile/Camada 3.webp",
-    max: 900,
-    quality: 0.86,
-  },
-  {
-    input: "assets/images/section-5/mobile/Camada 3 copiar.png",
-    output: "assets/images/section-5/mobile/Camada 3 copiar.webp",
-    max: 900,
-    quality: 0.86,
-  },
-  ...fs
-    .readdirSync("assets/images/gallery")
-    .filter((name) => /\.(jpe?g|png)$/i.test(name))
-    .map((name) => ({
-      input: `assets/images/gallery/${name}`,
-      output: `assets/images/gallery/${name.replace(/\.[^.]+$/, ".webp")}`,
-      max: 2200,
-      quality: 0.78,
-    })),
+  ...conversionTargets("assets/images/miguel-leticia", 2200, 0.82),
+  ...conversionTargets("assets/images/gallery", 2200, 0.78),
 ];
 
 function mimeFor(file) {
