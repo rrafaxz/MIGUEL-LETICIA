@@ -136,6 +136,19 @@ function formatGroupMeta(group) {
   return group.is_confirmed ? `${label} · já confirmou antes` : label;
 }
 
+function formatGroupMembers(group) {
+  const guests = getGuests(group);
+
+  if (!guests.length) {
+    return "Convidados ainda não carregados.";
+  }
+
+  const visibleGuests = guests.slice(0, 5).map((guest) => guest.full_name).join(", ");
+  const hiddenCount = guests.length - 5;
+
+  return hiddenCount > 0 ? `${visibleGuests} + ${hiddenCount}` : visibleGuests;
+}
+
 function renderResults(groups) {
   elements.results.innerHTML = "";
 
@@ -158,6 +171,7 @@ function renderResults(groups) {
     button.innerHTML = `
       <span class="result-title">${group.display_name}</span>
       <span class="result-meta">${formatGroupMeta(group)}</span>
+      <span class="result-members">${formatGroupMembers(group)}</span>
     `;
     button.addEventListener("click", () => selectGroup(group.id));
     elements.results.append(button);

@@ -15,7 +15,7 @@
   --ink: #172e1e;
   --paper: #edf8ee;
   --white: #fbfff9;
-  --black: #142619;
+  --black: #a8dcab;
   --celadon: #a8dcab;
   --celadon-soft: #ddf4dd;
   --line: rgba(23, 46, 30, 0.44);
@@ -75,7 +75,7 @@ img {
 
 .dark-scene {
   background: var(--black);
-  color: var(--paper);
+  color: var(--ink);
 }
 
 .hero-scene {
@@ -110,9 +110,9 @@ img {
   opacity: 1;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(20, 38, 25, 0.74) 0%, rgba(20, 38, 25, 0) 24%),
-    radial-gradient(circle at 50% 52%, rgba(20, 38, 25, 0) 0 30%, rgba(20, 38, 25, 0.38) 78%),
-    linear-gradient(90deg, rgba(20, 38, 25, 0.38), rgba(20, 38, 25, 0) 48%, rgba(20, 38, 25, 0.24));
+    linear-gradient(180deg, rgba(0, 0, 0, 0.56) 0%, rgba(0, 0, 0, 0) 24%),
+    radial-gradient(circle at 50% 52%, rgba(0, 0, 0, 0) 0 30%, rgba(0, 0, 0, 0.28) 78%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0) 48%, rgba(0, 0, 0, 0.18));
 }
 
 .hero-header {
@@ -620,11 +620,11 @@ img {
     width: 2.35rem;
     height: 2.35rem;
     margin-top: 0.15rem;
-    border: 1px solid rgba(246, 244, 240, 0.54);
+    border: 1px solid rgba(23, 46, 30, 0.44);
     border-radius: 0;
     padding: 0;
-    background: rgba(20, 38, 25, 0.18);
-    color: var(--paper);
+    background: rgba(168, 220, 171, 0.72);
+    color: var(--ink);
   }
 
   .menu-toggle span {
@@ -660,7 +660,7 @@ img {
     height: 100vh;
     min-height: 100svh;
     padding: 7.1rem 1.4rem 2rem;
-    background: rgba(20, 38, 25, 0.96);
+    background: rgba(168, 220, 171, 0.96);
     transform: translateX(-101%);
     transition: transform 360ms cubic-bezier(0.22, 0.61, 0.36, 1);
   }
@@ -677,7 +677,7 @@ img {
   .mobile-nav a {
     font-size: 0.86rem;
     line-height: 1.2;
-    color: rgba(246, 244, 240, 0.88);
+    color: rgba(23, 46, 30, 0.88);
   }
 
   .outline-button {
@@ -915,7 +915,7 @@ body.is-dress-modal-open {
 .dress-modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(20, 38, 25, 0.68);
+  background: rgba(168, 220, 171, 0.68);
 }
 
 .dress-modal__panel {
@@ -925,7 +925,7 @@ body.is-dress-modal-open {
   overflow-y: auto;
   border: 1px solid rgba(23, 46, 30, 0.18);
   background: var(--white);
-  color: var(--black);
+  color: var(--ink);
   padding: clamp(1.35rem, 5vw, 2.2rem);
   text-align: center;
   transform: translateY(0.65rem);

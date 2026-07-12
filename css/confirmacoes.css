@@ -12,12 +12,13 @@
 }
 
 :root {
-  --black: #142619;
-  --paper: #fbfff9;
+  --black: #a8dcab;
+  --paper: #172e1e;
+  --white: #fbfff9;
   --celadon: #a8dcab;
-  --muted: rgba(251, 255, 249, 0.7);
-  --soft: rgba(168, 220, 171, 0.18);
-  --line: rgba(251, 255, 249, 0.58);
+  --muted: rgba(23, 46, 30, 0.66);
+  --soft: rgba(23, 46, 30, 0.16);
+  --line: rgba(23, 46, 30, 0.45);
   --font-serif: "Bodoni 72", Didot, "Times New Roman", serif;
   --font-script: "Aston Script", "Snell Roundhand", cursive;
 }
@@ -151,7 +152,7 @@ a {
 }
 
 .search-frame input::placeholder {
-  color: rgba(246, 244, 240, 0.54);
+  color: rgba(23, 46, 30, 0.48);
 }
 
 .status-message {
@@ -192,14 +193,14 @@ a {
 
 .result-button:hover,
 .choice-button:hover {
-  border-color: rgba(246, 244, 240, 0.95);
-  background: rgba(246, 244, 240, 0.08);
+  border-color: rgba(23, 46, 30, 0.74);
+  background: rgba(251, 255, 249, 0.22);
 }
 
 .choice-button.is-active {
   border-color: var(--paper);
   background: var(--paper);
-  color: var(--black);
+  color: var(--white);
 }
 
 .result-title,
@@ -210,12 +211,19 @@ a {
 }
 
 .result-meta,
+.result-members,
 .group-meta,
 .member-status,
 .admin-small {
   color: var(--muted);
   font-size: 0.78rem;
   line-height: 1.35;
+}
+
+.result-members {
+  display: block;
+  margin-top: 0.36rem;
+  color: rgba(23, 46, 30, 0.78);
 }
 
 .group-meta {
@@ -261,7 +269,7 @@ a {
   align-items: center;
   gap: 0.34rem;
   min-height: 2rem;
-  color: rgba(246, 244, 240, 0.78);
+  color: rgba(23, 46, 30, 0.78);
 }
 
 .back-group-button svg {
@@ -299,14 +307,14 @@ a {
   padding: 0.88rem 1.2rem;
   border-color: var(--paper);
   background: var(--paper);
-  color: var(--black);
+  color: var(--white);
   font-size: 0.95rem;
 }
 
 .outline-action:hover {
-  border-color: #fff;
-  background: #fff;
-  color: var(--black);
+  border-color: var(--white);
+  background: var(--white);
+  color: var(--paper);
 }
 
 .outline-action:disabled,
@@ -350,7 +358,7 @@ a {
 .blessing-modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(20, 38, 25, 0.68);
+  background: rgba(23, 46, 30, 0.36);
 }
 
 .blessing-modal__panel {
@@ -359,8 +367,8 @@ a {
   max-height: calc(100vh - 2rem);
   overflow-y: auto;
   border: 1px solid rgba(23, 46, 30, 0.18);
-  background: var(--paper);
-  color: var(--black);
+  background: var(--white);
+  color: var(--paper);
   padding: clamp(1.4rem, 6vw, 2.4rem);
   text-align: center;
   transform: translateY(0.65rem);
@@ -415,14 +423,14 @@ a {
 .blessing-modal__primary,
 .blessing-modal__secondary {
   width: 100%;
-  border: 1px solid var(--black);
+  border: 1px solid var(--paper);
   padding: 0.9rem 1rem;
   font-size: 0.92rem;
 }
 
 .blessing-modal__primary {
-  background: var(--black);
-  color: #f7f5f0;
+  background: var(--paper);
+  color: var(--white);
 }
 
 .blessing-modal__secondary {
@@ -623,7 +631,7 @@ a {
 .admin-tab:hover {
   background: var(--paper);
   border-color: var(--paper);
-  color: var(--black);
+  color: var(--white);
 }
 
 .side-section {
@@ -681,8 +689,8 @@ a {
 }
 
 .blessing-modal__primary--pulse {
-  background: var(--black);
-  color: #f7f5f0;
+  background: var(--paper);
+  color: var(--white);
   animation: blessingPulse 2.8s ease-in-out infinite;
   transform-origin: center;
 }

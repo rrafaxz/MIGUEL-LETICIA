@@ -231,8 +231,8 @@ a {
   align-items: center;
   min-height: 2.9rem;
   border: 1px solid var(--ink);
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--celadon);
+  color: var(--ink);
   padding: 0.8rem 1rem;
   font-size: 0.9rem;
 }
@@ -257,7 +257,7 @@ a {
 .help-modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(20, 38, 25, 0.52);
+  background: rgba(168, 220, 171, 0.62);
 }
 
 .help-modal__panel {
@@ -368,8 +368,8 @@ button.gift-media {
 }
 
 .gift-action:hover {
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--celadon);
+  color: var(--ink);
   transform: translateY(-0.08rem);
 }
 
@@ -616,7 +616,8 @@ button.gift-media {
 }
 
 .fun-card__action {
-  background: var(--ink);
+  background: var(--celadon);
+  color: var(--ink);
 }
 
 @media (max-width: 760px) {
