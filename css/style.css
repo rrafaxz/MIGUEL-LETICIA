@@ -189,8 +189,8 @@ img {
   top: 47.5%;
   display: grid;
   place-items: center;
-  width: min(24rem, 52vw);
-  aspect-ratio: 814 / 553;
+  width: min(22rem, 48vw);
+  aspect-ratio: 425 / 361;
   pointer-events: none;
   transform: translate(-50%, -50%);
   transform-origin: center center;
@@ -215,39 +215,15 @@ img {
 .hero-monogram {
   position: absolute;
   inset: 0;
-  display: grid;
-  place-items: center;
   width: 100%;
   height: 100%;
-  color: #fff;
-  font-family: var(--font-script);
-  font-size: clamp(6.2rem, 11.6vw, 10.6rem);
-  line-height: 0.72;
+  object-fit: contain;
+  object-position: center center;
   pointer-events: none;
   transform-origin: center center;
   opacity: 0;
-  text-shadow: 0 0 1.35rem rgba(0, 0, 0, 0.18);
+  filter: drop-shadow(0 0 1.35rem rgba(0, 0, 0, 0.18));
   will-change: opacity, transform, filter;
-}
-
-.hero-monogram-letter {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  display: block;
-  font-weight: 400;
-  line-height: 0.74;
-  transform-origin: center center;
-}
-
-.hero-monogram-m {
-  font-size: 1em;
-  transform: translate(-58%, -51%) rotate(-4deg);
-}
-
-.hero-monogram-l {
-  font-size: 0.96em;
-  transform: translate(-13%, -33%) rotate(5deg);
 }
 
 .invitation-scene {
@@ -749,7 +725,7 @@ img {
   }
 
   .hero-mark-stage {
-    width: min(20rem, 68vw);
+    width: min(18rem, 66vw);
   }
 
   .hero-mark-stage {
@@ -759,10 +735,6 @@ img {
 
   .hero-couple-name {
     font-size: clamp(1.02rem, 5vw, 1.42rem);
-  }
-
-  .hero-monogram {
-    font-size: clamp(5.7rem, 22vw, 8.4rem);
   }
 
   .invitation-scene {
