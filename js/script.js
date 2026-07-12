@@ -710,7 +710,7 @@ function setupFinalScene() {
   });
 
   timeline
-    .fromTo(scene, { backgroundColor: "#fbfff9" }, { backgroundColor: "#142619", duration: 0.3 }, 0)
+    .fromTo(scene, { backgroundColor: "#fbfff9" }, { backgroundColor: "#a8dcab", duration: 0.3 }, 0)
     .to("[data-final-line='top'], [data-final-line='bottom']", { scaleX: 1, duration: 0.28 }, 0.18)
     .to("[data-final-line='left'], [data-final-line='right']", { scaleY: 1, duration: 0.28 }, 0.34)
     .to("[data-layer='final-text']", { autoAlpha: 1, y: 0, letterSpacing: "0.01em", duration: 0.32 }, 0.54);
