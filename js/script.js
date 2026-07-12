@@ -327,7 +327,7 @@ function setupInitialStates() {
     transformOrigin: "center center"
   });
   gsap.set("[data-layer='hero-couple-name']", { autoAlpha: 1, scale: 1, y: 0, filter: "blur(0px)" });
-  gsap.set("[data-layer='hero-monogram']", { autoAlpha: 0, scale: 0.72, filter: "blur(3px)" });
+  gsap.set("[data-layer='hero-monogram']", { autoAlpha: 0, scale: 0.62, filter: "blur(3px)" });
   gsap.set("[data-layer='hero-white-wash']", { autoAlpha: 0 });
   gsap.set(".type-char", { autoAlpha: 0, y: "0.38em" });
   gsap.set("[data-reveal-title] span", { y: 12, autoAlpha: 0 });
@@ -387,7 +387,7 @@ function setupHeroScene() {
     scrollTrigger: {
       trigger: scene,
       start: "top top",
-      end: "+=230%",
+      end: "+=260%",
       scrub: 0.9,
       pin: true,
       anticipatePin: 1
@@ -406,14 +406,14 @@ function setupHeroScene() {
     }, 0.12)
     .to("[data-layer='hero-monogram']", {
       autoAlpha: 0.96,
-      scale: 1,
+      scale: 1.06,
       filter: "blur(0px)",
       duration: 0.3,
       ease: "power1.out"
     }, 0.2)
-    .to("[data-layer='hero-media']", { scale: 1.04, autoAlpha: 0.64, duration: 0.42, ease: "power1.out" }, 0.32)
+    .to("[data-layer='hero-media']", { scale: 1.06, autoAlpha: 0.64, duration: 0.48, ease: "power1.out" }, 0.32)
     .to("[data-layer='hero-shade']", { autoAlpha: 0.18, duration: 0.34, ease: "power1.out" }, 0.38)
-    .to("[data-layer='hero-mark-stage']", { scale: 10.8, duration: 0.64, ease: "power1.inOut" }, 0.46)
+    .to("[data-layer='hero-mark-stage']", { scale: 16.4, duration: 0.74, ease: "power1.inOut" }, 0.42)
     .to("[data-layer='hero-white-wash']", { autoAlpha: 1, duration: 0.34, ease: "power1.inOut" }, 0.78)
     .to("[data-layer='hero-media'], [data-layer='hero-shade']", { autoAlpha: 0, duration: 0.22 }, 0.86)
     .to("[data-layer='hero-monogram']", { autoAlpha: 0, duration: 0.18 }, 0.94);
@@ -435,7 +435,7 @@ function setupInvitationScene() {
   });
 
   entrance
-    .fromTo("[data-layer='invitation-copy']", { y: 18 }, { y: 0, duration: 1.18 }, 0.26)
+    .fromTo("[data-layer='invitation-copy']", { y: 24, scale: 1.035 }, { y: 0, scale: 1, duration: 1.18 }, 0.22)
     .to(copyChars, { autoAlpha: 1, y: 0, stagger: 0.0105, duration: 0.04, ease: "power1.out" }, 0.52)
     .to(verseChars, { autoAlpha: 1, y: 0, stagger: 0.0155, duration: 0.045, ease: "power1.out" }, 2.96)
     .to(citeChars, { autoAlpha: 1, y: 0, stagger: 0.021, duration: 0.045, ease: "power1.out" }, 3.68)
