@@ -318,8 +318,17 @@ function prepareTypewriter() {
 
 function setupInitialStates() {
   gsap.set("[data-layer='hero-media'], [data-layer='hero-shade'], [data-layer='hero-nav']", { autoAlpha: 1 });
-  gsap.set("[data-layer='hero-hologram-one']", { autoAlpha: 0.9 });
-  gsap.set("[data-layer='hero-hologram-two']", { autoAlpha: 0 });
+  gsap.set("[data-layer='hero-mark-stage']", {
+    xPercent: -50,
+    yPercent: -50,
+    x: 0,
+    y: 0,
+    scale: 1,
+    transformOrigin: "center center"
+  });
+  gsap.set("[data-layer='hero-couple-name']", { autoAlpha: 1, scale: 1, y: 0, filter: "blur(0px)" });
+  gsap.set("[data-layer='hero-monogram']", { autoAlpha: 0, scale: 0.72, filter: "blur(3px)" });
+  gsap.set("[data-layer='hero-white-wash']", { autoAlpha: 0 });
   gsap.set(".type-char", { autoAlpha: 0, y: "0.38em" });
   gsap.set("[data-reveal-title] span", { y: 12, autoAlpha: 0 });
   gsap.set("[data-layer='verse']", { autoAlpha: 1, y: 0 });
@@ -378,19 +387,36 @@ function setupHeroScene() {
     scrollTrigger: {
       trigger: scene,
       start: "top top",
-      end: "+=165%",
-      scrub: 0.75,
+      end: "+=230%",
+      scrub: 0.9,
       pin: true,
       anticipatePin: 1
     }
   });
 
   timeline
-    .to("[data-layer='hero-hologram-one']", { autoAlpha: 0, duration: 0.24 }, 0.18)
-    .to("[data-layer='hero-hologram-two']", { autoAlpha: 0.92, duration: 0.28 }, 0.18)
-    .to("[data-layer='hero-hologram-two']", { autoAlpha: 0, duration: 0.28 }, 0.58)
-    .to("[data-layer='hero-nav']", { y: -12, autoAlpha: 0.5, duration: 0.28 }, 0.66)
-    .to("[data-layer='hero-shade']", { autoAlpha: 0.92, duration: 0.28 }, 0.72);
+    .to("[data-layer='hero-nav']", { y: -14, autoAlpha: 0, duration: 0.2 }, 0.05)
+    .to("[data-layer='hero-couple-name']", {
+      autoAlpha: 0,
+      scale: 0.94,
+      y: -6,
+      filter: "blur(4px)",
+      duration: 0.24,
+      ease: "power1.out"
+    }, 0.12)
+    .to("[data-layer='hero-monogram']", {
+      autoAlpha: 0.96,
+      scale: 1,
+      filter: "blur(0px)",
+      duration: 0.3,
+      ease: "power1.out"
+    }, 0.2)
+    .to("[data-layer='hero-media']", { scale: 1.04, autoAlpha: 0.64, duration: 0.42, ease: "power1.out" }, 0.32)
+    .to("[data-layer='hero-shade']", { autoAlpha: 0.18, duration: 0.34, ease: "power1.out" }, 0.38)
+    .to("[data-layer='hero-mark-stage']", { scale: 10.8, duration: 0.64, ease: "power1.inOut" }, 0.46)
+    .to("[data-layer='hero-white-wash']", { autoAlpha: 1, duration: 0.34, ease: "power1.inOut" }, 0.78)
+    .to("[data-layer='hero-media'], [data-layer='hero-shade']", { autoAlpha: 0, duration: 0.22 }, 0.86)
+    .to("[data-layer='hero-monogram']", { autoAlpha: 0, duration: 0.18 }, 0.94);
 }
 
 function setupInvitationScene() {
