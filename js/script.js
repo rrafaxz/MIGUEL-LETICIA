@@ -323,11 +323,10 @@ function setupInitialStates() {
     yPercent: -50,
     x: 0,
     y: 0,
-    scale: 1,
     transformOrigin: "center center"
   });
   gsap.set("[data-layer='hero-couple-name']", { autoAlpha: 1, scale: 1, y: 0, filter: "blur(0px)" });
-  gsap.set("[data-layer='hero-monogram']", { autoAlpha: 0, scale: 0.58, filter: "blur(3px)" });
+  gsap.set("[data-layer='hero-monogram']", { autoAlpha: 0 });
   gsap.set("[data-layer='hero-white-wash']", { autoAlpha: 0 });
   gsap.set(".type-char", { autoAlpha: 0, y: "0.38em" });
   gsap.set("[data-reveal-title] span", { y: 12, autoAlpha: 0 });
@@ -406,14 +405,12 @@ function setupHeroScene() {
     }, 0.12)
     .to("[data-layer='hero-monogram']", {
       autoAlpha: 0.96,
-      scale: 1.08,
-      filter: "blur(0px)",
       duration: 0.3,
       ease: "power1.out"
     }, 0.2)
     .to("[data-layer='hero-media']", { scale: 1.08, autoAlpha: 0.58, duration: 0.52, ease: "power1.out" }, 0.3)
     .to("[data-layer='hero-shade']", { autoAlpha: 0.08, duration: 0.38, ease: "power1.out" }, 0.36)
-    .to("[data-layer='hero-mark-stage']", { scale: 46, duration: 0.82, ease: "power1.inOut" }, 0.36)
+    .to("[data-layer='hero-mark-stage']", { width: "1800vmax", duration: 0.82, ease: "power1.inOut" }, 0.36)
     .to("[data-layer='hero-white-wash']", { autoAlpha: 1, duration: 0.22, ease: "power1.inOut" }, 0.9)
     .to("[data-layer='hero-media'], [data-layer='hero-shade']", { autoAlpha: 0, duration: 0.18 }, 0.93)
     .to("[data-layer='hero-monogram']", { autoAlpha: 0, duration: 0.12 }, 0.98);

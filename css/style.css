@@ -190,11 +190,12 @@ img {
   display: grid;
   place-items: center;
   width: min(22rem, 48vw);
+  height: auto;
   aspect-ratio: 425 / 361;
   pointer-events: none;
   transform: translate(-50%, -50%);
   transform-origin: center center;
-  will-change: transform;
+  will-change: width;
 }
 
 .hero-couple-name {
@@ -217,13 +218,14 @@ img {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  object-position: center center;
+  display: block;
+  overflow: visible;
+  fill: #fff;
   pointer-events: none;
   transform-origin: center center;
   opacity: 0;
-  filter: drop-shadow(0 0 1.35rem rgba(0, 0, 0, 0.18));
-  will-change: opacity, transform, filter;
+  shape-rendering: geometricPrecision;
+  will-change: opacity;
 }
 
 .invitation-scene {
