@@ -11,10 +11,10 @@
     <link rel="preload" href="assets/fonts/Bodoni%2072.ttc" as="font" crossorigin />
     <link rel="preload" href="assets/fonts/Aston%20Script.ttf" as="font" crossorigin />
     <link rel="preload" href="assets/fonts/Makcasa-Regular.otf" as="font" type="font/otf" crossorigin />
-    <link rel="stylesheet" href="css/style.css?v=section-flow-9" />
-    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
-    <script defer src="js/script.js?v=section-flow-9"></script>
+    <link rel="stylesheet" href="css/style.css?v=frame-sequence-2" />
+    <script defer src="js/vendor/gsap.min.js"></script>
+    <script defer src="js/vendor/ScrollTrigger.min.js"></script>
+    <script defer src="js/script.js?v=frame-sequence-2"></script>
   </head>
   <body>
     <main class="site-shell" id="top">
@@ -125,6 +125,28 @@
           <p class="date-mark date-time" data-layer="date-right">CHEGADA 15:30</p>
           <p class="date-mark date-note" data-layer="date-note">ENCERRAMENTO ÀS 22H</p>
         </div>
+      </section>
+
+      <section
+        class="scene frame-sequence-scene light-scene"
+        data-scene="frame-sequence"
+        data-frame-count="61"
+        data-frame-path="assets/frames/envelope"
+        data-scroll-distance="3000"
+        aria-label="Convite animado"
+      >
+        <div class="frame-loader" data-layer="frame-loader" aria-live="polite">
+          <span>Carregando convite</span>
+          <span data-layer="frame-progress">0%</span>
+        </div>
+        <canvas
+          class="frame-sequence-canvas"
+          data-layer="frame-canvas"
+          aria-label="Envelope do convite se abrindo"
+        ></canvas>
+        <a class="frame-sequence-cta" data-layer="frame-cta" href="confirmar-presenca.html">
+          Confirmar Presença
+        </a>
       </section>
 
       <section class="scene story-scene light-scene" data-scene="story" id="nossa-historia">

@@ -8,6 +8,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   setupDressCodeModal();
 
   if (!window.gsap || !window.ScrollTrigger || prefersReducedMotion) {
+    setupStaticFrameSequences();
     document.documentElement.classList.add("is-static-ready");
     return;
   }
@@ -21,6 +22,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   setupInvitationScene();
   setupCardScene();
   setupDateScene();
+  setupFrameSequenceScene();
   setupStoryScene();
   setupGalleryScene();
   setupFinalScene();
@@ -375,6 +377,14 @@ function setupInitialStates() {
   gsap.set("[data-final-line='top'], [data-final-line='bottom']", { scaleX: 0, transformOrigin: "center center" });
   gsap.set("[data-final-line='left'], [data-final-line='right']", { scaleY: 0, transformOrigin: "center center" });
   gsap.set("[data-layer='final-text']", { autoAlpha: 0, y: 8, letterSpacing: "0.08em" });
+  gsap.set("[data-layer='frame-cta']", {
+    xPercent: -50,
+    yPercent: -50,
+    y: 18,
+    scale: 0.96,
+    autoAlpha: 0,
+    pointerEvents: "none"
+  });
 }
 
 function setupHeroScene() {
@@ -528,6 +538,238 @@ function setupDateScene() {
     .to("[data-layer='date-right']", { autoAlpha: 0, y: -20, filter: "blur(14px)", duration: 0.28 }, 1.66)
     .to("[data-layer='date-note']", { autoAlpha: 1, y: 0, filter: "blur(0px)", letterSpacing: "0.11em", duration: 0.34 }, 1.94)
     .to("[data-layer='date-note']", { autoAlpha: 0, y: -18, filter: "blur(14px)", duration: 0.28 }, 2.52);
+}
+
+function setupFrameSequenceScene() {
+  document
+    .querySelectorAll("[data-scene='frame-sequence']")
+    .forEach((scene) => setupScrollFrameSequence(scene));
+}
+
+async function setupScrollFrameSequence(scene) {
+  const canvas = scene.querySelector("[data-layer='frame-canvas']");
+  const cta = scene.querySelector("[data-layer='frame-cta']");
+  const progressText = scene.querySelector("[data-layer='frame-progress']");
+  const frameCount = Number(scene.dataset.frameCount || 0);
+  const framePath = scene.dataset.framePath || "";
+  const scrollDistance = Number(scene.dataset.scrollDistance || 3000);
+
+  if (!canvas || !cta || !frameCount || !framePath) return;
+
+  const renderer = createFrameRenderer(canvas);
+
+  const onResize = () => renderer.resize();
+  window.addEventListener("resize", onResize, { passive: true });
+  renderer.resize();
+
+  try {
+    const images = await preloadFrameSequence(frameCount, framePath, (loaded, total) => {
+      if (progressText) {
+        progressText.textContent = `${Math.round((loaded / total) * 100)}%`;
+      }
+    });
+
+    renderer.setImages(images);
+    renderer.resize();
+    renderer.requestFrame(0, true);
+    scene.classList.add("is-loaded");
+
+    const frameState = { frame: 0 };
+    const timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: scene,
+        start: "top top",
+        end: () => `+=${scrollDistance}`,
+        scrub: 0.92,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true
+      }
+    });
+
+    timeline
+      .to(frameState, {
+        frame: frameCount - 1,
+        duration: 1,
+        ease: "none",
+        onUpdate: () => renderer.requestFrame(Math.round(frameState.frame))
+      }, 0)
+      .to(cta, {
+        autoAlpha: 1,
+        y: 0,
+        scale: 1,
+        pointerEvents: "auto",
+        duration: 0.15,
+        ease: "power2.out"
+      }, 0.85);
+
+    const enlargeCta = () => gsap.to(cta, { scale: 1.025, duration: 0.2, ease: "power2.out" });
+    const restoreCta = () => gsap.to(cta, { scale: 1, duration: 0.22, ease: "power2.out" });
+
+    cta.addEventListener("mouseenter", enlargeCta);
+    cta.addEventListener("mouseleave", restoreCta);
+
+    window.addEventListener("pagehide", () => {
+      cta.removeEventListener("mouseenter", enlargeCta);
+      cta.removeEventListener("mouseleave", restoreCta);
+      window.removeEventListener("resize", onResize);
+      timeline.kill();
+      renderer.destroy();
+      images.length = 0;
+    }, { once: true });
+
+    ScrollTrigger.refresh();
+  } catch (error) {
+    scene.classList.add("is-loaded");
+    if (progressText) progressText.textContent = "Erro";
+    window.removeEventListener("resize", onResize);
+    renderer.destroy();
+  }
+}
+
+function setupStaticFrameSequences() {
+  document.querySelectorAll("[data-scene='frame-sequence']").forEach(async (scene) => {
+    const canvas = scene.querySelector("[data-layer='frame-canvas']");
+    const cta = scene.querySelector("[data-layer='frame-cta']");
+    const framePath = scene.dataset.framePath || "";
+
+    if (!canvas || !framePath) return;
+
+    try {
+      const image = await loadFrameImage(getFrameSource(framePath, 0));
+      const renderer = createFrameRenderer(canvas);
+
+      renderer.setImages([image]);
+      renderer.resize();
+      renderer.requestFrame(0, true);
+      scene.classList.add("is-loaded");
+
+      if (cta) {
+        cta.style.opacity = "1";
+        cta.style.visibility = "visible";
+        cta.style.pointerEvents = "auto";
+      }
+
+      window.addEventListener("resize", () => renderer.resize(), { passive: true });
+    } catch (error) {
+      scene.classList.add("is-loaded");
+    }
+  });
+}
+
+function createFrameRenderer(canvas) {
+  const context = canvas.getContext("2d", { alpha: false, desynchronized: true });
+  let images = [];
+  let currentFrame = 0;
+  let lastRenderedFrame = -1;
+  let rafId = 0;
+
+  if (!context) {
+    return {
+      destroy() {},
+      requestFrame() {},
+      resize() {},
+      setImages() {}
+    };
+  }
+
+  const resize = () => {
+    const rect = canvas.getBoundingClientRect();
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    const width = Math.max(1, Math.round(rect.width * ratio));
+    const height = Math.max(1, Math.round(rect.height * ratio));
+
+    if (canvas.width !== width || canvas.height !== height) {
+      canvas.width = width;
+      canvas.height = height;
+    }
+
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = "high";
+    requestFrame(currentFrame, true);
+  };
+
+  const draw = (frameIndex) => {
+    const image = images[frameIndex];
+
+    if (!image) return;
+
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
+    const scale = Math.min(canvasWidth / image.naturalWidth, canvasHeight / image.naturalHeight);
+    const drawWidth = image.naturalWidth * scale;
+    const drawHeight = image.naturalHeight * scale;
+    const drawX = (canvasWidth - drawWidth) / 2;
+    const drawY = (canvasHeight - drawHeight) / 2;
+
+    context.setTransform(1, 0, 0, 1, 0, 0);
+    context.fillStyle = "#fbfff9";
+    context.fillRect(0, 0, canvasWidth, canvasHeight);
+    context.drawImage(image, drawX, drawY, drawWidth, drawHeight);
+    lastRenderedFrame = frameIndex;
+  };
+
+  function requestFrame(frameIndex, force = false) {
+    currentFrame = Math.max(0, Math.min(images.length - 1, frameIndex));
+
+    if (!force && currentFrame === lastRenderedFrame) return;
+    if (rafId) return;
+
+    rafId = window.requestAnimationFrame(() => {
+      rafId = 0;
+      draw(currentFrame);
+    });
+  }
+
+  return {
+    resize,
+    requestFrame,
+    setImages(nextImages) {
+      images = nextImages;
+      currentFrame = 0;
+      lastRenderedFrame = -1;
+    },
+    destroy() {
+      if (rafId) window.cancelAnimationFrame(rafId);
+      images = [];
+    }
+  };
+}
+
+function preloadFrameSequence(frameCount, framePath, onProgress) {
+  let loaded = 0;
+
+  return Promise.all(
+    Array.from({ length: frameCount }, (_, index) =>
+      loadFrameImage(getFrameSource(framePath, index)).then((image) => {
+        loaded += 1;
+        onProgress?.(loaded, frameCount);
+        return image;
+      })
+    )
+  );
+}
+
+function getFrameSource(framePath, index) {
+  return `${framePath.replace(/\/$/, "")}/${String(index + 1).padStart(3, "0")}.webp`;
+}
+
+function loadFrameImage(src) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+
+    image.decoding = "async";
+    image.onload = async () => {
+      try {
+        if (image.decode) await image.decode();
+      } catch (error) {
+        // Some browsers reject decode after load; the image is still drawable.
+      }
+      resolve(image);
+    };
+    image.onerror = reject;
+    image.src = src;
+  });
 }
 
 function setupStoryScene() {

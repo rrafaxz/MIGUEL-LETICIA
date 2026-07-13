@@ -405,6 +405,81 @@ img {
   font-size: var(--date-type-size);
 }
 
+.frame-sequence-scene {
+  z-index: 4;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  background: var(--white);
+  color: var(--ink);
+}
+
+.frame-sequence-canvas {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--white);
+}
+
+.frame-loader {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 50%;
+  display: grid;
+  gap: 0.55rem;
+  min-width: 13.2rem;
+  transform: translate(-50%, -50%);
+  color: rgba(23, 46, 30, 0.72);
+  font-size: 0.74rem;
+  letter-spacing: 0.11em;
+  line-height: 1.45;
+  text-align: center;
+  text-transform: uppercase;
+  transition: opacity 420ms ease, visibility 420ms ease;
+}
+
+.frame-sequence-scene.is-loaded .frame-loader {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.frame-sequence-cta {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  top: calc(50% - clamp(5rem, 13vh, 7.5rem));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: min(18rem, 78vw);
+  min-height: 3.25rem;
+  border-radius: 999px;
+  padding: 0.94rem 2.3rem 1rem;
+  background: #9fb77c;
+  box-shadow: 0 1rem 2.2rem rgba(82, 102, 59, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  color: var(--white);
+  font-size: 0.84rem;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  visibility: hidden;
+  will-change: transform, opacity;
+  transition: background-color 220ms ease, box-shadow 220ms ease;
+}
+
+.frame-sequence-cta:hover {
+  background: #8fa96d;
+  box-shadow: 0 1.1rem 2.5rem rgba(82, 102, 59, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.26);
+}
+
 .story-scene {
   z-index: 3;
   min-height: 100vh;
@@ -772,6 +847,18 @@ img {
 
   .date-time {
     font-size: var(--date-type-size);
+  }
+
+  .frame-sequence-cta {
+    top: calc(50% - clamp(4.4rem, 11vh, 5.7rem));
+    min-width: min(15.6rem, 76vw);
+    min-height: 3rem;
+    padding: 0.86rem 1.6rem 0.92rem;
+    font-size: 0.74rem;
+  }
+
+  .frame-loader {
+    font-size: 0.66rem;
   }
 
   .story-scene {
