@@ -476,7 +476,7 @@ function setupCardScene() {
     scrollTrigger: {
       trigger: scene,
       start: "top top",
-      end: "+=160%",
+      end: "+=480%",
       scrub: 0.9,
       pin: true,
       anticipatePin: 1
@@ -485,13 +485,12 @@ function setupCardScene() {
 
   timeline
     .to("[data-layer='card-photo']", { autoAlpha: 1, scale: 1, filter: "blur(0px)", duration: 0.42, ease: "power1.out" }, 0)
-    .to("[data-layer='card-photo'] img", { yPercent: 10, scale: 1.14, duration: 1.32, ease: "none" }, 0)
+    .to("[data-layer='card-photo'] img", { yPercent: 14, scale: 1.2, duration: 4.8, ease: "none" }, 0)
     .to("[data-layer='venue-shade']", { autoAlpha: 1, duration: 0.3 }, 0.14)
     .to("[data-layer='card-content']", { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.36, ease: "power1.out" }, 0.46)
     .to("[data-layer='card-link']", { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.22 }, 0.72)
-    .to("[data-layer='card-content']", { y: -32, autoAlpha: 0, filter: "blur(10px)", duration: 0.34 }, 1.1)
-    .to("[data-layer='card-photo']", { autoAlpha: 0.58, filter: "blur(7px)", duration: 0.26 }, 1.22)
-    .to("[data-layer='card-photo'] img", { yPercent: 14, scale: 1.2, duration: 0.3 }, 1.24);
+    .to("[data-layer='card-content']", { y: -32, autoAlpha: 0, filter: "blur(10px)", duration: 0.34 }, 4.02)
+    .to("[data-layer='card-photo']", { autoAlpha: 0.58, filter: "blur(7px)", duration: 0.26 }, 4.22);
 }
 
 function setupDateScene() {
