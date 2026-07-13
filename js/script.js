@@ -591,7 +591,7 @@ function createFrameRenderer(canvas) {
     const canvasHeight = canvas.height;
 
     const fitScale = Math.min(canvasWidth / image.naturalWidth, canvasHeight / image.naturalHeight);
-    const scaleBoost = window.matchMedia("(max-width: 980px)").matches ? 1.38 : 1;
+    const scaleBoost = window.matchMedia("(max-width: 980px)").matches ? 1.72 : 1;
     const scale = fitScale * scaleBoost;
     const drawWidth = image.naturalWidth * scale;
     const drawHeight = image.naturalHeight * scale;
