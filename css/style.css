@@ -368,20 +368,8 @@ img {
   display: grid;
   place-items: center;
   min-height: 100vh;
-  margin-top: -38vh;
-  overflow: visible;
-}
-
-.date-scene::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  left: 0;
-  right: 0;
-  top: -100vh;
-  height: 100vh;
   background: var(--white);
-  pointer-events: none;
+  will-change: clip-path;
 }
 
 .date-row {
@@ -394,6 +382,7 @@ img {
 }
 
 .date-mark {
+  --date-type-size: clamp(0.95rem, 1.65vw, 1.18rem);
   position: absolute;
   inset: 0;
   display: grid;
@@ -401,7 +390,7 @@ img {
   margin: 0;
   padding: 0.12rem 0.32rem;
   transform: none;
-  font-size: clamp(1.05rem, 2.25vw, 1.75rem);
+  font-size: var(--date-type-size);
   line-height: 1;
   letter-spacing: 0.08em;
   text-align: center;
@@ -409,7 +398,7 @@ img {
 }
 
 .date-time {
-  font-size: inherit;
+  font-size: var(--date-type-size);
 }
 
 .date-note {
@@ -787,13 +776,13 @@ img {
   }
 
   .date-mark {
-    font-size: clamp(0.96rem, 5.4vw, 1.55rem);
+    --date-type-size: clamp(0.88rem, 4.4vw, 1.1rem);
     letter-spacing: 0.08em;
     text-align: center;
   }
 
   .date-time {
-    font-size: inherit;
+    font-size: var(--date-type-size);
   }
 
   .story-scene {
