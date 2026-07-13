@@ -514,7 +514,7 @@ function setupDateScene() {
     scrollTrigger: {
       trigger: scene,
       start: "top top",
-      end: "+=210%",
+      end: "+=270%",
       scrub: 0.82,
       pin: true,
       anticipatePin: 1
@@ -525,9 +525,9 @@ function setupDateScene() {
     .to("[data-layer='date-left']", { autoAlpha: 1, y: 0, filter: "blur(0px)", letterSpacing: "0.11em", duration: 0.34 }, 0.06)
     .to("[data-layer='date-left']", { autoAlpha: 0, y: -22, filter: "blur(16px)", duration: 0.3 }, 0.74)
     .to("[data-layer='date-right']", { autoAlpha: 1, y: 0, filter: "blur(0px)", letterSpacing: "0.11em", duration: 0.36 }, 1.02)
-    .to("[data-layer='date-note']", { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.24 }, 1.2)
     .to("[data-layer='date-right']", { autoAlpha: 0, y: -20, filter: "blur(14px)", duration: 0.28 }, 1.66)
-    .to("[data-layer='date-note']", { autoAlpha: 0.74, y: -12, duration: 0.24 }, 1.72);
+    .to("[data-layer='date-note']", { autoAlpha: 1, y: 0, filter: "blur(0px)", letterSpacing: "0.11em", duration: 0.34 }, 1.94)
+    .to("[data-layer='date-note']", { autoAlpha: 0, y: -18, filter: "blur(14px)", duration: 0.28 }, 2.52);
 }
 
 function setupStoryScene() {
