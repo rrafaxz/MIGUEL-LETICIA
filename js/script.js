@@ -287,8 +287,8 @@ function setupHeroScene() {
     scrollTrigger: {
       trigger: scene,
       start: "top top",
-      end: "+=175%",
-      scrub: 0.36,
+      end: "+=125%",
+      scrub: 0.24,
       pin: true,
       anticipatePin: 1
     }
@@ -309,11 +309,11 @@ function setupHeroScene() {
       duration: 0.24,
       ease: "power1.out"
     }, 0.2)
-    .to("[data-layer='hero-media']", { scale: 1.07, duration: 0.58, ease: "power1.out" }, 0.26)
-    .to("[data-layer='hero-mark-stage']", { width: "10000vmax", duration: 0.58, ease: "power1.inOut" }, 0.28)
-    .to("[data-layer='hero-white-wash']", { autoAlpha: 1, duration: 0.1, ease: "power1.inOut" }, 0.9)
-    .to("[data-layer='hero-media'], [data-layer='hero-shade']", { autoAlpha: 0, duration: 0.08 }, 0.92)
-    .to("[data-layer='hero-monogram']", { autoAlpha: 0, duration: 0.05 }, 0.98);
+    .to("[data-layer='hero-media']", { scale: 1.07, duration: 0.46, ease: "power1.out" }, 0.24)
+    .to("[data-layer='hero-mark-stage']", { width: "10000vmax", duration: 0.46, ease: "power1.inOut" }, 0.24)
+    .to("[data-layer='hero-white-wash']", { autoAlpha: 1, duration: 0.08, ease: "power1.inOut" }, 0.74)
+    .to("[data-layer='hero-media'], [data-layer='hero-shade']", { autoAlpha: 0, duration: 0.06 }, 0.76)
+    .to("[data-layer='hero-monogram']", { autoAlpha: 0, duration: 0.04 }, 0.84);
 }
 
 function setupInvitationScene() {
@@ -325,45 +325,45 @@ function setupInvitationScene() {
   const entrance = gsap.timeline({
     scrollTrigger: {
       trigger: scene,
-      start: "top 88%",
-      end: "top -48%",
-      scrub: 0.68
+      start: "top 104%",
+      end: "top -28%",
+      scrub: 0.42
     }
   });
 
   entrance
     .fromTo("[data-layer='invitation-copy']", {
-      y: 24,
+      y: 16,
       scale: 1.035,
       filter: "blur(12px)"
     }, {
       y: 0,
       scale: 1,
       filter: "blur(0px)",
-      duration: 0.48
-    }, 0.02);
+      duration: 0.34
+    }, 0);
 
   copyLines.forEach((line, index) => {
     entrance.to(line, {
       autoAlpha: 1,
       y: 0,
       filter: "blur(0px)",
-      duration: 0.2,
+      duration: 0.18,
       ease: "power1.out"
-    }, 0.12 + index * 0.32);
+    }, 0.04 + index * 0.23);
   });
 
   entrance
-    .to(verseLine, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.24, ease: "power1.out" }, 1.86)
-    .to(citeLine, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.2, ease: "power1.out" }, 2.18)
-    .to(citeLine, { borderBottomColor: "rgba(21, 20, 19, 0.86)", duration: 0.1 }, 2.28);
+    .to(verseLine, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.2, ease: "power1.out" }, 1.26)
+    .to(citeLine, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.18, ease: "power1.out" }, 1.5)
+    .to(citeLine, { borderBottomColor: "rgba(21, 20, 19, 0.86)", duration: 0.08 }, 1.58);
 
   const timeline = gsap.timeline({
     scrollTrigger: {
       trigger: scene,
       start: "top top",
-      end: "+=120%",
-      scrub: 0.9,
+      end: "+=95%",
+      scrub: 0.72,
       pin: true,
       anticipatePin: 1
     }

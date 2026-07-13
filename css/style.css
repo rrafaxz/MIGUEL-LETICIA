@@ -232,9 +232,9 @@ img {
   z-index: 4;
   display: grid;
   place-items: start center;
-  min-height: 150vh;
+  min-height: 132vh;
   margin-top: 0;
-  padding: 24vh 1.5rem 10rem;
+  padding: 15vh 1.5rem 8rem;
   background: #fff;
 }
 
@@ -728,9 +728,9 @@ img {
   }
 
   .invitation-scene {
-    min-height: 138vh;
+    min-height: 124vh;
     margin-top: 0;
-    padding: 22vh 1.05rem 8rem;
+    padding: 15vh 1.05rem 6.5rem;
   }
 
   .invitation-copy {
