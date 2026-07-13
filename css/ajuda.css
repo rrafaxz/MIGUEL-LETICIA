@@ -881,3 +881,112 @@ button[aria-label="Presentear Despertador para a noiva"] img {
     margin-left: 0.75rem;
   }
 }
+
+/* Grade ampla de presentes, com ação dentro do próprio card. */
+.help-page {
+  width: 100%;
+  padding-right: clamp(0.9rem, 2vw, 2rem);
+  padding-left: clamp(0.9rem, 2vw, 2rem);
+}
+
+.help-hero,
+.help-options {
+  width: min(68rem, 100%);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.fun-gifts,
+.gift-section {
+  width: 100%;
+  max-width: none;
+}
+
+.fun-gifts__controls {
+  display: none;
+}
+
+.fun-gifts__track {
+  display: grid;
+  grid-auto-flow: row;
+  grid-auto-columns: initial;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(10rem, 13vw, 14.5rem), 1fr));
+  gap: clamp(0.65rem, 1vw, 1rem);
+  overflow: visible;
+  padding: 0;
+  scroll-snap-type: none;
+}
+
+.fun-card,
+.gift-card {
+  position: relative;
+  display: grid;
+  min-height: clamp(17rem, 25vw, 25rem);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: rgba(221, 244, 221, 0.56);
+}
+
+.fun-card__media,
+.gift-media {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  aspect-ratio: auto;
+  border: 0;
+  background: rgba(168, 220, 171, 0.14);
+}
+
+.fun-card__body {
+  position: absolute;
+  right: clamp(0.55rem, 1vw, 0.82rem);
+  bottom: clamp(0.55rem, 1vw, 0.82rem);
+  left: clamp(0.55rem, 1vw, 0.82rem);
+  z-index: 2;
+  padding: 0;
+}
+
+.gift-action,
+.fun-card__action {
+  width: 100%;
+  min-height: 2.75rem;
+  border: 1px solid rgba(23, 46, 30, 0.72);
+  border-radius: 0;
+  background: rgba(168, 220, 171, 0.92);
+  color: var(--ink);
+  padding: 0.74rem 0.8rem;
+  font-size: clamp(0.82rem, 1vw, 0.95rem);
+  line-height: 1.15;
+}
+
+.gift-action {
+  position: absolute;
+  right: clamp(0.55rem, 1vw, 0.82rem);
+  bottom: clamp(0.55rem, 1vw, 0.82rem);
+  left: clamp(0.55rem, 1vw, 0.82rem);
+  z-index: 2;
+  width: auto;
+}
+
+.gift-grid {
+  grid-template-columns: repeat(auto-fit, minmax(clamp(10.5rem, 13vw, 15rem), 1fr));
+  gap: clamp(0.65rem, 1vw, 1rem);
+}
+
+.gift-media img,
+.fun-card__media img {
+  height: 100%;
+}
+
+@media (max-width: 760px) {
+  .fun-gifts__track,
+  .gift-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .fun-card,
+  .gift-card {
+    min-height: 16rem;
+  }
+}

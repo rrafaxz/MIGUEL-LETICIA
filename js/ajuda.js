@@ -159,7 +159,6 @@ function renderGifts() {
         <img src="${gift.image}" alt="${gift.name}" />
         <span class="gift-placeholder">${gift.name}<br />adicione a imagem depois</span>
       </button>
-      <h3>${gift.name}</h3>
       <button class="gift-action" type="button">${getGiftButtonText(gift)}</button>
     `;
 
@@ -202,14 +201,15 @@ function renderFunGifts() {
     }
 
     const hasImage = Boolean(gift.image);
+    const actionText = gift.price
+      ? `${gift.buttonText || "Presentear"} · ${gift.price}`
+      : gift.buttonText || "Presentear";
     card.innerHTML = `
       <button class="fun-card__media${hasImage ? "" : " is-placeholder"}" type="button" aria-label="Presentear ${gift.name}">
         ${hasImage ? `<img src="${gift.image}" alt="${gift.name}" />` : `<span>imagem em breve</span>`}
       </button>
       <div class="fun-card__body">
-        <h3>${gift.name}</h3>
-        <strong>${gift.price || ""}</strong>
-        <button class="fun-card__action" type="button">${gift.buttonText || "Presentear"}</button>
+        <button class="fun-card__action" type="button">${actionText}</button>
       </div>
     `;
 

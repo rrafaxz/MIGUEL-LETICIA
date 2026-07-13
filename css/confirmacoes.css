@@ -786,3 +786,66 @@ a {
     max-height: min(31vh, 16.5rem);
   }
 }
+
+/* Layout claro e mais horizontal para a busca de convidados. */
+html,
+body {
+  background: var(--white);
+}
+
+.confirm-shell {
+  width: min(76rem, 100%);
+  padding: clamp(5.8rem, 12vh, 8.4rem) clamp(1.2rem, 4vw, 3.2rem) 3rem;
+}
+
+.confirm-shell--center {
+  align-content: start;
+  justify-items: center;
+  place-items: start center;
+}
+
+.rsvp-card {
+  width: min(52rem, 92vw);
+}
+
+.brand-title--logo {
+  position: fixed;
+  top: clamp(1rem, 3vw, 1.7rem);
+  right: clamp(1rem, 3vw, 1.8rem);
+  z-index: 3;
+  margin: 0;
+}
+
+.rsvp-logo {
+  width: clamp(2.8rem, 5vw, 4.1rem);
+}
+
+.search-frame {
+  min-height: 3.95rem;
+  padding: 0.82rem 1.65rem;
+}
+
+.search-frame input {
+  font-size: clamp(1.05rem, 2.5vw, 1.34rem);
+}
+
+@media (max-width: 720px) {
+  .confirm-shell {
+    width: 100%;
+    padding: 5.9rem 1rem 2rem;
+  }
+
+  .rsvp-card {
+    width: 100%;
+  }
+
+  .brand-title--logo {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .search-frame {
+    min-height: 3.7rem;
+    padding: 0.76rem 1rem;
+  }
+}
