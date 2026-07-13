@@ -364,14 +364,28 @@ img {
 
 .date-scene {
   z-index: 6;
+  isolation: isolate;
   display: grid;
   place-items: center;
   min-height: 100vh;
   margin-top: -38vh;
 }
 
+.date-scene::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 0;
+  right: 0;
+  top: -62vh;
+  height: 62vh;
+  background: var(--white);
+  pointer-events: none;
+}
+
 .date-row {
   position: relative;
+  z-index: 1;
   width: min(48rem, 82vw);
   height: 22rem;
 }
@@ -383,14 +397,14 @@ img {
   margin: 0;
   padding: 0.12rem 0.32rem;
   transform: translate(-50%, -50%);
-  font-size: clamp(1.62rem, 3.6vw, 2.85rem);
+  font-size: clamp(1.05rem, 2.25vw, 1.75rem);
   line-height: 1;
   letter-spacing: 0.08em;
   white-space: nowrap;
 }
 
 .date-time {
-  font-size: clamp(1.05rem, 2.25vw, 1.75rem);
+  font-size: inherit;
 }
 
 .date-note {
@@ -767,13 +781,13 @@ img {
   }
 
   .date-mark {
-    font-size: clamp(1.45rem, 7.2vw, 2.25rem);
+    font-size: clamp(0.96rem, 5.4vw, 1.55rem);
     letter-spacing: 0.08em;
     text-align: center;
   }
 
   .date-time {
-    font-size: clamp(0.96rem, 5.4vw, 1.55rem);
+    font-size: inherit;
   }
 
   .story-scene {
