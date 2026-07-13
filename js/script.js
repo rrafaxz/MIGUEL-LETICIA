@@ -753,6 +753,24 @@ function setupGalleryScene() {
         { x: 24, y: 222, rotate: 2.6, scale: 0.94, z: 1 }
       ];
 
+  const organized = compact
+    ? [
+        { x: 0, y: -222, rotate: 0, scale: 0.62, z: 1 },
+        { x: -82, y: -66, rotate: 0, scale: 0.68, z: 2 },
+        { x: 82, y: -66, rotate: 0, scale: 0.68, z: 3 },
+        { x: -82, y: 110, rotate: 0, scale: 0.72, z: 4 },
+        { x: 82, y: 110, rotate: 0, scale: 0.68, z: 5 },
+        { x: 0, y: 252, rotate: 0, scale: 0.62, z: 6 }
+      ]
+    : [
+        { x: -548, y: 0, rotate: 0, scale: 0.62, z: 1 },
+        { x: -338, y: 0, rotate: 0, scale: 0.64, z: 2 },
+        { x: -126, y: 0, rotate: 0, scale: 0.64, z: 3 },
+        { x: 78, y: 0, rotate: 0, scale: 0.68, z: 4 },
+        { x: 292, y: 0, rotate: 0, scale: 0.64, z: 5 },
+        { x: 520, y: 0, rotate: 0, scale: 0.62, z: 6 }
+      ];
+
   const drift = compact
     ? [
         { x: 0, y: -236, rotate: -4.6, scale: 0.9 },
@@ -775,8 +793,8 @@ function setupGalleryScene() {
     scrollTrigger: {
       trigger: scene,
       start: "top top",
-      end: () => `+=${Math.max(window.innerHeight * 3.2, 2200)}`,
-      scrub: 0.96,
+      end: () => `+=${Math.max(window.innerHeight * 3.65, 2500)}`,
+      scrub: 0.92,
       pin: true,
       anticipatePin: 1,
       invalidateOnRefresh: true
@@ -785,6 +803,7 @@ function setupGalleryScene() {
 
   items.forEach((item, index) => {
     const target = layouts[index % layouts.length];
+    const ordered = organized[index % organized.length];
     const final = drift[index % drift.length];
     const image = item.querySelector("img");
     const entryDelay = index * 0.075;
@@ -821,27 +840,37 @@ function setupGalleryScene() {
         ease: "power2.out"
       }, 0.08 + entryDelay)
       .to(item, {
+        x: ordered.x,
+        y: ordered.y,
+        rotate: ordered.rotate,
+        scale: ordered.scale,
+        zIndex: ordered.z,
+        duration: 0.86,
+        ease: "power2.inOut"
+      }, 1.04 + index * 0.018)
+      .to(item, {
         x: final.x,
         y: final.y,
         rotate: final.rotate,
         scale: final.scale,
-        duration: 1.25,
+        zIndex: target.z,
+        duration: 1.02,
         ease: "power1.inOut"
-      }, 1.05 + index * 0.025)
+      }, 2.12 + index * 0.025)
       .to(item, {
         y: final.y - (compact ? 42 : 64),
         autoAlpha: 0,
         filter: "blur(12px)",
         duration: 0.42,
         ease: "power1.in"
-      }, 2.54 + index * 0.035);
+      }, 3.08 + index * 0.035);
 
     if (image) {
       timeline.to(image, {
         scale: 1.04,
         xPercent: index % 2 === 0 ? 2.8 : -2.8,
         yPercent: index % 3 === 0 ? 2.2 : -2.2,
-        duration: 2.46,
+        duration: 3,
         ease: "none"
       }, 0.1);
     }
