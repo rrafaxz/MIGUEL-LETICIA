@@ -460,7 +460,6 @@ img {
   line-height: 1;
   text-align: center;
   text-transform: uppercase;
-  transform: translate(-50%, -50%);
   opacity: 0;
   visibility: hidden;
   will-change: transform, opacity;
@@ -807,8 +806,8 @@ img {
   }
 
   .frame-sequence-cta {
-    top: calc(50% - clamp(4.4rem, 11vh, 5.7rem));
-    min-width: min(15.6rem, 76vw);
+    top: calc(50% - clamp(2.2rem, 5.4vh, 3.4rem));
+    min-width: min(16.8rem, 82vw);
     min-height: 3rem;
     padding: 0.86rem 1.6rem 0.92rem;
     font-size: 0.74rem;
@@ -823,10 +822,14 @@ img {
     height: 100vh;
   }
 
-  .gallery-item-1,
+  .gallery-item-1 {
+    width: min(42vw, 10.5rem);
+    height: min(27.2vw, 6.8rem);
+  }
+
   .gallery-item-6 {
-    width: min(82vw, 22rem);
-    height: min(30vw, 10.5rem);
+    width: min(42vw, 10.5rem);
+    height: min(63vw, 15.75rem);
   }
 
   .gallery-item-2,
@@ -837,8 +840,8 @@ img {
   }
 
   .gallery-item-4 {
-    width: min(42vw, 10rem);
-    height: min(36vh, 14rem);
+    width: min(42vw, 10.5rem);
+    height: min(50vh, 18rem);
   }
 
   .final-button {

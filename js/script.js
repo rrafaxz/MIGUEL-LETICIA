@@ -379,8 +379,8 @@ function setupCardScene() {
     scrollTrigger: {
       trigger: scene,
       start: "top top",
-      end: "+=480%",
-      scrub: 0.9,
+      end: "+=330%",
+      scrub: 0.76,
       pin: true,
       anticipatePin: 1
     }
@@ -388,12 +388,12 @@ function setupCardScene() {
 
   timeline
     .to("[data-layer='card-photo']", { autoAlpha: 1, scale: 1, filter: "blur(0px)", duration: 0.42, ease: "power1.out" }, 0)
-    .to("[data-layer='card-photo'] img", { yPercent: 14, scale: 1.2, duration: 4.8, ease: "none" }, 0)
+    .to("[data-layer='card-photo'] img", { yPercent: 14, scale: 1.2, duration: 3.3, ease: "none" }, 0)
     .to("[data-layer='venue-shade']", { autoAlpha: 1, duration: 0.3 }, 0.14)
     .to("[data-layer='card-content']", { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.36, ease: "power1.out" }, 0.46)
     .to("[data-layer='card-link']", { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.22 }, 0.72)
-    .to("[data-layer='card-content']", { y: -32, autoAlpha: 0, filter: "blur(10px)", duration: 0.34 }, 4.02)
-    .to("[data-layer='card-photo']", { autoAlpha: 0.58, filter: "blur(7px)", duration: 0.26 }, 4.22);
+    .to("[data-layer='card-content']", { y: -32, autoAlpha: 0, filter: "blur(10px)", duration: 0.34 }, 2.7)
+    .to("[data-layer='card-photo']", { autoAlpha: 0.58, filter: "blur(7px)", duration: 0.26 }, 2.95);
 }
 
 function setupDateScene() {
@@ -590,7 +590,9 @@ function createFrameRenderer(canvas) {
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
 
-    const scale = Math.min(canvasWidth / image.naturalWidth, canvasHeight / image.naturalHeight);
+    const fitScale = Math.min(canvasWidth / image.naturalWidth, canvasHeight / image.naturalHeight);
+    const scaleBoost = window.matchMedia("(max-width: 980px)").matches ? 1.38 : 1;
+    const scale = fitScale * scaleBoost;
     const drawWidth = image.naturalWidth * scale;
     const drawHeight = image.naturalHeight * scale;
 
@@ -862,6 +864,14 @@ function setupGalleryScene() {
 }
 
 function buildOrganizedGalleryLayout(items, compact) {
+  if (compact) {
+    return buildCompactOrganizedGalleryLayout(items);
+  }
+
+  return buildDesktopOrganizedGalleryLayout(items);
+}
+
+function createDefaultGalleryLayout(items) {
   const layout = items.map((item, index) => ({
     x: 0,
     y: 0,
@@ -869,14 +879,69 @@ function buildOrganizedGalleryLayout(items, compact) {
     scale: 1,
     z: index + 1
   }));
+
+  return layout;
+}
+
+function buildCompactOrganizedGalleryLayout(items) {
+  const layout = createDefaultGalleryLayout(items);
+  const rows = [
+    [1, 2],
+    [3, 4],
+    [0, 5]
+  ];
+  const gap = 16;
+  const rowGap = 18;
+  const maxWidth = Math.min(window.innerWidth * 0.84, 720);
+  const columnWidth = (maxWidth - gap) / 2;
+  const leftX = -maxWidth / 2 + columnWidth / 2;
+  const rightX = maxWidth / 2 - columnWidth / 2;
+  const rowMetrics = rows.map((row) => {
+    const cells = row.map((index, order) => {
+      const item = items[index];
+      const scale = item?.offsetWidth ? columnWidth / item.offsetWidth : 1;
+
+      return {
+        index,
+        x: order === 0 ? leftX : rightX,
+        scale,
+        height: (item?.offsetHeight || 0) * scale
+      };
+    });
+
+    return {
+      cells,
+      height: Math.max(...cells.map((cell) => cell.height))
+    };
+  });
+  const totalHeight = rowMetrics.reduce((total, row) => total + row.height, 0) + rowGap * (rowMetrics.length - 1);
+  let cursorY = -totalHeight / 2;
+
+  rowMetrics.forEach((row, rowIndex) => {
+    row.cells.forEach((cell, order) => {
+      layout[cell.index] = {
+        x: cell.x,
+        y: cursorY + cell.height / 2,
+        rotate: 0,
+        scale: cell.scale,
+        z: rowIndex * 2 + order + 1
+      };
+    });
+
+    cursorY += row.height + rowGap;
+  });
+
+  return layout;
+}
+
+function buildDesktopOrganizedGalleryLayout(items) {
+  const layout = createDefaultGalleryLayout(items);
   const topIndexes = [1, 2, 3, 4];
   const bottomIndexes = [0, 5];
-  const gap = compact ? 14 : 28;
-  const rowGap = compact ? 18 : 30;
-  const topHeight = compact
-    ? Math.round(Math.min(window.innerHeight * 0.22, 165))
-    : Math.round(Math.min(window.innerHeight * 0.42, 340));
-  const topCenterY = compact ? -150 : -170;
+  const gap = 28;
+  const rowGap = 30;
+  const topHeight = Math.round(Math.min(window.innerHeight * 0.42, 340));
+  const topCenterY = -170;
 
   const topSizes = topIndexes.map((index) => {
     const item = items[index];
