@@ -260,16 +260,6 @@ img {
   display: block;
 }
 
-.type-word {
-  display: inline-block;
-  white-space: nowrap;
-}
-
-.type-char {
-  display: inline-block;
-  will-change: opacity, transform, filter;
-}
-
 .verse {
   position: absolute;
   left: 50%;
@@ -483,100 +473,63 @@ img {
   color: rgba(23, 46, 30, 0.78);
 }
 
-.story-scene {
-  z-index: 3;
-  min-height: 100vh;
-  padding: 0;
-}
-
-.story-panel {
-  position: absolute;
-  z-index: 1;
-  left: 50%;
-  top: 46.5%;
-  display: grid;
-  width: min(56rem, 82vw);
-  align-items: center;
-  gap: 5.45rem;
-  will-change: transform, opacity;
-}
-
-.story-panel-left {
-  grid-template-columns: minmax(8.8rem, 11.5rem) minmax(18rem, 23rem);
-}
-
-.story-panel-right {
-  grid-template-columns: minmax(18rem, 23rem) minmax(8.8rem, 11.5rem);
-  text-align: center;
-}
-
-.story-photo {
-  width: 100%;
-  height: 31.2rem;
-  object-fit: cover;
-  filter: grayscale(1);
-}
-
-.story-photo-right {
-  height: 31.2rem;
-  object-position: center top;
-}
-
-.story-copy {
-  align-self: start;
-  padding-top: 0;
-}
-
-.story-copy h2 {
-  margin: -0.2rem 0 2.65rem;
-  overflow: visible;
-  padding: 0.78rem 0.95rem 0.86rem;
-  font-family: var(--font-script);
-  font-size: 2.34rem;
-  font-weight: 400;
-  line-height: 1.32;
-}
-
-.story-copy h2 span {
-  display: block;
-}
-
-.story-copy p {
-  max-width: 22.5rem;
-  margin: 0 0 2.25rem;
-  font-size: 0.82rem;
-  line-height: 1.6;
-}
-
-.story-copy-right p {
-  margin-left: 0;
-  margin-right: 0;
-  text-align: right;
-}
-
 .gallery-scene {
   z-index: 1;
-  display: flex;
-  align-items: center;
+  display: grid;
+  place-items: center;
   min-height: 100vh;
+  background: var(--white);
+  color: var(--ink);
 }
 
-.gallery-track {
-  display: flex;
-  align-items: center;
-  gap: 1.42rem;
-  width: max-content;
-  padding: 0 7vw;
+.gallery-stage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  perspective: 1200px;
+  transform-style: preserve-3d;
   will-change: transform;
 }
 
 .gallery-item {
-  flex: 0 0 auto;
-  width: clamp(18rem, 23vw, 22rem);
-  height: clamp(31rem, 72vh, 38rem);
+  position: absolute;
+  left: 50%;
+  top: 50%;
   margin: 0;
   overflow: hidden;
   background: transparent;
+  transform-origin: center center;
+  will-change: transform, opacity, filter;
+}
+
+.gallery-item-1 {
+  width: clamp(18rem, 34vw, 29rem);
+  height: clamp(12rem, 22vw, 18rem);
+}
+
+.gallery-item-2 {
+  width: clamp(13rem, 20vw, 17rem);
+  height: clamp(20rem, 55vh, 31rem);
+}
+
+.gallery-item-3 {
+  width: clamp(13rem, 22vw, 18rem);
+  height: clamp(20rem, 58vh, 32rem);
+}
+
+.gallery-item-4 {
+  width: clamp(12rem, 18vw, 15.5rem);
+  height: clamp(15rem, 37vh, 22rem);
+}
+
+.gallery-item-5 {
+  width: clamp(14rem, 24vw, 21rem);
+  height: clamp(18rem, 48vh, 29rem);
+}
+
+.gallery-item-6 {
+  width: clamp(15rem, 28vw, 24rem);
+  height: clamp(10rem, 19vw, 16rem);
 }
 
 .gallery-item img {
@@ -864,68 +817,27 @@ img {
     font-size: 0.66rem;
   }
 
-  .story-scene {
-    min-height: 100vh;
-    padding: 0;
+  .gallery-stage {
+    width: 100vw;
+    height: 100vh;
   }
 
-  .story-panel,
-  .story-panel-right {
-    left: 50%;
-    top: 50%;
-    width: min(21rem, 86vw);
-    grid-template-columns: 1fr;
-    gap: 1.05rem;
-    justify-items: center;
-    text-align: center;
+  .gallery-item-1,
+  .gallery-item-6 {
+    width: min(82vw, 22rem);
+    height: min(30vw, 10.5rem);
   }
 
-  .story-photo,
-  .story-photo-right {
-    width: min(20.5rem, 84vw);
-    height: min(7.8rem, 24vw);
-    justify-self: center;
-    object-position: center center;
+  .gallery-item-2,
+  .gallery-item-3,
+  .gallery-item-5 {
+    width: min(42vw, 10.5rem);
+    height: min(50vh, 18rem);
   }
 
-  .story-photo-right {
-    order: -1;
-    margin-left: 0;
-  }
-
-  .story-copy {
-    width: 100%;
-  }
-
-  .story-copy h2 {
-    margin: 0 0 0.86rem;
-    padding: 0.28rem 0.25rem 0.48rem;
-    font-size: 2.12rem;
-    line-height: 1.22;
-  }
-
-  .story-copy p {
-    max-width: min(19rem, 84vw);
-    margin: 0 auto 0.78rem;
-    font-size: 0.82rem;
-    line-height: 1.52;
-    text-align: center;
-  }
-
-  .story-copy-right p {
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-  }
-
-  .gallery-track {
-    gap: 1.2rem;
-    padding: 0 1.5rem;
-  }
-
-  .gallery-item {
-    width: clamp(15.5rem, 66vw, 19rem);
-    height: clamp(26rem, 70vh, 32rem);
+  .gallery-item-4 {
+    width: min(42vw, 10rem);
+    height: min(36vh, 14rem);
   }
 
   .final-button {

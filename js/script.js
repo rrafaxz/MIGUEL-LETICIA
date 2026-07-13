@@ -16,14 +16,12 @@ window.addEventListener("DOMContentLoaded", async () => {
   gsap.registerPlugin(ScrollTrigger);
   gsap.defaults({ ease: "none" });
 
-  prepareTypewriter();
   setupInitialStates();
   setupHeroScene();
   setupInvitationScene();
   setupCardScene();
   setupDateScene();
   setupFrameSequenceScene();
-  setupStoryScene();
   setupGalleryScene();
   setupFinalScene();
 
@@ -32,41 +30,8 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 async function hydrateDynamicMedia() {
   await Promise.all([
-    hydrateStoryImages(),
     hydrateGalleryImages()
   ]);
-}
-
-async function hydrateStoryImages() {
-  const miguelImage = document.querySelector("[data-story-role='miguel']");
-  const leticiaImage = document.querySelector("[data-story-role='leticia']");
-  const compact = window.matchMedia("(max-width: 980px)").matches;
-
-  if (!miguelImage || !leticiaImage) return;
-
-  if (compact && miguelImage.dataset.mobileSrc && leticiaImage.dataset.mobileSrc) {
-    miguelImage.src = miguelImage.dataset.mobileSrc;
-    leticiaImage.src = leticiaImage.dataset.mobileSrc;
-    return;
-  }
-
-  const folders = [
-    "assets/images/miguel-leticia/"
-  ];
-
-  for (const folder of folders) {
-    const images = await listImagesFromFolder(folder);
-
-    if (images.length < 2) continue;
-
-    const picked = pickStoryImages(images);
-
-    if (!picked.miguel || !picked.leticia) continue;
-
-    miguelImage.src = picked.miguel;
-    leticiaImage.src = picked.leticia;
-    break;
-  }
 }
 
 async function hydrateGalleryImages() {
@@ -87,7 +52,8 @@ async function hydrateGalleryImages() {
     const figure = document.createElement("figure");
     const image = document.createElement("img");
 
-    figure.className = "gallery-item gallery-item-standard";
+    figure.className = `gallery-item gallery-item-${(index % 6) + 1}`;
+    figure.dataset.galleryItem = "";
     image.src = src;
     image.alt = readableImageName(src);
     image.loading = index > 2 ? "lazy" : "eager";
@@ -202,27 +168,6 @@ function preferModernImages(images) {
     .sort((a, b) => decodeURIComponent(a).localeCompare(decodeURIComponent(b), "pt-BR", { numeric: true }));
 }
 
-function pickStoryImages(images) {
-  const normalized = images.map((src) => ({
-    src,
-    key: readableImageName(src).toLowerCase()
-  }));
-  const miguel =
-    normalized.find((image) => image.key.includes("miguel") && !image.key.includes("leticia")) ||
-    normalized.find((image) => image.key.includes("copiar")) ||
-    normalized[0];
-  const leticia =
-    normalized.find((image) => image.key.includes("leticia") && !image.key.includes("miguel")) ||
-    normalized.find((image) => image.src !== miguel.src && !image.key.includes("copiar")) ||
-    normalized.find((image) => image.src !== miguel.src) ||
-    normalized[1];
-
-  return {
-    miguel: miguel?.src,
-    leticia: leticia?.src
-  };
-}
-
 function readableImageName(src) {
   const filename = decodeURIComponent(src.split("/").pop() || "Miguel e Letícia");
 
@@ -288,36 +233,6 @@ function setupDressCodeModal() {
   });
 }
 
-function prepareTypewriter() {
-  const targets = document.querySelectorAll(".story-copy p");
-
-  targets.forEach((target) => {
-    const text = target.textContent;
-    target.textContent = "";
-
-    text.split(/(\s+)/).forEach((token) => {
-      if (!token) return;
-
-      if (/^\s+$/.test(token)) {
-        target.appendChild(document.createTextNode(token));
-        return;
-      }
-
-      const word = document.createElement("span");
-      word.className = "type-word";
-
-      Array.from(token).forEach((character) => {
-        const letter = document.createElement("span");
-        letter.className = "type-char";
-        letter.textContent = character;
-        word.appendChild(letter);
-      });
-
-      target.appendChild(word);
-    });
-  });
-}
-
 function setupInitialStates() {
   gsap.set("[data-layer='hero-media'], [data-layer='hero-shade'], [data-layer='hero-nav']", { autoAlpha: 1 });
   gsap.set("[data-layer='hero-mark-stage']", {
@@ -330,7 +245,6 @@ function setupInitialStates() {
   gsap.set("[data-layer='hero-couple-name']", { autoAlpha: 1, scale: 1, y: 0, filter: "blur(0px)" });
   gsap.set("[data-layer='hero-monogram']", { autoAlpha: 0 });
   gsap.set("[data-layer='hero-white-wash']", { autoAlpha: 0 });
-  gsap.set(".type-char", { autoAlpha: 0, y: "0.38em", filter: "blur(0.32em)" });
   gsap.set("[data-reveal-line]", { autoAlpha: 0, y: 18, filter: "blur(14px)" });
   gsap.set("[data-reveal-title] span", { y: 12, autoAlpha: 0 });
   gsap.set("[data-layer='verse'] p, [data-layer='verse'] cite", { autoAlpha: 0, y: 16, filter: "blur(12px)" });
@@ -354,26 +268,6 @@ function setupInitialStates() {
     filter: "blur(18px)"
   });
   gsap.set("[data-layer='date-note']", { autoAlpha: 0, y: 18, filter: "blur(12px)" });
-  gsap.set("[data-layer='story-left']", {
-    xPercent: -50,
-    yPercent: -50,
-    x: 0,
-    y: 0,
-    scale: 1,
-    autoAlpha: 0
-  });
-  gsap.set("[data-layer='story-right']", {
-    xPercent: -50,
-    yPercent: -50,
-    x: 0,
-    y: 0,
-    scale: 1,
-    autoAlpha: 0
-  });
-  gsap.set(".story-copy", { autoAlpha: 1, x: 0, y: 0 });
-  gsap.set(".story-copy p", { autoAlpha: 1, y: 0 });
-  gsap.set("[data-layer='story-photo-left']", { yPercent: 5 });
-  gsap.set("[data-layer='story-photo-right']", { yPercent: -5 });
   gsap.set("[data-final-line='top'], [data-final-line='bottom']", { scaleX: 0, transformOrigin: "center center" });
   gsap.set("[data-final-line='left'], [data-final-line='right']", { scaleY: 0, transformOrigin: "center center" });
   gsap.set("[data-layer='final-text']", { autoAlpha: 0, y: 8, letterSpacing: "0.08em" });
@@ -831,168 +725,127 @@ function loadFrameImage(src) {
   });
 }
 
-function setupStoryScene() {
-  const scene = document.querySelector("[data-scene='story']");
-  const titles = scene.querySelectorAll("[data-reveal-title] span");
+function setupGalleryScene() {
+  const scene = document.querySelector("[data-scene='gallery']");
+
+  if (!scene) return;
+
+  const items = gsap.utils.toArray(scene.querySelectorAll("[data-gallery-item]"));
+  const images = scene.querySelectorAll(".gallery-item img");
+
+  if (!items.length || !images.length) return;
+
   const compact = window.matchMedia("(max-width: 980px)").matches;
-  const pedroChars = scene.querySelectorAll("[data-layer='story-left'] .story-copy p .type-char");
-  const maynaraChars = scene.querySelectorAll("[data-layer='story-right'] .story-copy p .type-char");
+  const layouts = compact
+    ? [
+        { x: 0, y: -208, rotate: -2.4, scale: 0.88, z: 3 },
+        { x: -92, y: -56, rotate: 3.2, scale: 0.72, z: 2 },
+        { x: 94, y: -48, rotate: -3.6, scale: 0.75, z: 4 },
+        { x: -105, y: 124, rotate: -4.2, scale: 0.74, z: 1 },
+        { x: 16, y: 88, rotate: 1.4, scale: 0.84, z: 5 },
+        { x: 8, y: 224, rotate: 2.8, scale: 0.82, z: 2 }
+      ]
+    : [
+        { x: -285, y: -155, rotate: -5.4, scale: 0.96, z: 4 },
+        { x: -420, y: 82, rotate: 3.8, scale: 0.92, z: 2 },
+        { x: -28, y: -8, rotate: -1.2, scale: 1.06, z: 6 },
+        { x: 332, y: -150, rotate: 5.2, scale: 0.88, z: 3 },
+        { x: 398, y: 108, rotate: -3.4, scale: 0.96, z: 5 },
+        { x: 24, y: 222, rotate: 2.6, scale: 0.94, z: 1 }
+      ];
 
-  if (compact) {
-    const timeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: scene,
-        start: "top top",
-        end: "+=500%",
-        scrub: 0.96,
-        pin: true,
-        anticipatePin: 1
-      }
-    });
-
-    timeline
-      .to("[data-layer='story-left']", { autoAlpha: 1, x: 0, y: -42, scale: 1, duration: 0.36 }, 0)
-      .to("[data-layer='story-photo-left']", { yPercent: 0, duration: 0.76 }, 0)
-      .to(titles[0], { y: 0, autoAlpha: 1, duration: 0.2 }, 0.2)
-      .to(pedroChars, { autoAlpha: 1, y: 0, filter: "blur(0em)", stagger: 0.0062, duration: 0.04, ease: "power1.out" }, 0.52)
-      .to("[data-layer='story-left']", { autoAlpha: 0, y: -72, duration: 0.32 }, 2.9)
-      .to("[data-layer='story-right']", { autoAlpha: 1, x: 0, y: -34, scale: 1, duration: 0.36 }, 3.22)
-      .to("[data-layer='story-photo-right']", { yPercent: 0, duration: 0.76 }, 3.22)
-      .to(titles[1], { y: 0, autoAlpha: 1, duration: 0.2 }, 3.44)
-      .to(maynaraChars, { autoAlpha: 1, y: 0, filter: "blur(0em)", stagger: 0.0062, duration: 0.04, ease: "power1.out" }, 3.74)
-      .to("[data-layer='story-right']", { autoAlpha: 0, y: -66, duration: 0.32 }, 6.14)
-      .to(".story-copy", { autoAlpha: 1, x: 0, y: 0, duration: 0.18 }, 6.48)
-      .to(titles, { autoAlpha: 1, y: 0, duration: 0.18 }, 6.48)
-      .to(".story-copy p", {
-        autoAlpha: 0.92,
-        y: 0,
-        fontSize: "0.76rem",
-        lineHeight: 1.5,
-        marginBottom: "0.72rem",
-        duration: 0.18
-      }, 6.5)
-      .to("[data-layer='story-left']", {
-        x: 0,
-        y: -180,
-        xPercent: -50,
-        yPercent: -50,
-        scale: 0.75,
-        autoAlpha: 1,
-        duration: 0.4
-      }, 6.6)
-      .to("[data-layer='story-right']", {
-        x: 0,
-        y: 164,
-        xPercent: -50,
-        yPercent: -50,
-        scale: 0.75,
-        autoAlpha: 1,
-        duration: 0.4
-      }, 6.6)
-      .to("[data-layer='story-left'], [data-layer='story-right']", { y: "-=10", duration: 0.24 }, 7.22)
-      .to("[data-layer='story-left'], [data-layer='story-right']", { autoAlpha: 0, y: "-=44", duration: 0.28 }, 7.62);
-
-    return;
-  }
-
-  const pedroSoloX = compact ? 0 : 72;
-  const maynaraSoloX = compact ? 0 : 94;
-  const finalShift = compact ? 0 : 62;
-  const finalOffset = compact ? 104 : 345;
-  const finalScale = compact ? 0.66 : 0.76;
+  const drift = compact
+    ? [
+        { x: 0, y: -236, rotate: -4.6, scale: 0.9 },
+        { x: -128, y: -68, rotate: 5.8, scale: 0.68 },
+        { x: 126, y: -64, rotate: -6.4, scale: 0.71 },
+        { x: -134, y: 144, rotate: -6.2, scale: 0.7 },
+        { x: 18, y: 78, rotate: 0.2, scale: 0.88 },
+        { x: 8, y: 250, rotate: 4.4, scale: 0.78 }
+      ]
+    : [
+        { x: -360, y: -175, rotate: -8.2, scale: 0.94 },
+        { x: -480, y: 66, rotate: 6.4, scale: 0.88 },
+        { x: -44, y: -18, rotate: -0.4, scale: 1 },
+        { x: 396, y: -184, rotate: 7.6, scale: 0.84 },
+        { x: 462, y: 82, rotate: -5.8, scale: 0.92 },
+        { x: 48, y: 256, rotate: 4.6, scale: 0.9 }
+      ];
 
   const timeline = gsap.timeline({
     scrollTrigger: {
       trigger: scene,
       start: "top top",
-      end: "+=380%",
-      scrub: 0.94,
+      end: () => `+=${Math.max(window.innerHeight * 3.2, 2200)}`,
+      scrub: 0.96,
       pin: true,
-      anticipatePin: 1
+      anticipatePin: 1,
+      invalidateOnRefresh: true
     }
   });
 
-  timeline
-    .to("[data-layer='story-left']", { autoAlpha: 1, x: pedroSoloX, duration: 0.36 }, 0)
-    .to("[data-layer='story-photo-left']", { yPercent: -2.5, duration: 1.25 }, 0)
-    .to(titles[0], { y: 0, autoAlpha: 1, duration: 0.22 }, 0.18)
-    .to(pedroChars, { autoAlpha: 1, y: 0, filter: "blur(0em)", stagger: 0.0037, duration: 0.04, ease: "power1.out" }, 0.42)
-    .to("[data-layer='story-left'] .story-copy", { autoAlpha: 1, duration: 0.45 }, 1.92)
-    .to("[data-layer='story-left'] .story-copy", { autoAlpha: 0, x: -24, duration: 0.24 }, 2.24)
-    .to("[data-layer='story-left']", { x: pedroSoloX - 130, autoAlpha: 0, duration: 0.3 }, 2.38)
-    .to("[data-layer='story-right']", { autoAlpha: 1, x: maynaraSoloX, duration: 0.38 }, 2.68)
-    .to("[data-layer='story-photo-right']", { yPercent: 2.5, duration: 1.18 }, 2.68)
-    .to(titles[1], { y: 0, autoAlpha: 1, duration: 0.22 }, 2.9)
-    .to(maynaraChars, { autoAlpha: 1, y: 0, filter: "blur(0em)", stagger: 0.0037, duration: 0.04, ease: "power1.out" }, 3.14)
-    .to("[data-layer='story-right'] .story-copy", { autoAlpha: 1, duration: 0.45 }, 4.62)
-    .to(".story-copy", { autoAlpha: 1, x: 0, y: 0, duration: 0.22 }, 5.02)
-    .to(titles, { autoAlpha: 1, y: 0, duration: 0.2 }, 5.02)
-    .to(".story-copy p", { autoAlpha: 0.9, y: 0, duration: 0.24 }, 5.06)
-    .to("[data-layer='story-left']", {
-      x: finalShift - finalOffset,
-      y: 0,
+  items.forEach((item, index) => {
+    const target = layouts[index % layouts.length];
+    const final = drift[index % drift.length];
+    const image = item.querySelector("img");
+    const entryDelay = index * 0.075;
+
+    gsap.set(item, {
       xPercent: -50,
       yPercent: -50,
-      scale: finalScale,
-      autoAlpha: 1,
-      duration: 0.44
-    }, 5.1)
-    .to("[data-layer='story-right']", {
-      x: finalShift + finalOffset,
-      y: 0,
-      xPercent: -50,
-      yPercent: -50,
-      scale: finalScale,
-      duration: 0.44
-    }, 5.1)
-    .to("[data-layer='story-left'], [data-layer='story-right']", { y: -10, duration: 0.24 }, 6.0)
-    .to("[data-layer='story-left'], [data-layer='story-right']", { autoAlpha: 0, y: -54, duration: 0.28 }, 6.42);
-}
+      x: compact ? 0 : (index - 2.5) * 8,
+      y: compact ? 42 : 28,
+      rotate: (index - 2.5) * 1.8,
+      scale: 0.62,
+      zIndex: target.z,
+      autoAlpha: 0,
+      filter: "blur(18px)"
+    });
 
-function setupGalleryScene() {
-  const scene = document.querySelector("[data-scene='gallery']");
-  const track = scene.querySelector("[data-layer='gallery-track']");
-  const images = scene.querySelectorAll(".gallery-item img");
-
-  if (!track || !images.length) return;
-
-  const getTravel = () => -Math.max(track.scrollWidth - window.innerWidth + window.innerWidth * 0.12, 0);
-
-  gsap.to(track, {
-    x: getTravel,
-    scrollTrigger: {
-      trigger: scene,
-      start: "top top",
-      end: () => `+=${Math.max(track.scrollWidth * 0.72, window.innerWidth * 1.35)}`,
-      scrub: 1.18,
-      pin: true,
-      invalidateOnRefresh: true,
-      anticipatePin: 1
+    if (image) {
+      gsap.set(image, {
+        scale: 1.12,
+        xPercent: index % 2 === 0 ? -2 : 2,
+        yPercent: index % 3 === 0 ? -2 : 2
+      });
     }
-  });
 
-  images.forEach((image, index) => {
-    const direction = index % 2 === 0 ? 1 : -1;
+    timeline
+      .to(item, {
+        x: target.x,
+        y: target.y,
+        rotate: target.rotate,
+        scale: target.scale,
+        autoAlpha: 1,
+        filter: "blur(0px)",
+        duration: 0.74,
+        ease: "power2.out"
+      }, 0.08 + entryDelay)
+      .to(item, {
+        x: final.x,
+        y: final.y,
+        rotate: final.rotate,
+        scale: final.scale,
+        duration: 1.25,
+        ease: "power1.inOut"
+      }, 1.05 + index * 0.025)
+      .to(item, {
+        y: final.y - (compact ? 42 : 64),
+        autoAlpha: 0,
+        filter: "blur(12px)",
+        duration: 0.42,
+        ease: "power1.in"
+      }, 2.54 + index * 0.035);
 
-    gsap.fromTo(
-      image,
-      {
-        xPercent: direction * -2.4,
-        yPercent: index % 3 === 0 ? -1.6 : 1.6,
-        scale: 1.04
-      },
-      {
-        xPercent: direction * 2.4,
-        yPercent: index % 3 === 0 ? 1.6 : -1.6,
-        scale: 1.055,
-        scrollTrigger: {
-          trigger: scene,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.45
-        }
-      }
-    );
+    if (image) {
+      timeline.to(image, {
+        scale: 1.04,
+        xPercent: index % 2 === 0 ? 2.8 : -2.8,
+        yPercent: index % 3 === 0 ? 2.2 : -2.2,
+        duration: 2.46,
+        ease: "none"
+      }, 0.1);
+    }
   });
 }
 
