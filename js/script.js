@@ -755,20 +755,20 @@ function setupGalleryScene() {
 
   const organized = compact
     ? [
-        { x: -94, y: -150, rotate: 0, scale: 0.62, z: 1 },
-        { x: 94, y: -150, rotate: 0, scale: 0.62, z: 2 },
-        { x: -94, y: 12, rotate: 0, scale: 0.62, z: 3 },
-        { x: 94, y: 12, rotate: 0, scale: 0.62, z: 4 },
-        { x: -78, y: 204, rotate: 0, scale: 0.66, z: 5 },
-        { x: 78, y: 204, rotate: 0, scale: 0.66, z: 6 }
+        { x: -78, y: 222, rotate: 0, scale: 0.58, z: 5 },
+        { x: -92, y: -150, rotate: 0, scale: 0.68, z: 1, alignHeight: 165 },
+        { x: 92, y: -150, rotate: 0, scale: 0.66, z: 2, alignHeight: 165 },
+        { x: -92, y: 30, rotate: 0, scale: 0.96, z: 3, alignHeight: 165 },
+        { x: 92, y: 30, rotate: 0, scale: 0.72, z: 4, alignHeight: 165 },
+        { x: 78, y: 222, rotate: 0, scale: 0.58, z: 6 }
       ]
     : [
-        { x: -438, y: -118, rotate: 0, scale: 0.68, z: 1 },
-        { x: -158, y: -118, rotate: 0, scale: 0.68, z: 2 },
-        { x: 120, y: -118, rotate: 0, scale: 0.68, z: 3 },
-        { x: 398, y: -118, rotate: 0, scale: 0.68, z: 4 },
-        { x: -274, y: 198, rotate: 0, scale: 0.96, z: 5 },
-        { x: 284, y: 198, rotate: 0, scale: 0.96, z: 6 }
+        { x: -286, y: 214, rotate: 0, scale: 0.9, z: 5 },
+        { x: -444, y: -126, rotate: 0, scale: 0.72, z: 1, alignHeight: 360 },
+        { x: -158, y: -126, rotate: 0, scale: 0.7, z: 2, alignHeight: 360 },
+        { x: 120, y: -126, rotate: 0, scale: 1.02, z: 3, alignHeight: 360 },
+        { x: 404, y: -126, rotate: 0, scale: 0.77, z: 4, alignHeight: 360 },
+        { x: 306, y: 214, rotate: 0, scale: 0.9, z: 6 }
       ];
 
   const drift = compact
@@ -807,6 +807,9 @@ function setupGalleryScene() {
     const final = drift[index % drift.length];
     const image = item.querySelector("img");
     const entryDelay = index * 0.075;
+    const orderedScale = ordered.alignHeight && item.offsetHeight
+      ? ordered.alignHeight / item.offsetHeight
+      : ordered.scale;
 
     gsap.set(item, {
       xPercent: -50,
@@ -843,7 +846,7 @@ function setupGalleryScene() {
         x: ordered.x,
         y: ordered.y,
         rotate: ordered.rotate,
-        scale: ordered.scale,
+        scale: orderedScale,
         zIndex: ordered.z,
         duration: 0.86,
         ease: "power2.inOut"
