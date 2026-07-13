@@ -755,20 +755,20 @@ function setupGalleryScene() {
 
   const organized = compact
     ? [
-        { x: 0, y: -222, rotate: 0, scale: 0.62, z: 1 },
-        { x: -82, y: -66, rotate: 0, scale: 0.68, z: 2 },
-        { x: 82, y: -66, rotate: 0, scale: 0.68, z: 3 },
-        { x: -82, y: 110, rotate: 0, scale: 0.72, z: 4 },
-        { x: 82, y: 110, rotate: 0, scale: 0.68, z: 5 },
-        { x: 0, y: 252, rotate: 0, scale: 0.62, z: 6 }
+        { x: -94, y: -150, rotate: 0, scale: 0.62, z: 1 },
+        { x: 94, y: -150, rotate: 0, scale: 0.62, z: 2 },
+        { x: -94, y: 12, rotate: 0, scale: 0.62, z: 3 },
+        { x: 94, y: 12, rotate: 0, scale: 0.62, z: 4 },
+        { x: -78, y: 204, rotate: 0, scale: 0.66, z: 5 },
+        { x: 78, y: 204, rotate: 0, scale: 0.66, z: 6 }
       ]
     : [
-        { x: -548, y: 0, rotate: 0, scale: 0.62, z: 1 },
-        { x: -338, y: 0, rotate: 0, scale: 0.64, z: 2 },
-        { x: -126, y: 0, rotate: 0, scale: 0.64, z: 3 },
-        { x: 78, y: 0, rotate: 0, scale: 0.68, z: 4 },
-        { x: 292, y: 0, rotate: 0, scale: 0.64, z: 5 },
-        { x: 520, y: 0, rotate: 0, scale: 0.62, z: 6 }
+        { x: -438, y: -118, rotate: 0, scale: 0.68, z: 1 },
+        { x: -158, y: -118, rotate: 0, scale: 0.68, z: 2 },
+        { x: 120, y: -118, rotate: 0, scale: 0.68, z: 3 },
+        { x: 398, y: -118, rotate: 0, scale: 0.68, z: 4 },
+        { x: -274, y: 198, rotate: 0, scale: 0.96, z: 5 },
+        { x: 284, y: 198, rotate: 0, scale: 0.96, z: 6 }
       ];
 
   const drift = compact

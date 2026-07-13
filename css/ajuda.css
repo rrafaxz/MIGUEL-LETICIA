@@ -928,6 +928,10 @@ button[aria-label="Presentear Despertador para a noiva"] img {
   background: rgba(221, 244, 221, 0.56);
 }
 
+.gift-card h3 {
+  display: none;
+}
+
 .fun-card__media,
 .gift-media {
   width: 100%;
@@ -967,6 +971,22 @@ button[aria-label="Presentear Despertador para a noiva"] img {
   left: clamp(0.55rem, 1vw, 0.82rem);
   z-index: 2;
   width: auto;
+}
+
+.gift-card > .gift-action {
+  position: absolute !important;
+  right: clamp(0.65rem, 1.1vw, 0.95rem) !important;
+  bottom: clamp(0.65rem, 1.1vw, 0.95rem) !important;
+  left: clamp(0.65rem, 1.1vw, 0.95rem) !important;
+  z-index: 4;
+  width: auto !important;
+  margin: 0 !important;
+  background: rgba(251, 255, 249, 0.88);
+  backdrop-filter: blur(8px);
+}
+
+.gift-card > .gift-action:hover {
+  background: rgba(168, 220, 171, 0.94);
 }
 
 .gift-grid {
