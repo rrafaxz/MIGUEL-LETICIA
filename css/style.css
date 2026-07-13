@@ -234,7 +234,7 @@ img {
   place-items: start center;
   min-height: 132vh;
   margin-top: 0;
-  padding: 19vh 1.5rem 8rem;
+  padding: 29vh 1.5rem 8rem;
   background: #fff;
 }
 
@@ -264,7 +264,7 @@ img {
 .verse {
   position: absolute;
   left: 50%;
-  top: 47vh;
+  top: 58vh;
   bottom: auto;
   width: min(31rem, 70vw);
   margin: 0;
@@ -730,7 +730,7 @@ img {
   .invitation-scene {
     min-height: 124vh;
     margin-top: 0;
-    padding: 18vh 1.05rem 6.5rem;
+    padding: 24vh 1.05rem 6.5rem;
   }
 
   .invitation-copy {
@@ -754,7 +754,7 @@ img {
   }
 
   .verse {
-    top: 53vh;
+    top: 62vh;
     bottom: auto;
     width: min(20.5rem, 86vw);
   }
