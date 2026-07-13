@@ -328,33 +328,28 @@ function setupInitialStates() {
   gsap.set("[data-layer='hero-couple-name']", { autoAlpha: 1, scale: 1, y: 0, filter: "blur(0px)" });
   gsap.set("[data-layer='hero-monogram']", { autoAlpha: 0 });
   gsap.set("[data-layer='hero-white-wash']", { autoAlpha: 0 });
-  gsap.set(".type-char", { autoAlpha: 0, y: "0.38em" });
+  gsap.set(".type-char", { autoAlpha: 0, y: "0.38em", filter: "blur(0.32em)" });
   gsap.set("[data-reveal-title] span", { y: 12, autoAlpha: 0 });
   gsap.set("[data-layer='verse']", { autoAlpha: 1, y: 0 });
   gsap.set("[data-layer='verse'] cite", { borderBottomColor: "rgba(21, 20, 19, 0)" });
-  gsap.set("[data-layer='card-frame']", { autoAlpha: 1 });
-  gsap.set("[data-layer='card-content']", { autoAlpha: 0 });
-  gsap.set("[data-layer='card-photo']", { clipPath: "inset(36% 18% 36% 18%)" });
-  gsap.set("[data-card-line='top'], [data-card-line='bottom']", { scaleX: 0 });
-  gsap.set("[data-card-line='left'], [data-card-line='right']", { scaleY: 0 });
-  gsap.set("[data-layer='card-photo'] img", { yPercent: -5 });
-  gsap.set("[data-layer='card-photo'] figcaption", { autoAlpha: 0, y: 12 });
-  gsap.set("[data-layer='card-link']", { autoAlpha: 0, y: 18 });
+  gsap.set("[data-layer='card-photo']", { autoAlpha: 0, scale: 1.08, filter: "blur(22px)" });
+  gsap.set("[data-layer='card-photo'] img", { yPercent: -7, scale: 1.06 });
+  gsap.set("[data-layer='venue-shade']", { autoAlpha: 0 });
+  gsap.set("[data-layer='card-content']", { autoAlpha: 0, y: 28, filter: "blur(16px)" });
+  gsap.set("[data-layer='card-link']", { autoAlpha: 0, y: 16, filter: "blur(10px)" });
   gsap.set("[data-layer='date-left']", {
-    xPercent: -50,
-    yPercent: -50,
-    x: "8rem",
+    x: 0,
+    y: 18,
     autoAlpha: 0,
-    clipPath: "inset(0 100% 0 0)"
+    filter: "blur(18px)"
   });
   gsap.set("[data-layer='date-right']", {
-    xPercent: -50,
-    yPercent: -50,
-    x: "8rem",
+    x: 0,
+    y: 18,
     autoAlpha: 0,
-    clipPath: "inset(0 0 0 100%)"
+    filter: "blur(18px)"
   });
-  gsap.set("[data-layer='date-divider']", { scaleY: 0, transformOrigin: "center center" });
+  gsap.set("[data-layer='date-note']", { autoAlpha: 0, y: 18, filter: "blur(12px)" });
   gsap.set("[data-layer='story-left']", {
     xPercent: -50,
     yPercent: -50,
@@ -418,7 +413,7 @@ function setupHeroScene() {
 
 function setupInvitationScene() {
   const scene = document.querySelector("[data-scene='invitation']");
-  const copyChars = scene.querySelectorAll(".invitation-copy .type-char");
+  const copyLines = scene.querySelectorAll(".invitation-copy [data-reveal-line]");
   const verseChars = scene.querySelectorAll(".verse p .type-char");
   const citeChars = scene.querySelectorAll(".verse cite .type-char");
 
@@ -432,11 +427,32 @@ function setupInvitationScene() {
   });
 
   entrance
-    .fromTo("[data-layer='invitation-copy']", { y: 24, scale: 1.035 }, { y: 0, scale: 1, duration: 1.18 }, 0.22)
-    .to(copyChars, { autoAlpha: 1, y: 0, stagger: 0.0105, duration: 0.04, ease: "power1.out" }, 0.52)
-    .to(verseChars, { autoAlpha: 1, y: 0, stagger: 0.0155, duration: 0.045, ease: "power1.out" }, 2.96)
-    .to(citeChars, { autoAlpha: 1, y: 0, stagger: 0.021, duration: 0.045, ease: "power1.out" }, 3.68)
-    .to("[data-layer='verse'] cite", { borderBottomColor: "rgba(21, 20, 19, 0.86)", duration: 0.12 }, 3.88);
+    .fromTo("[data-layer='invitation-copy']", {
+      y: 24,
+      scale: 1.035,
+      filter: "blur(12px)"
+    }, {
+      y: 0,
+      scale: 1,
+      filter: "blur(0px)",
+      duration: 0.82
+    }, 0.18);
+
+  copyLines.forEach((line, index) => {
+    entrance.to(line.querySelectorAll(".type-char"), {
+      autoAlpha: 1,
+      y: 0,
+      filter: "blur(0em)",
+      stagger: 0.012,
+      duration: 0.055,
+      ease: "power1.out"
+    }, 0.46 + index * 0.48);
+  });
+
+  entrance
+    .to(verseChars, { autoAlpha: 1, y: 0, filter: "blur(0em)", stagger: 0.0155, duration: 0.05, ease: "power1.out" }, 3.08)
+    .to(citeChars, { autoAlpha: 1, y: 0, filter: "blur(0em)", stagger: 0.021, duration: 0.05, ease: "power1.out" }, 3.82)
+    .to("[data-layer='verse'] cite", { borderBottomColor: "rgba(21, 20, 19, 0.86)", duration: 0.12 }, 4.06);
 
   const timeline = gsap.timeline({
     scrollTrigger: {
@@ -450,7 +466,7 @@ function setupInvitationScene() {
   });
 
   timeline
-    .to("[data-layer='invitation-copy']", { scale: 0.978, autoAlpha: 0.68, duration: 0.34 }, 0.68);
+    .to("[data-layer='invitation-copy'], [data-layer='verse']", { scale: 0.982, autoAlpha: 0.72, filter: "blur(4px)", duration: 0.34 }, 0.68);
 }
 
 function setupCardScene() {
@@ -459,99 +475,46 @@ function setupCardScene() {
     scrollTrigger: {
       trigger: scene,
       start: "top top",
-      end: "+=122%",
-      scrub: 0.86,
+      end: "+=160%",
+      scrub: 0.9,
       pin: true,
       anticipatePin: 1
     }
   });
 
   timeline
-    .to("[data-card-line='bottom']", { scaleX: 1, duration: 0.2 }, 0.03)
-    .to("[data-card-line='left'], [data-card-line='right']", { scaleY: 1, duration: 0.28 }, 0.2)
-    .to("[data-card-line='top']", { scaleX: 1, duration: 0.22 }, 0.46)
-    .to("[data-layer='card-content']", { autoAlpha: 1, duration: 0.16 }, 0.18)
-    .to("[data-layer='card-photo']", { clipPath: "inset(0% 0% 0% 0%)", duration: 0.46 }, 0.28)
-    .to("[data-layer='card-photo'] img", { yPercent: 5, duration: 0.82 }, 0.26)
-    .to("[data-layer='card-photo'] figcaption", { y: 0, autoAlpha: 1, duration: 0.28 }, 0.66)
-    .to("[data-layer='card-link']", { autoAlpha: 1, y: 0, duration: 0.22 }, 0.82)
-    .to("[data-layer='card-frame']", { y: -14, duration: 0.24 }, 1.02);
+    .to("[data-layer='card-photo']", { autoAlpha: 1, scale: 1, filter: "blur(0px)", duration: 0.42, ease: "power1.out" }, 0)
+    .to("[data-layer='card-photo'] img", { yPercent: 8, scale: 1.14, duration: 1.32, ease: "none" }, 0)
+    .to("[data-layer='venue-shade']", { autoAlpha: 1, duration: 0.3 }, 0.14)
+    .to("[data-layer='card-content']", { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.36, ease: "power1.out" }, 0.46)
+    .to("[data-layer='card-link']", { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.22 }, 0.72)
+    .to("[data-layer='card-content']", { y: -32, autoAlpha: 0, filter: "blur(10px)", duration: 0.34 }, 1.1)
+    .to("[data-layer='card-photo']", { autoAlpha: 0.58, filter: "blur(7px)", duration: 0.26 }, 1.22)
+    .to("[data-layer='card-photo'] img", { yPercent: 14, scale: 1.2, duration: 0.3 }, 1.24);
 }
 
 function setupDateScene() {
   const scene = document.querySelector("[data-scene='date']");
-  const compact = window.matchMedia("(max-width: 980px)").matches;
-
-  if (compact) {
-    gsap.set("[data-layer='date-left'], [data-layer='date-right']", {
-      xPercent: 0,
-      yPercent: 0,
-      x: 0,
-      y: 0,
-      autoAlpha: 0,
-      clipPath: "inset(0 0 100% 0)"
-    });
-    gsap.set("[data-layer='date-divider']", {
-      scaleX: 0,
-      scaleY: 1,
-      transformOrigin: "center center"
-    });
-
-    const timeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: scene,
-        start: "top top",
-        end: "+=105%",
-        scrub: 0.76,
-        pin: true,
-        anticipatePin: 1
-      }
-    });
-
-    timeline
-      .to("[data-layer='date-left']", { autoAlpha: 1, clipPath: "inset(0 0 0% 0)", duration: 0.3 }, 0.08)
-      .to("[data-layer='date-divider']", { scaleX: 1, duration: 0.24 }, 0.48)
-      .to("[data-layer='date-right']", { autoAlpha: 1, clipPath: "inset(0 0 0% 0)", duration: 0.3 }, 0.78)
-      .to("[data-layer='date-row']", { y: -10, duration: 0.24 }, 1.08);
-
-    return;
-  }
-
-  const dateRest = compact ? "-5.6rem" : "-10.4rem";
-  const timeStart = compact ? "8rem" : "13.4rem";
-  const timeRest = compact ? "5.6rem" : "10.4rem";
-
-  gsap.set("[data-layer='date-left']", { x: compact ? "5.6rem" : "8rem" });
-  gsap.set("[data-layer='date-right']", { x: timeStart });
-
-  const entrance = gsap.timeline({
-    scrollTrigger: {
-      trigger: scene,
-      start: "top 92%",
-      end: "top 42%",
-      scrub: 0.62
-    }
-  });
-
-  entrance.to("[data-layer='date-left']", { autoAlpha: 1, clipPath: "inset(0 0% 0 0)", x: 0, duration: 0.36 }, 0);
 
   const timeline = gsap.timeline({
     scrollTrigger: {
       trigger: scene,
       start: "top top",
-      end: "+=126%",
-      scrub: 0.78,
+      end: "+=210%",
+      scrub: 0.82,
       pin: true,
       anticipatePin: 1
     }
   });
 
   timeline
-    .to("[data-layer='date-left']", { letterSpacing: "0.13em", duration: 0.16 }, 0.08)
-    .to("[data-layer='date-left']", { x: dateRest, duration: 0.32 }, 0.44)
-    .to("[data-layer='date-divider']", { scaleY: 1, duration: 0.22 }, 0.76)
-    .to("[data-layer='date-right']", { autoAlpha: 1, clipPath: "inset(0 0 0 0%)", duration: 0.26 }, 1.02)
-    .to("[data-layer='date-right']", { x: timeRest, letterSpacing: "0.11em", duration: 0.24 }, 1.13);
+    .to("[data-layer='date-left']", { autoAlpha: 1, y: 0, filter: "blur(0px)", letterSpacing: "0.13em", duration: 0.34 }, 0.06)
+    .to("[data-layer='date-left']", { autoAlpha: 0, y: -22, filter: "blur(16px)", duration: 0.3 }, 0.74)
+    .to("[data-layer='date-right']", { autoAlpha: 1, y: 0, filter: "blur(0px)", letterSpacing: "0.11em", duration: 0.36 }, 1.02)
+    .to("[data-layer='date-note']", { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.24 }, 1.2)
+    .to("[data-layer='date-right']", { autoAlpha: 0, y: -20, filter: "blur(14px)", duration: 0.28 }, 1.66)
+    .to("[data-layer='date-note']", { autoAlpha: 0.74, y: -12, duration: 0.24 }, 1.72)
+    .to("[data-layer='date-row']", { y: -10, duration: 0.24 }, 1.95);
 }
 
 function setupStoryScene() {
@@ -577,12 +540,12 @@ function setupStoryScene() {
       .to("[data-layer='story-left']", { autoAlpha: 1, x: 0, y: -42, scale: 1, duration: 0.36 }, 0)
       .to("[data-layer='story-photo-left']", { yPercent: 0, duration: 0.76 }, 0)
       .to(titles[0], { y: 0, autoAlpha: 1, duration: 0.2 }, 0.2)
-      .to(pedroChars, { autoAlpha: 1, y: 0, stagger: 0.0062, duration: 0.04, ease: "power1.out" }, 0.52)
+      .to(pedroChars, { autoAlpha: 1, y: 0, filter: "blur(0em)", stagger: 0.0062, duration: 0.04, ease: "power1.out" }, 0.52)
       .to("[data-layer='story-left']", { autoAlpha: 0, y: -72, duration: 0.32 }, 2.9)
       .to("[data-layer='story-right']", { autoAlpha: 1, x: 0, y: -34, scale: 1, duration: 0.36 }, 3.22)
       .to("[data-layer='story-photo-right']", { yPercent: 0, duration: 0.76 }, 3.22)
       .to(titles[1], { y: 0, autoAlpha: 1, duration: 0.2 }, 3.44)
-      .to(maynaraChars, { autoAlpha: 1, y: 0, stagger: 0.0062, duration: 0.04, ease: "power1.out" }, 3.74)
+      .to(maynaraChars, { autoAlpha: 1, y: 0, filter: "blur(0em)", stagger: 0.0062, duration: 0.04, ease: "power1.out" }, 3.74)
       .to("[data-layer='story-right']", { autoAlpha: 0, y: -66, duration: 0.32 }, 6.14)
       .to(".story-copy", { autoAlpha: 1, x: 0, y: 0, duration: 0.18 }, 6.48)
       .to(titles, { autoAlpha: 1, y: 0, duration: 0.18 }, 6.48)
@@ -639,14 +602,14 @@ function setupStoryScene() {
     .to("[data-layer='story-left']", { autoAlpha: 1, x: pedroSoloX, duration: 0.36 }, 0)
     .to("[data-layer='story-photo-left']", { yPercent: -2.5, duration: 1.25 }, 0)
     .to(titles[0], { y: 0, autoAlpha: 1, duration: 0.22 }, 0.18)
-    .to(pedroChars, { autoAlpha: 1, y: 0, stagger: 0.0037, duration: 0.04, ease: "power1.out" }, 0.42)
+    .to(pedroChars, { autoAlpha: 1, y: 0, filter: "blur(0em)", stagger: 0.0037, duration: 0.04, ease: "power1.out" }, 0.42)
     .to("[data-layer='story-left'] .story-copy", { autoAlpha: 1, duration: 0.45 }, 1.92)
     .to("[data-layer='story-left'] .story-copy", { autoAlpha: 0, x: -24, duration: 0.24 }, 2.24)
     .to("[data-layer='story-left']", { x: pedroSoloX - 130, autoAlpha: 0, duration: 0.3 }, 2.38)
     .to("[data-layer='story-right']", { autoAlpha: 1, x: maynaraSoloX, duration: 0.38 }, 2.68)
     .to("[data-layer='story-photo-right']", { yPercent: 2.5, duration: 1.18 }, 2.68)
     .to(titles[1], { y: 0, autoAlpha: 1, duration: 0.22 }, 2.9)
-    .to(maynaraChars, { autoAlpha: 1, y: 0, stagger: 0.0037, duration: 0.04, ease: "power1.out" }, 3.14)
+    .to(maynaraChars, { autoAlpha: 1, y: 0, filter: "blur(0em)", stagger: 0.0037, duration: 0.04, ease: "power1.out" }, 3.14)
     .to("[data-layer='story-right'] .story-copy", { autoAlpha: 1, duration: 0.45 }, 4.62)
     .to(".story-copy", { autoAlpha: 1, x: 0, y: 0, duration: 0.22 }, 5.02)
     .to(titles, { autoAlpha: 1, y: 0, duration: 0.2 }, 5.02)

@@ -267,7 +267,7 @@ img {
 
 .type-char {
   display: inline-block;
-  will-change: opacity, transform;
+  will-change: opacity, transform, filter;
 }
 
 .verse {
@@ -295,151 +295,112 @@ img {
   line-height: 1.35;
 }
 
-.card-scene {
-  display: grid;
-  place-items: center;
-  padding: 4rem 1.5rem;
+.venue-scene {
+  min-height: 100vh;
+  background: var(--ink);
+  color: var(--white);
 }
 
-.editorial-card {
-  position: relative;
-  display: grid;
-  width: min(43rem, 62vw);
-  min-height: 32rem;
-  border: 0;
-  padding: 3.75rem 4.2rem 3.9rem;
-  transform-origin: center center;
-}
-
-.card-content {
-  display: grid;
-  grid-template-rows: auto 1fr;
-  justify-items: center;
-  width: 100%;
-  height: 100%;
-}
-
-.card-line {
+.venue-media,
+.venue-shade,
+.venue-media img {
   position: absolute;
-  display: block;
-  background: var(--line);
-  pointer-events: none;
+  inset: 0;
 }
 
-.card-line-top,
-.card-line-bottom {
-  left: 0;
-  width: 100%;
-  height: 1px;
-  transform: scaleX(0);
-}
-
-.card-line-top {
-  top: 0;
-  transform-origin: center center;
-}
-
-.card-line-bottom {
-  bottom: 0;
-  transform-origin: center center;
-}
-
-.card-line-left,
-.card-line-right {
-  top: 0;
-  width: 1px;
-  height: 100%;
-  transform: scaleY(0);
-  transform-origin: center bottom;
-}
-
-.card-line-left {
-  left: 0;
-}
-
-.card-line-right {
-  right: 0;
-}
-
-.card-photo-frame {
-  position: relative;
-  width: 100%;
-  margin: 0;
+.venue-media {
   overflow: hidden;
 }
 
-.card-photo-frame img {
+.venue-media img {
   width: 100%;
-  height: 17.9rem;
+  height: 116%;
   object-fit: cover;
-  filter: none;
+  object-position: center center;
   transform-origin: center center;
 }
 
-.card-photo-frame figcaption {
+.venue-shade {
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(23, 46, 30, 0.24), rgba(23, 46, 30, 0.06) 42%, rgba(23, 46, 30, 0.5)),
+    radial-gradient(circle at 50% 48%, rgba(23, 46, 30, 0.08), rgba(23, 46, 30, 0.52) 78%);
+}
+
+.venue-copy {
   position: absolute;
-  left: -1.25%;
-  top: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 102.5%;
-  transform: translateY(-50%);
-  color: var(--paper);
-  font-family: var(--font-script);
-  font-size: 2.55rem;
-  line-height: 1.28;
-  padding: 0 4rem;
+  left: 50%;
+  top: 54%;
+  display: grid;
+  justify-items: center;
+  width: min(44rem, 86vw);
+  transform: translate(-50%, -50%);
   text-align: center;
-  text-shadow: 0 0 18px rgba(0, 0, 0, 0.22);
+}
+
+.venue-eyebrow {
+  margin: 0 0 0.9rem;
+  font-size: 0.76rem;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.venue-title {
+  margin: 0;
+  font-family: var(--font-script);
+  font-size: clamp(3.4rem, 8vw, 7.4rem);
+  font-weight: 400;
+  line-height: 1.28;
+  text-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.26);
 }
 
 .quiet-link {
-  align-self: end;
-  margin-top: 3rem;
+  margin-top: 1.8rem;
   font-size: 0.76rem;
   line-height: 1;
   letter-spacing: 0.035em;
 }
 
+.venue-link {
+  color: rgba(251, 255, 249, 0.9);
+  border-bottom: 1px solid rgba(251, 255, 249, 0.72);
+  padding-bottom: 0.22rem;
+}
+
 .date-scene {
   display: grid;
   place-items: center;
+  min-height: 100vh;
 }
 
 .date-row {
   position: relative;
   width: min(48rem, 82vw);
-  height: 12rem;
+  height: 22rem;
 }
 
 .date-mark {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 43%;
   margin: 0;
   padding: 0.12rem 0.32rem;
-  font-size: 1.82rem;
+  transform: translate(-50%, -50%);
+  font-size: clamp(2.6rem, 6.8vw, 5.7rem);
   line-height: 1;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.08em;
   white-space: nowrap;
 }
 
-.date-divider {
-  position: absolute;
-  left: 50%;
-  top: calc(50% - 2rem);
-  width: 1px;
-  height: 4rem;
-  background: rgba(23, 46, 30, 0.32);
-  transform: translateX(-50%) scaleY(0);
-  transform-origin: center center;
+.date-time {
+  font-size: clamp(1.75rem, 4.2vw, 3.55rem);
 }
 
 .date-note {
   position: absolute;
   left: 50%;
-  top: calc(50% + 3.2rem);
+  top: calc(50% + 6.9rem);
   margin: 0;
   transform: translateX(-50%);
   color: rgba(23, 46, 30, 0.68);
@@ -750,19 +711,19 @@ img {
   }
 
   .copy-line {
-    display: inline;
+    display: block;
     font-size: clamp(0.86rem, 3.4vw, 0.98rem);
     line-height: 1.52;
-    padding: 0;
+    padding: 0.04rem 0 0.14rem;
   }
 
   .copy-line > span,
   .copy-line.last-wide > span {
-    display: inline;
+    display: block;
   }
 
   .copy-line:not(:last-child)::after {
-    content: " ";
+    content: none;
   }
 
   .verse {
@@ -780,60 +741,42 @@ img {
     font-size: 0.88rem;
   }
 
-  .editorial-card {
-    width: min(22rem, 84vw);
-    min-height: 26rem;
-    padding: 2.4rem 2rem 2.55rem;
+  .venue-media img {
+    height: 112%;
+    object-position: center center;
   }
 
-  .card-photo-frame img {
-    height: 13rem;
+  .venue-copy {
+    top: 55%;
+    width: min(21rem, 86vw);
   }
 
-  .card-photo-frame figcaption {
-    font-size: 1.9rem;
+  .venue-title {
+    font-size: clamp(3.15rem, 17vw, 5.7rem);
   }
 
-  .quiet-link {
-    align-self: start;
-    margin-top: 4.15rem;
+  .venue-link {
+    margin-top: 1.35rem;
   }
 
   .date-row {
-    display: grid;
-    justify-items: center;
-    align-items: center;
-    gap: 1.35rem;
     width: min(18rem, 82vw);
-    height: 13rem;
+    height: 19rem;
   }
 
   .date-note {
-    position: relative;
-    left: auto;
-    top: auto;
-    transform: none;
+    top: calc(50% + 5.9rem);
     white-space: normal;
   }
 
   .date-mark {
-    position: relative;
-    left: auto;
-    top: auto;
-    padding: 0;
-    font-size: 1.44rem;
+    font-size: clamp(2.18rem, 12vw, 3.55rem);
     letter-spacing: 0.08em;
     text-align: center;
   }
 
-  .date-divider {
-    position: relative;
-    left: auto;
-    top: auto;
-    width: 7.2rem;
-    height: 1px;
-    transform: scaleX(0);
-    transform-origin: center center;
+  .date-time {
+    font-size: clamp(1.45rem, 8.6vw, 2.5rem);
   }
 
   .story-scene {

@@ -11,10 +11,10 @@
     <link rel="preload" href="assets/fonts/Bodoni%2072.ttc" as="font" crossorigin />
     <link rel="preload" href="assets/fonts/Aston%20Script.ttf" as="font" crossorigin />
     <link rel="preload" href="assets/fonts/Makcasa-Regular.otf" as="font" type="font/otf" crossorigin />
-    <link rel="stylesheet" href="css/style.css?v=hero-mark-4" />
+    <link rel="stylesheet" href="css/style.css?v=section-flow-1" />
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
-    <script defer src="js/script.js?v=hero-mark-4"></script>
+    <script defer src="js/script.js?v=section-flow-1"></script>
   </head>
   <body>
     <main class="site-shell" id="top">
@@ -96,35 +96,34 @@
         </blockquote>
       </section>
 
-      <section class="scene card-scene light-scene" data-scene="card">
-        <div class="editorial-card" data-layer="card-frame">
-          <span class="card-line card-line-top" data-card-line="top"></span>
-          <span class="card-line card-line-right" data-card-line="right"></span>
-          <span class="card-line card-line-bottom" data-card-line="bottom"></span>
-          <span class="card-line card-line-left" data-card-line="left"></span>
-          <div class="card-content" data-layer="card-content">
-            <figure class="card-photo-frame" data-layer="card-photo">
-              <img src="assets/images/solar-dos-novaes.webp" alt="Cerimônia ao ar livre no Solar dos Novaes" />
-              <figcaption>Solar dos Novaes</figcaption>
-            </figure>
-            <a
-              href="https://maps.google.com/maps/place//data=!4m2!3m1!1s0x935a28d0538aae1d:0x219643e6d7acbf7e?entry=s&amp;sa=X&amp;ved=2ahUKEwjv4qvbvL-VAxUYjJUCHZBHL3QQ4kB6BAgVEAA&amp;hl=pt"
-              class="quiet-link"
-              data-layer="card-link"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              CLIQUE AQUI
-            </a>
-          </div>
+      <section class="scene venue-scene dark-scene" data-scene="card">
+        <div class="venue-media" data-layer="card-photo">
+          <img
+            src="assets/images/solar-dos-novaes.webp"
+            alt="Cerimônia ao ar livre no Solar dos Novaes"
+            data-layer="venue-image"
+          />
+        </div>
+        <div class="venue-shade" data-layer="venue-shade"></div>
+        <div class="venue-copy" data-layer="card-content">
+          <p class="venue-eyebrow">Local</p>
+          <h2 class="venue-title">Solar dos Novaes</h2>
+          <a
+            href="https://maps.google.com/maps/place//data=!4m2!3m1!1s0x935a28d0538aae1d:0x219643e6d7acbf7e?entry=s&amp;sa=X&amp;ved=2ahUKEwjv4qvbvL-VAxUYjJUCHZBHL3QQ4kB6BAgVEAA&amp;hl=pt"
+            class="quiet-link venue-link"
+            data-layer="card-link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Ver no mapa
+          </a>
         </div>
       </section>
 
       <section class="scene date-scene light-scene" data-scene="date" id="onde-e-quando">
         <div class="date-row" data-layer="date-row">
           <p class="date-mark" data-layer="date-left">10/09/26</p>
-          <span class="date-divider" data-layer="date-divider"></span>
-          <p class="date-mark" data-layer="date-right">CHEGADA 15:30</p>
+          <p class="date-mark date-time" data-layer="date-right">CHEGADA 15:30</p>
           <p class="date-note" data-layer="date-note">Encerramento às 22h · confirme até 15/08</p>
         </div>
       </section>
