@@ -753,23 +753,7 @@ function setupGalleryScene() {
         { x: 24, y: 222, rotate: 2.6, scale: 0.94, z: 1 }
       ];
 
-  const organized = compact
-    ? [
-        { x: -78, y: 222, rotate: 0, scale: 0.58, z: 5 },
-        { x: -92, y: -150, rotate: 0, scale: 0.68, z: 1, alignHeight: 165 },
-        { x: 92, y: -150, rotate: 0, scale: 0.66, z: 2, alignHeight: 165 },
-        { x: -92, y: 30, rotate: 0, scale: 0.96, z: 3, alignHeight: 165 },
-        { x: 92, y: 30, rotate: 0, scale: 0.72, z: 4, alignHeight: 165 },
-        { x: 78, y: 222, rotate: 0, scale: 0.58, z: 6 }
-      ]
-    : [
-        { x: -286, y: 214, rotate: 0, scale: 0.9, z: 5 },
-        { x: -444, y: -126, rotate: 0, scale: 0.72, z: 1, alignHeight: 360 },
-        { x: -158, y: -126, rotate: 0, scale: 0.7, z: 2, alignHeight: 360 },
-        { x: 120, y: -126, rotate: 0, scale: 1.02, z: 3, alignHeight: 360 },
-        { x: 404, y: -126, rotate: 0, scale: 0.77, z: 4, alignHeight: 360 },
-        { x: 306, y: 214, rotate: 0, scale: 0.9, z: 6 }
-      ];
+  const organized = buildOrganizedGalleryLayout(items, compact);
 
   const drift = compact
     ? [
@@ -807,9 +791,6 @@ function setupGalleryScene() {
     const final = drift[index % drift.length];
     const image = item.querySelector("img");
     const entryDelay = index * 0.075;
-    const orderedScale = ordered.alignHeight && item.offsetHeight
-      ? ordered.alignHeight / item.offsetHeight
-      : ordered.scale;
 
     gsap.set(item, {
       xPercent: -50,
@@ -846,7 +827,7 @@ function setupGalleryScene() {
         x: ordered.x,
         y: ordered.y,
         rotate: ordered.rotate,
-        scale: orderedScale,
+        scale: ordered.scale,
         zIndex: ordered.z,
         duration: 0.86,
         ease: "power2.inOut"
@@ -878,6 +859,83 @@ function setupGalleryScene() {
       }, 0.1);
     }
   });
+}
+
+function buildOrganizedGalleryLayout(items, compact) {
+  const layout = items.map((item, index) => ({
+    x: 0,
+    y: 0,
+    rotate: 0,
+    scale: 1,
+    z: index + 1
+  }));
+  const topIndexes = [1, 2, 3, 4];
+  const bottomIndexes = [0, 5];
+  const gap = compact ? 14 : 28;
+  const rowGap = compact ? 18 : 30;
+  const topHeight = compact
+    ? Math.round(Math.min(window.innerHeight * 0.22, 165))
+    : Math.round(Math.min(window.innerHeight * 0.42, 340));
+  const topCenterY = compact ? -150 : -170;
+
+  const topSizes = topIndexes.map((index) => {
+    const item = items[index];
+    const scale = item?.offsetHeight ? topHeight / item.offsetHeight : 1;
+
+    return {
+      index,
+      scale,
+      width: (item?.offsetWidth || 0) * scale
+    };
+  });
+  const topWidth = topSizes.reduce((total, size) => total + size.width, 0) + gap * (topSizes.length - 1);
+  let cursor = -topWidth / 2;
+
+  topSizes.forEach((size, order) => {
+    layout[size.index] = {
+      x: cursor + size.width / 2,
+      y: topCenterY,
+      rotate: 0,
+      scale: size.scale,
+      z: order + 1
+    };
+    cursor += size.width + gap;
+  });
+
+  const bottomAspects = bottomIndexes.map((index) => {
+    const item = items[index];
+
+    return item?.offsetHeight ? item.offsetWidth / item.offsetHeight : 1;
+  });
+  const bottomHeight = (topWidth - gap) / bottomAspects.reduce((total, aspect) => total + aspect, 0);
+  const bottomSizes = bottomIndexes.map((index, order) => {
+    const item = items[index];
+    const scale = item?.offsetHeight ? bottomHeight / item.offsetHeight : 1;
+
+    return {
+      index,
+      scale,
+      width: bottomHeight * bottomAspects[order]
+    };
+  });
+  const bottomCenterY = topCenterY + topHeight / 2 + rowGap + bottomHeight / 2;
+
+  layout[bottomSizes[0].index] = {
+    x: -topWidth / 2 + bottomSizes[0].width / 2,
+    y: bottomCenterY,
+    rotate: 0,
+    scale: bottomSizes[0].scale,
+    z: 5
+  };
+  layout[bottomSizes[1].index] = {
+    x: topWidth / 2 - bottomSizes[1].width / 2,
+    y: bottomCenterY,
+    rotate: 0,
+    scale: bottomSizes[1].scale,
+    z: 6
+  };
+
+  return layout;
 }
 
 function setupFinalScene() {
