@@ -4,9 +4,9 @@ export default function InvitationExperiencePage() {
   return (
     <main>
       <ScrollFrameSequence
-        frameCount={60}
+        frameCount={150}
         framePath="/frames"
-        scrollDistance={3000}
+        scrollDistance={5200}
       />
     </main>
   );

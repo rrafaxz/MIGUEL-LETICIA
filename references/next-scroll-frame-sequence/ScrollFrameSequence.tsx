@@ -13,8 +13,8 @@ export interface ScrollFrameSequenceProps {
 
 type FrameRenderer = {
   destroy: () => void;
-  requestFrame: (frame: number, force?: boolean) => void;
   resize: () => void;
+  setTargetFrame: (frame: number, force?: boolean) => void;
   setImages: (images: HTMLImageElement[]) => void;
 };
 
@@ -23,7 +23,7 @@ gsap.registerPlugin(ScrollTrigger);
 export function ScrollFrameSequence({
   frameCount,
   framePath,
-  scrollDistance = 3000
+  scrollDistance = 5200
 }: ScrollFrameSequenceProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -70,7 +70,7 @@ export function ScrollFrameSequence({
       images = loadedImages;
       renderer.setImages(images);
       renderer.resize();
-      renderer.requestFrame(0, true);
+      renderer.setTargetFrame(0, true);
       setLoaded(true);
 
       timeline = gsap.timeline({
@@ -90,7 +90,7 @@ export function ScrollFrameSequence({
           duration: 1,
           ease: "none",
           frame: frameCount - 1,
-          onUpdate: () => renderer.requestFrame(Math.round(frameState.frame))
+          onUpdate: () => renderer.setTargetFrame(frameState.frame)
         }, 0)
         .to(cta, {
           autoAlpha: 1,
@@ -142,28 +142,20 @@ function createFrameRenderer(canvas: HTMLCanvasElement): FrameRenderer {
   const context = canvas.getContext("2d", { alpha: false, desynchronized: true });
   let images: HTMLImageElement[] = [];
   let currentFrame = 0;
-  let lastRenderedFrame = -1;
+  let targetFrame = 0;
+  let lastRenderedFrame = Number.NaN;
   let rafId = 0;
+  const smoothing = 0.28;
+  const maxFrameStep = 2.25;
+  const settleDistance = 0.0025;
 
   if (!context) {
     return {
       destroy: () => undefined,
-      requestFrame: () => undefined,
       resize: () => undefined,
+      setTargetFrame: () => undefined,
       setImages: () => undefined
     };
-  }
-
-  function requestFrame(frame: number, force = false) {
-    currentFrame = Math.max(0, Math.min(images.length - 1, frame));
-
-    if (!force && currentFrame === lastRenderedFrame) return;
-    if (rafId) return;
-
-    rafId = window.requestAnimationFrame(() => {
-      rafId = 0;
-      drawFrame(currentFrame);
-    });
   }
 
   function resize() {
@@ -179,25 +171,79 @@ function createFrameRenderer(canvas: HTMLCanvasElement): FrameRenderer {
 
     context.imageSmoothingEnabled = true;
     context.imageSmoothingQuality = "high";
-    requestFrame(currentFrame, true);
+    setTargetFrame(targetFrame, true);
   }
 
-  function drawFrame(frame: number) {
-    const image = images[frame];
+  function drawFrame(frameValue: number) {
+    if (!images.length) return;
 
-    if (!image) return;
+    const clampedFrame = Math.max(0, Math.min(images.length - 1, frameValue));
+    const lowerIndex = Math.floor(clampedFrame);
+    const upperIndex = Math.min(lowerIndex + 1, images.length - 1);
+    const blend = clampedFrame - lowerIndex;
+    const lowerImage = images[lowerIndex];
+    const upperImage = images[upperIndex];
 
-    const scale = Math.min(canvas.width / image.naturalWidth, canvas.height / image.naturalHeight);
-    const width = image.naturalWidth * scale;
-    const height = image.naturalHeight * scale;
+    if (!lowerImage || !upperImage) return;
+
+    const scale = Math.min(canvas.width / lowerImage.naturalWidth, canvas.height / lowerImage.naturalHeight);
+    const width = lowerImage.naturalWidth * scale;
+    const height = lowerImage.naturalHeight * scale;
     const x = (canvas.width - width) / 2;
     const y = (canvas.height - height) / 2;
 
     context.setTransform(1, 0, 0, 1, 0, 0);
     context.fillStyle = "#fbfff9";
     context.fillRect(0, 0, canvas.width, canvas.height);
-    context.drawImage(image, x, y, width, height);
-    lastRenderedFrame = frame;
+    context.globalAlpha = 1;
+    context.drawImage(lowerImage, x, y, width, height);
+
+    if (blend > 0.001 && upperIndex !== lowerIndex) {
+      context.globalAlpha = blend;
+      context.drawImage(upperImage, x, y, width, height);
+      context.globalAlpha = 1;
+    }
+
+    lastRenderedFrame = clampedFrame;
+  }
+
+  function tick() {
+    rafId = 0;
+
+    const delta = targetFrame - currentFrame;
+
+    if (Math.abs(delta) <= settleDistance) {
+      currentFrame = targetFrame;
+    } else {
+      const step = Math.min(Math.abs(delta) * smoothing, maxFrameStep);
+      currentFrame += Math.sign(delta) * step;
+    }
+
+    if (Math.abs(currentFrame - lastRenderedFrame) > 0.001) {
+      drawFrame(currentFrame);
+    }
+
+    if (Math.abs(targetFrame - currentFrame) > settleDistance) {
+      schedule();
+    }
+  }
+
+  function schedule() {
+    if (!rafId) {
+      rafId = window.requestAnimationFrame(tick);
+    }
+  }
+
+  function setTargetFrame(frame: number, force = false) {
+    targetFrame = Math.max(0, Math.min(images.length - 1, frame));
+
+    if (force) {
+      currentFrame = targetFrame;
+      drawFrame(currentFrame);
+      return;
+    }
+
+    schedule();
   }
 
   return {
@@ -205,12 +251,13 @@ function createFrameRenderer(canvas: HTMLCanvasElement): FrameRenderer {
       if (rafId) window.cancelAnimationFrame(rafId);
       images = [];
     },
-    requestFrame,
     resize,
+    setTargetFrame,
     setImages(nextImages) {
       images = nextImages;
       currentFrame = 0;
-      lastRenderedFrame = -1;
+      targetFrame = 0;
+      lastRenderedFrame = Number.NaN;
     }
   };
 }

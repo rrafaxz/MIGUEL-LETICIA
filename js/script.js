@@ -571,7 +571,7 @@ async function setupScrollFrameSequence(scene) {
 
     renderer.setImages(images);
     renderer.resize();
-    renderer.requestFrame(0, true);
+    renderer.setTargetFrame(0, true);
     scene.classList.add("is-loaded");
 
     const frameState = { frame: 0 };
@@ -592,7 +592,7 @@ async function setupScrollFrameSequence(scene) {
         frame: frameCount - 1,
         duration: 1,
         ease: "none",
-        onUpdate: () => renderer.requestFrame(Math.round(frameState.frame))
+        onUpdate: () => renderer.setTargetFrame(frameState.frame)
       }, 0)
       .to(cta, {
         autoAlpha: 1,
@@ -641,7 +641,7 @@ function setupStaticFrameSequences() {
 
       renderer.setImages([image]);
       renderer.resize();
-      renderer.requestFrame(0, true);
+      renderer.setTargetFrame(0, true);
       scene.classList.add("is-loaded");
 
       if (cta) {
@@ -661,14 +661,18 @@ function createFrameRenderer(canvas) {
   const context = canvas.getContext("2d", { alpha: false, desynchronized: true });
   let images = [];
   let currentFrame = 0;
-  let lastRenderedFrame = -1;
+  let targetFrame = 0;
+  let lastRenderedFrame = Number.NaN;
   let rafId = 0;
+  const smoothing = 0.28;
+  const maxFrameStep = 2.25;
+  const settleDistance = 0.0025;
 
   if (!context) {
     return {
       destroy() {},
-      requestFrame() {},
       resize() {},
+      setTargetFrame() {},
       setImages() {}
     };
   }
@@ -686,48 +690,103 @@ function createFrameRenderer(canvas) {
 
     context.imageSmoothingEnabled = true;
     context.imageSmoothingQuality = "high";
-    requestFrame(currentFrame, true);
+    setTargetFrame(targetFrame, true);
   };
 
-  const draw = (frameIndex) => {
-    const image = images[frameIndex];
-
-    if (!image) return;
-
+  const getDrawMetrics = (image) => {
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
+
     const scale = Math.min(canvasWidth / image.naturalWidth, canvasHeight / image.naturalHeight);
     const drawWidth = image.naturalWidth * scale;
     const drawHeight = image.naturalHeight * scale;
-    const drawX = (canvasWidth - drawWidth) / 2;
-    const drawY = (canvasHeight - drawHeight) / 2;
+
+    return {
+      canvasHeight,
+      canvasWidth,
+      drawHeight,
+      drawWidth,
+      drawX: (canvasWidth - drawWidth) / 2,
+      drawY: (canvasHeight - drawHeight) / 2
+    };
+  };
+
+  const draw = (frameValue) => {
+    if (!images.length) return;
+
+    const clampedFrame = Math.max(0, Math.min(images.length - 1, frameValue));
+    const lowerIndex = Math.floor(clampedFrame);
+    const upperIndex = Math.min(lowerIndex + 1, images.length - 1);
+    const blend = clampedFrame - lowerIndex;
+    const lowerImage = images[lowerIndex];
+    const upperImage = images[upperIndex];
+
+    if (!lowerImage || !upperImage) return;
+
+    const metrics = getDrawMetrics(lowerImage);
 
     context.setTransform(1, 0, 0, 1, 0, 0);
     context.fillStyle = "#fbfff9";
-    context.fillRect(0, 0, canvasWidth, canvasHeight);
-    context.drawImage(image, drawX, drawY, drawWidth, drawHeight);
-    lastRenderedFrame = frameIndex;
+    context.fillRect(0, 0, metrics.canvasWidth, metrics.canvasHeight);
+    context.globalAlpha = 1;
+    context.drawImage(lowerImage, metrics.drawX, metrics.drawY, metrics.drawWidth, metrics.drawHeight);
+
+    if (blend > 0.001 && upperIndex !== lowerIndex) {
+      context.globalAlpha = blend;
+      context.drawImage(upperImage, metrics.drawX, metrics.drawY, metrics.drawWidth, metrics.drawHeight);
+      context.globalAlpha = 1;
+    }
+
+    lastRenderedFrame = clampedFrame;
   };
 
-  function requestFrame(frameIndex, force = false) {
-    currentFrame = Math.max(0, Math.min(images.length - 1, frameIndex));
+  function tick() {
+    rafId = 0;
 
-    if (!force && currentFrame === lastRenderedFrame) return;
-    if (rafId) return;
+    const delta = targetFrame - currentFrame;
 
-    rafId = window.requestAnimationFrame(() => {
-      rafId = 0;
+    if (Math.abs(delta) <= settleDistance) {
+      currentFrame = targetFrame;
+    } else {
+      const step = Math.min(Math.abs(delta) * smoothing, maxFrameStep);
+      currentFrame += Math.sign(delta) * step;
+    }
+
+    if (Math.abs(currentFrame - lastRenderedFrame) > 0.001) {
       draw(currentFrame);
-    });
+    }
+
+    if (Math.abs(targetFrame - currentFrame) > settleDistance) {
+      schedule();
+    }
+  }
+
+  function schedule() {
+    if (!rafId) {
+      rafId = window.requestAnimationFrame(tick);
+    }
+  }
+
+  function setTargetFrame(frameIndex, force = false) {
+    targetFrame = Math.max(0, Math.min(images.length - 1, frameIndex));
+
+    if (force) {
+      currentFrame = targetFrame;
+      draw(currentFrame);
+      return;
+    }
+
+    schedule();
   }
 
   return {
     resize,
-    requestFrame,
+    setTargetFrame,
     setImages(nextImages) {
       images = nextImages;
       currentFrame = 0;
-      lastRenderedFrame = -1;
+      targetFrame = 0;
+      lastRenderedFrame = Number.NaN;
     },
     destroy() {
       if (rafId) window.cancelAnimationFrame(rafId);
