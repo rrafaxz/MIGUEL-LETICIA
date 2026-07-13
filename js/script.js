@@ -287,8 +287,8 @@ function setupHeroScene() {
     scrollTrigger: {
       trigger: scene,
       start: "top top",
-      end: "+=235%",
-      scrub: 0.72,
+      end: "+=225%",
+      scrub: 0.5,
       pin: true,
       anticipatePin: 1
     }
@@ -310,10 +310,10 @@ function setupHeroScene() {
       ease: "power1.out"
     }, 0.2)
     .to("[data-layer='hero-media']", { scale: 1.07, duration: 0.7, ease: "power1.out" }, 0.28)
-    .to("[data-layer='hero-mark-stage']", { width: "4200vmax", duration: 0.66, ease: "power1.inOut" }, 0.3)
-    .to("[data-layer='hero-white-wash']", { autoAlpha: 1, duration: 0.14, ease: "power1.inOut" }, 0.96)
-    .to("[data-layer='hero-media'], [data-layer='hero-shade']", { autoAlpha: 0, duration: 0.12 }, 0.98)
-    .to("[data-layer='hero-monogram']", { autoAlpha: 0, duration: 0.08 }, 1.04);
+    .to("[data-layer='hero-mark-stage']", { width: "10000vmax", duration: 0.78, ease: "power1.inOut" }, 0.3)
+    .to("[data-layer='hero-white-wash']", { autoAlpha: 1, duration: 0.12, ease: "power1.inOut" }, 1.08)
+    .to("[data-layer='hero-media'], [data-layer='hero-shade']", { autoAlpha: 0, duration: 0.1 }, 1.1)
+    .to("[data-layer='hero-monogram']", { autoAlpha: 0, duration: 0.06 }, 1.16);
 }
 
 function setupInvitationScene() {

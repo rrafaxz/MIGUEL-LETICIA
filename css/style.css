@@ -66,7 +66,7 @@ img {
 }
 
 .site-shell {
-  background: var(--white);
+  background: #fff;
 }
 
 .scene {
@@ -235,6 +235,7 @@ img {
   min-height: 150vh;
   margin-top: 0;
   padding: 24vh 1.5rem 10rem;
+  background: #fff;
 }
 
 .invitation-copy {
