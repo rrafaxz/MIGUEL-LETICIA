@@ -458,12 +458,12 @@ img {
   justify-content: center;
   min-width: min(18rem, 78vw);
   min-height: 3.25rem;
-  border: 1px solid rgba(23, 46, 30, 0.86);
-  border-radius: 999px;
+  border: 1px solid rgba(23, 46, 30, 0.42);
+  border-radius: 0;
   padding: 0.94rem 2.3rem 1rem;
   background: transparent;
   box-shadow: none;
-  color: var(--ink);
+  color: rgba(23, 46, 30, 0.62);
   font-size: 0.84rem;
   letter-spacing: 0.06em;
   line-height: 1;
@@ -477,10 +477,10 @@ img {
 }
 
 .frame-sequence-cta:hover {
-  border-color: var(--ink);
+  border-color: rgba(23, 46, 30, 0.62);
   background: transparent;
   box-shadow: none;
-  color: var(--ink);
+  color: rgba(23, 46, 30, 0.78);
 }
 
 .story-scene {
