@@ -998,6 +998,9 @@ function setupGalleryScene() {
 
 function setupFinalScene() {
   const scene = document.querySelector("[data-scene='final']");
+
+  if (!scene) return;
+
   const timeline = gsap.timeline({
     scrollTrigger: {
       trigger: scene,

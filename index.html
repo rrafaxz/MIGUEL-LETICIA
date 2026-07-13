@@ -11,10 +11,10 @@
     <link rel="preload" href="assets/fonts/Bodoni%2072.ttc" as="font" crossorigin />
     <link rel="preload" href="assets/fonts/Aston%20Script.ttf" as="font" crossorigin />
     <link rel="preload" href="assets/fonts/Makcasa-Regular.otf" as="font" type="font/otf" crossorigin />
-    <link rel="stylesheet" href="css/style.css?v=frame-sequence-3" />
+    <link rel="stylesheet" href="css/style.css?v=frame-sequence-4" />
     <script defer src="js/vendor/gsap.min.js"></script>
     <script defer src="js/vendor/ScrollTrigger.min.js"></script>
-    <script defer src="js/script.js?v=frame-sequence-3"></script>
+    <script defer src="js/script.js?v=frame-sequence-4"></script>
   </head>
   <body>
     <main class="site-shell" id="top">
@@ -127,28 +127,6 @@
         </div>
       </section>
 
-      <section
-        class="scene frame-sequence-scene light-scene"
-        data-scene="frame-sequence"
-        data-frame-count="150"
-        data-frame-path="assets/frames/envelope"
-        data-scroll-distance="5200"
-        aria-label="Convite animado"
-      >
-        <div class="frame-loader" data-layer="frame-loader" aria-live="polite">
-          <span>Carregando convite</span>
-          <span data-layer="frame-progress">0%</span>
-        </div>
-        <canvas
-          class="frame-sequence-canvas"
-          data-layer="frame-canvas"
-          aria-label="Envelope do convite se abrindo"
-        ></canvas>
-        <a class="frame-sequence-cta" data-layer="frame-cta" href="confirmar-presenca.html">
-          Confirmar Presença
-        </a>
-      </section>
-
       <section class="scene story-scene light-scene" data-scene="story" id="nossa-historia">
         <article class="story-panel story-panel-left" data-layer="story-left">
           <img
@@ -216,13 +194,26 @@
         </div>
       </section>
 
-      <section class="scene final-scene dark-scene" data-scene="final" id="confirmar-presenca">
-        <a href="confirmar-presenca.html" class="final-button" data-layer="final-button">
-          <span class="final-line final-line-top" data-final-line="top"></span>
-          <span class="final-line final-line-right" data-final-line="right"></span>
-          <span class="final-line final-line-bottom" data-final-line="bottom"></span>
-          <span class="final-line final-line-left" data-final-line="left"></span>
-          <span class="final-button-text" data-layer="final-text">Confirmar Presença</span>
+      <section
+        class="scene frame-sequence-scene light-scene"
+        data-scene="frame-sequence"
+        data-frame-count="150"
+        data-frame-path="assets/frames/envelope"
+        data-scroll-distance="5200"
+        id="confirmar-presenca"
+        aria-label="Convite animado"
+      >
+        <div class="frame-loader" data-layer="frame-loader" aria-live="polite">
+          <span>Carregando convite</span>
+          <span data-layer="frame-progress">0%</span>
+        </div>
+        <canvas
+          class="frame-sequence-canvas"
+          data-layer="frame-canvas"
+          aria-label="Envelope do convite se abrindo"
+        ></canvas>
+        <a class="frame-sequence-cta" data-layer="frame-cta" href="confirmar-presenca.html">
+          Confirmar Presença
         </a>
       </section>
     </main>
