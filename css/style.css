@@ -296,7 +296,9 @@ img {
 }
 
 .venue-scene {
+  z-index: 5;
   min-height: 100vh;
+  margin-top: -42vh;
   background: var(--ink);
   color: var(--white);
 }
@@ -330,20 +332,12 @@ img {
 .venue-copy {
   position: absolute;
   left: 50%;
-  top: 54%;
+  top: 47%;
   display: grid;
   justify-items: center;
   width: min(44rem, 86vw);
   transform: translate(-50%, -50%);
   text-align: center;
-}
-
-.venue-eyebrow {
-  margin: 0 0 0.9rem;
-  font-size: 0.76rem;
-  line-height: 1;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
 }
 
 .venue-title {
@@ -357,9 +351,9 @@ img {
 
 .quiet-link {
   margin-top: 1.8rem;
-  font-size: 0.76rem;
+  font-size: 0.94rem;
   line-height: 1;
-  letter-spacing: 0.035em;
+  letter-spacing: 0.055em;
 }
 
 .venue-link {
@@ -369,9 +363,11 @@ img {
 }
 
 .date-scene {
+  z-index: 6;
   display: grid;
   place-items: center;
   min-height: 100vh;
+  margin-top: -38vh;
 }
 
 .date-row {
@@ -387,14 +383,14 @@ img {
   margin: 0;
   padding: 0.12rem 0.32rem;
   transform: translate(-50%, -50%);
-  font-size: clamp(2.6rem, 6.8vw, 5.7rem);
+  font-size: clamp(1.62rem, 3.6vw, 2.85rem);
   line-height: 1;
   letter-spacing: 0.08em;
   white-space: nowrap;
 }
 
 .date-time {
-  font-size: clamp(1.75rem, 4.2vw, 3.55rem);
+  font-size: clamp(1.05rem, 2.25vw, 1.75rem);
 }
 
 .date-note {
@@ -747,7 +743,7 @@ img {
   }
 
   .venue-copy {
-    top: 55%;
+    top: 48%;
     width: min(21rem, 86vw);
   }
 
@@ -757,6 +753,7 @@ img {
 
   .venue-link {
     margin-top: 1.35rem;
+    font-size: 0.9rem;
   }
 
   .date-row {
@@ -770,13 +767,13 @@ img {
   }
 
   .date-mark {
-    font-size: clamp(2.18rem, 12vw, 3.55rem);
+    font-size: clamp(1.45rem, 7.2vw, 2.25rem);
     letter-spacing: 0.08em;
     text-align: center;
   }
 
   .date-time {
-    font-size: clamp(1.45rem, 8.6vw, 2.5rem);
+    font-size: clamp(0.96rem, 5.4vw, 1.55rem);
   }
 
   .story-scene {

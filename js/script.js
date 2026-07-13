@@ -287,7 +287,7 @@ function setupDressCodeModal() {
 }
 
 function prepareTypewriter() {
-  const targets = document.querySelectorAll(".copy-line > span, .verse p, .verse cite, .story-copy p");
+  const targets = document.querySelectorAll(".story-copy p");
 
   targets.forEach((target) => {
     const text = target.textContent;
@@ -329,8 +329,10 @@ function setupInitialStates() {
   gsap.set("[data-layer='hero-monogram']", { autoAlpha: 0 });
   gsap.set("[data-layer='hero-white-wash']", { autoAlpha: 0 });
   gsap.set(".type-char", { autoAlpha: 0, y: "0.38em", filter: "blur(0.32em)" });
+  gsap.set("[data-reveal-line]", { autoAlpha: 0, y: 18, filter: "blur(14px)" });
   gsap.set("[data-reveal-title] span", { y: 12, autoAlpha: 0 });
-  gsap.set("[data-layer='verse']", { autoAlpha: 1, y: 0 });
+  gsap.set("[data-layer='verse'] p, [data-layer='verse'] cite", { autoAlpha: 0, y: 16, filter: "blur(12px)" });
+  gsap.set("[data-layer='verse']", { autoAlpha: 1, y: 0, filter: "blur(0px)" });
   gsap.set("[data-layer='verse'] cite", { borderBottomColor: "rgba(21, 20, 19, 0)" });
   gsap.set("[data-layer='card-photo']", { autoAlpha: 0, scale: 1.08, filter: "blur(22px)" });
   gsap.set("[data-layer='card-photo'] img", { yPercent: -7, scale: 1.06 });
@@ -414,8 +416,8 @@ function setupHeroScene() {
 function setupInvitationScene() {
   const scene = document.querySelector("[data-scene='invitation']");
   const copyLines = scene.querySelectorAll(".invitation-copy [data-reveal-line]");
-  const verseChars = scene.querySelectorAll(".verse p .type-char");
-  const citeChars = scene.querySelectorAll(".verse cite .type-char");
+  const verseLine = scene.querySelector(".verse p");
+  const citeLine = scene.querySelector(".verse cite");
 
   const entrance = gsap.timeline({
     scrollTrigger: {
@@ -439,20 +441,19 @@ function setupInvitationScene() {
     }, 0.18);
 
   copyLines.forEach((line, index) => {
-    entrance.to(line.querySelectorAll(".type-char"), {
+    entrance.to(line, {
       autoAlpha: 1,
       y: 0,
-      filter: "blur(0em)",
-      stagger: 0.012,
-      duration: 0.055,
+      filter: "blur(0px)",
+      duration: 0.26,
       ease: "power1.out"
     }, 0.46 + index * 0.48);
   });
 
   entrance
-    .to(verseChars, { autoAlpha: 1, y: 0, filter: "blur(0em)", stagger: 0.0155, duration: 0.05, ease: "power1.out" }, 3.08)
-    .to(citeChars, { autoAlpha: 1, y: 0, filter: "blur(0em)", stagger: 0.021, duration: 0.05, ease: "power1.out" }, 3.82)
-    .to("[data-layer='verse'] cite", { borderBottomColor: "rgba(21, 20, 19, 0.86)", duration: 0.12 }, 4.06);
+    .to(verseLine, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "power1.out" }, 3.08)
+    .to(citeLine, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.24, ease: "power1.out" }, 3.74)
+    .to(citeLine, { borderBottomColor: "rgba(21, 20, 19, 0.86)", duration: 0.12 }, 3.86);
 
   const timeline = gsap.timeline({
     scrollTrigger: {
@@ -484,7 +485,7 @@ function setupCardScene() {
 
   timeline
     .to("[data-layer='card-photo']", { autoAlpha: 1, scale: 1, filter: "blur(0px)", duration: 0.42, ease: "power1.out" }, 0)
-    .to("[data-layer='card-photo'] img", { yPercent: 8, scale: 1.14, duration: 1.32, ease: "none" }, 0)
+    .to("[data-layer='card-photo'] img", { yPercent: 10, scale: 1.14, duration: 1.32, ease: "none" }, 0)
     .to("[data-layer='venue-shade']", { autoAlpha: 1, duration: 0.3 }, 0.14)
     .to("[data-layer='card-content']", { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.36, ease: "power1.out" }, 0.46)
     .to("[data-layer='card-link']", { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.22 }, 0.72)
@@ -508,7 +509,8 @@ function setupDateScene() {
   });
 
   timeline
-    .to("[data-layer='date-left']", { autoAlpha: 1, y: 0, filter: "blur(0px)", letterSpacing: "0.13em", duration: 0.34 }, 0.06)
+    .fromTo("[data-layer='date-row']", { y: 24 }, { y: 0, duration: 0.36, ease: "power1.out" }, 0)
+    .to("[data-layer='date-left']", { autoAlpha: 1, y: 0, filter: "blur(0px)", letterSpacing: "0.11em", duration: 0.34 }, 0.06)
     .to("[data-layer='date-left']", { autoAlpha: 0, y: -22, filter: "blur(16px)", duration: 0.3 }, 0.74)
     .to("[data-layer='date-right']", { autoAlpha: 1, y: 0, filter: "blur(0px)", letterSpacing: "0.11em", duration: 0.36 }, 1.02)
     .to("[data-layer='date-note']", { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 0.24 }, 1.2)
