@@ -287,8 +287,8 @@ function setupHeroScene() {
     scrollTrigger: {
       trigger: scene,
       start: "top top",
-      end: "+=330%",
-      scrub: 0.9,
+      end: "+=235%",
+      scrub: 0.72,
       pin: true,
       anticipatePin: 1
     }
@@ -305,16 +305,15 @@ function setupHeroScene() {
       ease: "power1.out"
     }, 0.12)
     .to("[data-layer='hero-monogram']", {
-      autoAlpha: 0.96,
-      duration: 0.3,
+      autoAlpha: 1,
+      duration: 0.24,
       ease: "power1.out"
     }, 0.2)
-    .to("[data-layer='hero-media']", { scale: 1.08, autoAlpha: 0.58, duration: 0.52, ease: "power1.out" }, 0.3)
-    .to("[data-layer='hero-shade']", { autoAlpha: 0.08, duration: 0.38, ease: "power1.out" }, 0.36)
-    .to("[data-layer='hero-mark-stage']", { width: "1800vmax", duration: 0.82, ease: "power1.inOut" }, 0.36)
-    .to("[data-layer='hero-white-wash']", { autoAlpha: 1, duration: 0.22, ease: "power1.inOut" }, 0.9)
-    .to("[data-layer='hero-media'], [data-layer='hero-shade']", { autoAlpha: 0, duration: 0.18 }, 0.93)
-    .to("[data-layer='hero-monogram']", { autoAlpha: 0, duration: 0.12 }, 0.98);
+    .to("[data-layer='hero-media']", { scale: 1.07, duration: 0.7, ease: "power1.out" }, 0.28)
+    .to("[data-layer='hero-mark-stage']", { width: "4200vmax", duration: 0.66, ease: "power1.inOut" }, 0.3)
+    .to("[data-layer='hero-white-wash']", { autoAlpha: 1, duration: 0.14, ease: "power1.inOut" }, 0.96)
+    .to("[data-layer='hero-media'], [data-layer='hero-shade']", { autoAlpha: 0, duration: 0.12 }, 0.98)
+    .to("[data-layer='hero-monogram']", { autoAlpha: 0, duration: 0.08 }, 1.04);
 }
 
 function setupInvitationScene() {
