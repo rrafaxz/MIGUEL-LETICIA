@@ -368,8 +368,8 @@ img {
   display: grid;
   place-items: center;
   min-height: 100vh;
+  margin-top: -100vh;
   background: var(--white);
-  will-change: clip-path;
 }
 
 .date-row {

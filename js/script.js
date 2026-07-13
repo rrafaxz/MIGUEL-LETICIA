@@ -497,19 +497,6 @@ function setupCardScene() {
 function setupDateScene() {
   const scene = document.querySelector("[data-scene='date']");
 
-  gsap.fromTo(scene, {
-    clipPath: "inset(100% 0% 0% 0%)"
-  }, {
-    clipPath: "inset(0% 0% 0% 0%)",
-    ease: "none",
-    scrollTrigger: {
-      trigger: scene,
-      start: "top bottom",
-      end: "top top",
-      scrub: 0.9
-    }
-  });
-
   gsap.to("[data-layer='date-left']", {
     autoAlpha: 1,
     y: 0,
