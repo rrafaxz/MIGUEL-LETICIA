@@ -9,19 +9,25 @@
       content="Painel simples de acompanhamento das confirmações."
     />
     <link rel="icon" href="assets/images/monogram-ml-green.png" type="image/png" />
-    <link rel="stylesheet" href="css/confirmacoes.css?v=admin-views-1" />
+    <link rel="stylesheet" href="css/confirmacoes.css?v=admin-panel-1" />
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="js/supabase-config.js"></script>
-    <script defer src="js/admin-confirmacoes.js?v=admin-views-1"></script>
+    <script defer src="js/admin-confirmacoes.js?v=admin-panel-1"></script>
   </head>
   <body>
     <a class="page-back" href="index.html">voltar</a>
 
-    <main class="confirm-shell">
+    <main class="confirm-shell admin-shell">
       <section class="admin-login" id="admin-login" aria-labelledby="admin-login-title">
+        <img
+          class="admin-login-logo"
+          src="assets/images/monogram-ml-green.png"
+          alt=""
+          aria-hidden="true"
+        />
         <h1 id="admin-login-title">Admin</h1>
         <p class="admin-small">
-          Acesso visual simples para ocultar o painel nesta fase.
+          Digite a senha do casal para acompanhar as confirmações.
         </p>
         <label class="sr-only" for="admin-password">Senha</label>
         <input
@@ -48,16 +54,16 @@
 
         <section class="summary-grid summary-grid--general" aria-label="Resumo geral">
           <article class="summary-card">
-            <span class="admin-small">Vai</span>
-            <strong id="summary-going">0</strong>
+            <span class="admin-small">Confirmados</span>
+            <strong id="summary-confirmed">0</strong>
           </article>
           <article class="summary-card">
-            <span class="admin-small">Não vai</span>
-            <strong id="summary-not-going">0</strong>
-          </article>
-          <article class="summary-card">
-            <span class="admin-small">Pendente</span>
+            <span class="admin-small">Pendentes</span>
             <strong id="summary-pending">0</strong>
+          </article>
+          <article class="summary-card">
+            <span class="admin-small">Não irão</span>
+            <strong id="summary-not-going">0</strong>
           </article>
           <article class="summary-card">
             <span class="admin-small">Total de convidados</span>
@@ -65,31 +71,32 @@
           </article>
         </section>
 
-        <section class="side-summary" aria-label="Resumo por lado">
-          <article class="side-card">
-            <strong>Letícia</strong>
-            <div class="side-totals" id="summary-side-leticia"></div>
+        <p class="status-message" id="admin-status" aria-live="polite"></p>
+        <section class="admin-status-board" aria-label="Lista de convidados por status">
+          <article class="admin-status-column admin-status-column--confirmed">
+            <div class="admin-column-header">
+              <span>Confirmados</span>
+              <strong id="column-confirmed-count">0</strong>
+            </div>
+            <div class="admin-list" id="confirmed-list"></div>
           </article>
-          <article class="side-card">
-            <strong>Miguel</strong>
-            <div class="side-totals" id="summary-side-miguel"></div>
+
+          <article class="admin-status-column admin-status-column--pending">
+            <div class="admin-column-header">
+              <span>Pendentes</span>
+              <strong id="column-pending-count">0</strong>
+            </div>
+            <div class="admin-list" id="pending-list"></div>
           </article>
-          <article class="side-card">
-            <strong>Casal</strong>
-            <div class="side-totals" id="summary-side-casal"></div>
+
+          <article class="admin-status-column admin-status-column--not-going">
+            <div class="admin-column-header">
+              <span>Não irão</span>
+              <strong id="column-not-going-count">0</strong>
+            </div>
+            <div class="admin-list" id="not-going-list"></div>
           </article>
         </section>
-
-        <nav class="admin-tabs" aria-label="Filtros de grupos">
-          <button class="admin-tab is-active" type="button" data-admin-tab="all">Todos</button>
-          <button class="admin-tab" type="button" data-admin-tab="going">Grupos que vão</button>
-          <button class="admin-tab" type="button" data-admin-tab="not-going">Grupos que não vão</button>
-          <button class="admin-tab" type="button" data-admin-tab="mixed">Grupos mistos</button>
-          <button class="admin-tab" type="button" data-admin-tab="pending">Pendentes</button>
-        </nav>
-
-        <p class="status-message" id="admin-status" aria-live="polite"></p>
-        <section class="admin-list" id="admin-list" aria-label="Lista de grupos"></section>
       </section>
     </main>
   </body>
