@@ -367,17 +367,20 @@ img {
   position: relative;
   z-index: 1;
   display: grid;
-  place-items: center;
-  width: min(48rem, 82vw);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  justify-items: center;
+  gap: clamp(1.15rem, 4vw, 3.8rem);
+  width: min(68rem, 88vw);
   height: 22rem;
 }
 
 .date-mark {
   --date-type-size: clamp(1.08rem, 1.95vw, 1.36rem);
-  position: absolute;
-  inset: 0;
   display: grid;
   place-items: center;
+  width: 100%;
+  min-width: 0;
   margin: 0;
   padding: 0.12rem 0.32rem;
   transform: none;
@@ -388,11 +391,9 @@ img {
   white-space: nowrap;
 }
 
-.date-time {
-  font-size: var(--date-type-size);
-}
-
-.date-note {
+.date-arrival,
+.date-calendar,
+.date-closing {
   font-size: var(--date-type-size);
 }
 
@@ -443,19 +444,19 @@ img {
   position: absolute;
   z-index: 5;
   left: 50%;
-  top: calc(50% - clamp(5rem, 13vh, 7.5rem));
+  top: calc(50% - clamp(7rem, 18vh, 10rem));
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: min(18rem, 78vw);
-  min-height: 3.25rem;
+  min-width: min(19.6rem, 78vw);
+  min-height: 3.6rem;
   border: 1px solid rgba(23, 46, 30, 0.42);
   border-radius: 0;
-  padding: 0.94rem 2.3rem 1rem;
+  padding: 1.02rem 2.65rem 1.08rem;
   background: transparent;
   box-shadow: none;
   color: rgba(23, 46, 30, 0.62);
-  font-size: 0.84rem;
+  font-size: 0.92rem;
   letter-spacing: 0.06em;
   line-height: 1;
   text-align: center;
@@ -787,22 +788,24 @@ img {
   }
 
   .date-row {
-    width: min(18rem, 82vw);
+    width: min(24rem, 92vw);
     height: 19rem;
+    gap: clamp(0.34rem, 2.8vw, 0.8rem);
   }
 
-  .date-note {
+  .date-arrival,
+  .date-closing {
     white-space: normal;
   }
 
   .date-mark {
-    --date-type-size: clamp(1rem, 5vw, 1.28rem);
-    letter-spacing: 0.08em;
+    --date-type-size: clamp(0.64rem, 2.55vw, 0.88rem);
+    letter-spacing: 0.045em;
     text-align: center;
   }
 
-  .date-time {
-    font-size: var(--date-type-size);
+  .date-calendar {
+    white-space: nowrap;
   }
 
   .frame-sequence-cta {

@@ -255,19 +255,12 @@ function setupInitialStates() {
   gsap.set("[data-layer='venue-shade']", { autoAlpha: 0 });
   gsap.set("[data-layer='card-content']", { autoAlpha: 0, y: 28, filter: "blur(16px)" });
   gsap.set("[data-layer='card-link']", { autoAlpha: 0, y: 16, filter: "blur(10px)" });
-  gsap.set("[data-layer='date-left']", {
+  gsap.set("[data-layer='date-arrival'], [data-layer='date-calendar'], [data-layer='date-closing']", {
     x: 0,
     y: 18,
     autoAlpha: 0,
     filter: "blur(18px)"
   });
-  gsap.set("[data-layer='date-right']", {
-    x: 0,
-    y: 18,
-    autoAlpha: 0,
-    filter: "blur(18px)"
-  });
-  gsap.set("[data-layer='date-note']", { autoAlpha: 0, y: 18, filter: "blur(12px)" });
   gsap.set("[data-final-line='top'], [data-final-line='bottom']", { scaleX: 0, transformOrigin: "center center" });
   gsap.set("[data-final-line='left'], [data-final-line='right']", { scaleY: 0, transformOrigin: "center center" });
   gsap.set("[data-layer='final-text']", { autoAlpha: 0, y: 8, letterSpacing: "0.08em" });
@@ -399,25 +392,17 @@ function setupCardScene() {
 function setupDateScene() {
   const scene = document.querySelector("[data-scene='date']");
 
-  gsap.to("[data-layer='date-left']", {
-    autoAlpha: 1,
-    y: 0,
-    filter: "blur(0px)",
-    letterSpacing: "0.11em",
-    ease: "none",
-    scrollTrigger: {
-      trigger: scene,
-      start: "top 72%",
-      end: "top 18%",
-      scrub: 0.86
-    }
-  });
+  const dateItems = [
+    "[data-layer='date-arrival']",
+    "[data-layer='date-calendar']",
+    "[data-layer='date-closing']"
+  ];
 
   const timeline = gsap.timeline({
     scrollTrigger: {
       trigger: scene,
       start: "top top",
-      end: "+=270%",
+      end: "+=320%",
       scrub: 0.82,
       pin: true,
       anticipatePin: 1
@@ -425,12 +410,10 @@ function setupDateScene() {
   });
 
   timeline
-    .to("[data-layer='date-left']", { autoAlpha: 1, y: 0, filter: "blur(0px)", letterSpacing: "0.11em", duration: 0.34 }, 0.06)
-    .to("[data-layer='date-left']", { autoAlpha: 0, y: -22, filter: "blur(16px)", duration: 0.3 }, 0.74)
-    .to("[data-layer='date-right']", { autoAlpha: 1, y: 0, filter: "blur(0px)", letterSpacing: "0.11em", duration: 0.36 }, 1.02)
-    .to("[data-layer='date-right']", { autoAlpha: 0, y: -20, filter: "blur(14px)", duration: 0.28 }, 1.66)
-    .to("[data-layer='date-note']", { autoAlpha: 1, y: 0, filter: "blur(0px)", letterSpacing: "0.11em", duration: 0.34 }, 1.94)
-    .to("[data-layer='date-note']", { autoAlpha: 0, y: -18, filter: "blur(14px)", duration: 0.28 }, 2.52);
+    .to(dateItems[0], { autoAlpha: 1, y: 0, filter: "blur(0px)", letterSpacing: "0.11em", duration: 0.34 }, 0.08)
+    .to(dateItems[1], { autoAlpha: 1, y: 0, filter: "blur(0px)", letterSpacing: "0.11em", duration: 0.34 }, 0.68)
+    .to(dateItems[2], { autoAlpha: 1, y: 0, filter: "blur(0px)", letterSpacing: "0.11em", duration: 0.34 }, 1.28)
+    .to(dateItems, { autoAlpha: 0, y: -22, filter: "blur(14px)", duration: 0.42 }, 2.64);
 }
 
 function setupFrameSequenceScene() {
@@ -492,9 +475,9 @@ async function setupScrollFrameSequence(scene) {
         y: 0,
         scale: 1,
         pointerEvents: "auto",
-        duration: 0.15,
+        duration: 0.16,
         ease: "power2.out"
-      }, 0.85);
+      }, 1.08);
 
     const enlargeCta = () => gsap.to(cta, { scale: 1.025, duration: 0.2, ease: "power2.out" });
     const restoreCta = () => gsap.to(cta, { scale: 1, duration: 0.22, ease: "power2.out" });
