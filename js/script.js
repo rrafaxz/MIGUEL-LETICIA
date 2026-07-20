@@ -4,8 +4,6 @@ const folderImageCache = new Map();
 
 window.addEventListener("DOMContentLoaded", async () => {
   await hydrateDynamicMedia();
-  setupMobileMenu();
-  setupDressCodeModal();
 
   if (!window.gsap || !window.ScrollTrigger || prefersReducedMotion) {
     setupStaticFrameSequences();
@@ -176,61 +174,6 @@ function readableImageName(src) {
     .replace(/[_-]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
-}
-
-function setupMobileMenu() {
-  const toggle = document.querySelector("[data-menu-toggle]");
-  const panel = document.querySelector("[data-mobile-menu]");
-  const links = panel?.querySelectorAll("a");
-
-  if (!toggle || !panel) return;
-
-  const setOpen = (isOpen) => {
-    document.body.classList.toggle("is-mobile-menu-open", isOpen);
-    toggle.setAttribute("aria-expanded", String(isOpen));
-    toggle.setAttribute("aria-label", isOpen ? "Fechar menu" : "Abrir menu");
-  };
-
-  toggle.addEventListener("click", () => {
-    setOpen(!document.body.classList.contains("is-mobile-menu-open"));
-  });
-
-  links?.forEach((link) => {
-    link.addEventListener("click", () => setOpen(false));
-  });
-
-  window.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") setOpen(false);
-  });
-}
-
-function setupDressCodeModal() {
-  const modal = document.querySelector("#traje-de-convidado");
-  const openButtons = document.querySelectorAll("[data-open-dress-code]");
-  const closeButtons = modal?.querySelectorAll("[data-close-dress-code]");
-
-  if (!modal || !openButtons.length) return;
-
-  const setOpen = (isOpen) => {
-    modal.classList.toggle("is-visible", isOpen);
-    modal.setAttribute("aria-hidden", String(!isOpen));
-    document.body.classList.toggle("is-dress-modal-open", isOpen);
-  };
-
-  openButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-      event.preventDefault();
-      setOpen(true);
-    });
-  });
-
-  closeButtons?.forEach((button) => {
-    button.addEventListener("click", () => setOpen(false));
-  });
-
-  window.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") setOpen(false);
-  });
 }
 
 function setupInitialStates() {

@@ -1,7 +1,7 @@
 const editNoticeMessage =
   "Este grupo já confirmou presença anteriormente. Você pode atualizar as respostas se necessário.";
-const firstSuccessMessage = "Presença confirmada com sucesso.";
-const updateSuccessMessage = "Presença atualizada com sucesso.";
+const firstSuccessMessage = "Presença confirmada! Te esperamos no dia 10/09/2026.";
+const updateSuccessMessage = "Presença atualizada! Te esperamos no dia 10/09/2026.";
 const groupNotFoundMessage =
   "Não encontramos este convite. Você pode pesquisar seu nome abaixo.";
 const groupFields = "id, display_name, search_name, is_confirmed, confirmed_at";
@@ -27,8 +27,6 @@ const elements = {
   guestList: document.querySelector("#guest-list"),
   confirm: document.querySelector("#confirm-button"),
   success: document.querySelector("#success-message"),
-  blessingModal: document.querySelector("#blessing-modal"),
-  blessingCloseButtons: document.querySelectorAll("[data-blessing-close]"),
 };
 
 const supabaseClient = window.pmSupabase;
@@ -49,24 +47,6 @@ function setStatus(message = "") {
 
 function getDirectGroupId() {
   return new URLSearchParams(window.location.search).get("group")?.trim() || "";
-}
-
-function openBlessingModal() {
-  if (!elements.blessingModal) {
-    return;
-  }
-
-  elements.blessingModal.classList.add("is-visible");
-  elements.blessingModal.setAttribute("aria-hidden", "false");
-}
-
-function closeBlessingModal() {
-  if (!elements.blessingModal) {
-    return;
-  }
-
-  elements.blessingModal.classList.remove("is-visible");
-  elements.blessingModal.setAttribute("aria-hidden", "true");
 }
 
 function normalizeAttendanceStatus(status) {
@@ -374,7 +354,6 @@ async function confirmPresence() {
     elements.confirm.textContent = "Atualizar presença";
     elements.confirm.disabled = false;
     setStatus("");
-    openBlessingModal();
   } catch (error) {
     console.error(error);
     elements.confirm.disabled = false;
@@ -480,15 +459,5 @@ elements.changeGroup.addEventListener("click", () => {
 });
 
 elements.confirm.addEventListener("click", confirmPresence);
-
-elements.blessingCloseButtons.forEach((button) => {
-  button.addEventListener("click", closeBlessingModal);
-});
-
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") {
-    closeBlessingModal();
-  }
-});
 
 initializePage();

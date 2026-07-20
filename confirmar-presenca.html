@@ -8,10 +8,12 @@
       name="description"
       content="Confirme sua presença no casamento de Miguel e Letícia."
     />
-    <link rel="stylesheet" href="css/confirmacoes.css?v=rsvp-layout-1" />
+    <meta http-equiv="Cache-Control" content="no-store, max-age=0" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <link rel="stylesheet" href="css/confirmacoes.css?v=confirm-message-2" />
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="js/supabase-config.js"></script>
-    <script defer src="js/confirmar-presenca.js"></script>
+    <script defer src="js/confirmar-presenca.js?v=confirm-message-2"></script>
   </head>
   <body>
     <a class="page-back" href="index.html">voltar</a>
@@ -94,46 +96,10 @@
           </button>
 
           <div class="success-box" id="success-message">
-            Presença confirmada com sucesso.
+            Presença confirmada! Te esperamos no dia 10/09/2026.
           </div>
         </section>
       </section>
     </main>
-
-    <div
-      class="blessing-modal"
-      id="blessing-modal"
-      aria-hidden="true"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="blessing-modal-title"
-    >
-      <div class="blessing-modal__backdrop" data-blessing-close></div>
-      <section class="blessing-modal__panel">
-        <button
-          class="blessing-modal__close"
-          type="button"
-          aria-label="Fechar mensagem"
-          data-blessing-close
-        >
-          ×
-        </button>
-        <h2 id="blessing-modal-title">Traje Black Tie</h2>
-        <figure class="dress-code-frame">
-          <div class="dress-code-images">
-            <img src="assets/images/traje-convidado.png" alt="Traje masculino Black Tie" />
-            <img src="assets/images/traje/vestidos-femininos.webp" alt="Sugestões de vestidos Black Tie" />
-          </div>
-          <figcaption>imagem ilustrativa</figcaption>
-        </figure>
-        <p>
-          SUA PRESENÇA FOI CONFIRMADA! Para celebrarmos este momento com elegância,
-          o traje sugerido para a cerimônia é Black Tie. A chegada será às 15:30.
-        </p>
-        <div class="blessing-modal__actions">
-          <a class="blessing-modal__primary blessing-modal__primary--pulse" href="ajuda.html">AJUDE O CASAL</a>
-        </div>
-      </section>
-    </div>
   </body>
 </html>
